@@ -1,6 +1,7 @@
 /*
 ARMSTRONG ALGORHITHM implementation in C
 EVALDAS PAULAUAS PI18E
+1/5/2019
 */
 #include <stdio.h>
 #include <stdlib.h>
