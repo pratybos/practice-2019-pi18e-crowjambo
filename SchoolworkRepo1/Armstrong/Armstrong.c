@@ -6,9 +6,10 @@ EVALDAS PAULAUAS PI18E
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include "functionRefs.h"
 
 
-int main() {
+void ArmstrongFunction() {
 	int number, tempNumber, remainder, result = 0, counter = 0;
 	printf("Enter a num: ");
 	scanf_s("%d", &number);
@@ -37,7 +38,5 @@ int main() {
 	{
 		printf("\n%4d not an armstrong number\n", number);
 	}
-	system("pause");
 
-	return 0;
 }
