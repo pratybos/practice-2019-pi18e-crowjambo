@@ -15,7 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source.c">
+    <ClCompile Include="RealLifeAlgo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Armstrong.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
