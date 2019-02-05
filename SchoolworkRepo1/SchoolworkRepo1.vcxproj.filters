@@ -13,10 +13,27 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Armstrong">
+      <UniqueIdentifier>{fef4b1f1-87a2-41a9-a4b2-4a5e55baa230}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RealLifeAlgorhithm">
+      <UniqueIdentifier>{a8cc6943-1ed7-4ec2-a013-8b27199fc750}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Armstrong.c">
+    <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Armstrong.c">
+      <Filter>Armstrong</Filter>
+    </ClCompile>
+    <ClCompile Include="RealLifeAlgo.c">
+      <Filter>RealLifeAlgorhithm</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="functionRefs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
