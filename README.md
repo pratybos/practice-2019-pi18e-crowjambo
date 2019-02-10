@@ -10,17 +10,13 @@ practice-2019-pi18e-crowjambo
 
 |
 
-+-- **SchoolworkRepo1/** *(Main function here)*
++-- **Armstrong/Armstrong/Source.c** *(Armstrong algorhithm here)*
 
 |
 
-+-- **SchoolworkRepo1/Armstrong** *(Armstrong algorhithm here)*
++-- **TASK1_RealLifeAlgo/TASK1_RealLifeAlgo/Source.c** *(Real life algorhithm here)*
 
 |
 
-+-- **SchoolworkRepo1/RealLifeAlgorhithm** *(Real life algorhithm here)*
-
-|
-
-README.MD
+**README.MD**
 
