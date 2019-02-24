@@ -41,7 +41,13 @@ Use normal C and just arrays to draw things, maybe WinAPI and extra thread for d
 
 void FillMap();
 void DrawMap();
-void PlayerDraw(int x, int y);
+void ChangePosition(struct player p);
+int Inputs();
+void AllDrawingActions();
+
+//utility , faster cls
+void cls(HANDLE hConsole);
+
 
 #pragma endregion
 
@@ -49,7 +55,7 @@ void PlayerDraw(int x, int y);
 #pragma region Structs
 
 struct map {
-	int size[10][10];
+	int size[25][25];
 
 };
 
@@ -57,9 +63,7 @@ struct player {
 	int playerNumber;
 	int Xpos;
 	int Ypos;
-	int(*Draw)(int,int);
-	// place inputs in here too?
-	// function pointers as well for movement
+	int size;
 };
 
 #pragma endregion
@@ -72,45 +76,39 @@ struct player {
 	struct player player1;
 
 #pragma endregion
+	
 
+// global input
+int key = 0;
 
 
 int main() 
 {
-	//LOCAL VARIABLES
-	int key = 0; // _getch returns ints
-
+	
 	//PLAYER INIT.
-	player1.Draw = &PlayerDraw;
 	player1.playerNumber = 6;
-	player1.Xpos = 5;
-	player1.Ypos = 5;
+	player1.size = 2;
+	player1.Xpos = 11;
+	player1.Ypos = 22;
 
+	//Initial drawing of the field
+	FillMap();
+	ChangePosition(player1);
+	DrawMap();
 
 	//infinite game loop
 	while (1) {
 
-		//DRAWING + Clearing screen
-		system("cls");
-		FillMap();
-		player1.Draw(player1.Xpos, player1.Ypos);
-		DrawMap();
-		//
-		//INPUT
-		if (_kbhit()) {
-			key = _getch();
-
-			// remember difference in ASCII value between capital letters and not
-			if (key == 'w') {			
-				player1.Xpos = player1.Xpos - 1;
-			}
-
+		// only draw if correct inputs were made
+		if (Inputs()) {
+			AllDrawingActions();
 		}
+
+
+
 		// miliseconds to wait
-		Sleep(200); 
+		Sleep(20);
 	}
-
-
 
 	system("Pause");
 	return 0;
@@ -121,22 +119,21 @@ int main()
 
 void FillMap(){
 	int i, j;
-	for (i = 0; i < 10; i++) {
-		for (j = 0; j < 10; j++) {
+	for (i = 0; i < 25; i++) {
+		for (j = 0; j < 25; j++) {
 			// value to fill the map with
-			firstMap.size[i][j] = 2;
+			firstMap.size[i][j] = 0;
 
 		}
 	}
-
 }
 
 void DrawMap() {
 	int i, j;
-	for (i = 0; i < 10; i++) {
-		for (j = 0; j < 10; j++) {
+	for (i = 0; i < 25; i++) {
+		for (j = 0; j < 25; j++) {
 			// make the map look square or rectangle. Draw new line at the end of each 10 elements.
-			if (j == 9) {
+			if (j == 24) {
 				printf("%d \n", firstMap.size[i][j]);
 				continue;
 			}
@@ -145,17 +142,127 @@ void DrawMap() {
 		}
 	}
 	// new line after print for cleanup
-	printf("\n");
+	printf("\n\n\n");
+	printf("x pos : %d , y pos : %d", player1.Xpos, player1.Ypos);
 
 }
 
-void PlayerDraw(int y, int x) {
+void ChangePosition(struct player p) {
 	
-	// set it in map space
-	firstMap.size[y][x] = player1.playerNumber;
+	// set it in map space. Make player of size depending on its size attribute ( in cube shape )
+	for (int i = 0; i < p.size; i++) {
+		for (int j = 0; j < p.size; j++) {
+			firstMap.size[p.Ypos + i][p.Xpos + j] = p.playerNumber;
+		}
+	}
+	
+
 
 }
 
+int Inputs() {
+
+	if (_kbhit()) {
+
+		key = _getch();
+
+		//only proc update if input keys are pressed
+		if (key == 'w' || key == 's' || key == 'd' || key == 'a') {
+
+			// remember difference in ASCII value between capital letters and not
+			// take care of proper inputs/collisions
+			if (key == 'w') {
+				if (player1.Ypos > 0) {
+					player1.Ypos -= 1;
+				}
+			}
+
+			// taking into account bigger player size
+			if (key == 's') {
+				if (player1.Ypos+player1.size-1 < 24) {
+					player1.Ypos += 1;
+				}
+			}
+
+			// taking into account bigger player size
+			if (key == 'd') {
+				if (player1.Xpos+player1.size-1 < 24) {
+					player1.Xpos += 1;
+				}
+			}
+
+			if (key == 'a') {
+				if (player1.Xpos > 0) {
+					player1.Xpos -= 1;
+				}
+			}
+
+			return 1;
+		}
+		return 0;
+	}
+}
+
+void AllDrawingActions() {
+
+	HANDLE hStdout;
+	hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	cls(hStdout);
+	FillMap();
+	ChangePosition(player1);
+	DrawMap();
+
+}
+
+void cls(HANDLE hConsole)
+{
+	COORD coordScreen = { 0, 0 };    // home for the cursor 
+	DWORD cCharsWritten;
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	DWORD dwConSize;
+
+	// Get the number of character cells in the current buffer. 
+
+	if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
+	{
+		return;
+	}
+
+	dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
+
+	// Fill the entire screen with blanks.
+
+	if (!FillConsoleOutputCharacter(hConsole,        // Handle to console screen buffer 
+		(TCHAR) ' ',     // Character to write to the buffer
+		dwConSize,       // Number of cells to write 
+		coordScreen,     // Coordinates of first cell 
+		&cCharsWritten))// Receive number of characters written
+	{
+		return;
+	}
+
+	// Get the current text attribute.
+
+	if (!GetConsoleScreenBufferInfo(hConsole, &csbi))
+	{
+		return;
+	}
+
+	// Set the buffer's attributes accordingly.
+
+	if (!FillConsoleOutputAttribute(hConsole,         // Handle to console screen buffer 
+		csbi.wAttributes, // Character attributes to use
+		dwConSize,        // Number of cells to set attribute 
+		coordScreen,      // Coordinates of first cell 
+		&cCharsWritten)) // Receive number of characters written
+	{
+		return;
+	}
+
+	// Put the cursor at its home coordinates.
+
+	SetConsoleCursorPosition(hConsole, coordScreen);
+}
 
 #pragma endregion
 
