@@ -12,14 +12,13 @@ ASSUMPTIONS :
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
-#include <Windows.h>
-#define NUMBER_OF_OBSTACLES 3
-#define MAP_SIZE 40
-
 /*
+
+ADD : 
+	- interraction with buildings
+	- extra input to intteract with building
+	- some refactoring
+	- fulfill actual objective by reaching a building, interracting with it and going home, then breaking the loop
 
 - Going to store (with a map from arrays)
 - Buying groceries (navigate aswell?), can pick whatever you want
@@ -28,9 +27,17 @@ ASSUMPTIONS :
 
 */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <Windows.h>
+#define NUMBER_OF_OBSTACLES 3
+#define MAP_SIZE 40
+
+
 enum ObstacleType {
 	Home=0,
-	VegetablesShop,
+	SuperMarket,
 	CandyStore,
 };
 
@@ -61,6 +68,8 @@ struct collidable {
 	int Ypos;
 	int size;
 	enum ObstacleType type;
+	int Xtrigger;
+	int Ytrigger;
 };
 
 
@@ -102,8 +111,11 @@ int main()
 		obstacles[0].size = 4;
 		obstacles[0].Xpos = 6;
 		obstacles[0].Ypos = 19;
+		//make doors be in the middle bottom of obstacle
+		obstacles[0].Xtrigger = obstacles[0].Xpos + obstacles[0].size / 2;
+		obstacles[0].Ytrigger = obstacles[0].Ypos + obstacles[0].size;
 		//shop1
-		obstacles[1].type = VegetablesShop;
+		obstacles[1].type = SuperMarket;
 		obstacles[1].numberRepresentation = 9;
 		obstacles[1].size = 8;
 		obstacles[1].Xpos = 15;
@@ -160,6 +172,14 @@ void FillMap(){
 // function for performing all of the drawing of objects/player after the positions are changed
 void DrawMap() {
 	int i, j;
+	char testWords[] = "Enter Home";
+	if (player1.Xpos == obstacles[0].Xtrigger) {
+		printf("\n\n %s \n\n", testWords);
+	}
+	else {
+		printf("\n\n \n\n");
+	}
+
 	for (i = 0; i < MAP_SIZE; i++) {
 		for (j = 0; j < MAP_SIZE; j++) {
 			// make the map look square or rectangle. Draw new line at the end of each 10 elements.
@@ -171,6 +191,7 @@ void DrawMap() {
 
 		}
 	}
+	printf("\n Current objective : Go to supermarket \n\n You = 6 ; HOME = 3 ; SUPERMARKET = 9");
 	// new line after print for cleanup
 
 	//debugging print values
@@ -241,6 +262,7 @@ int Inputs() {
 
 			return 1;
 		}
+
 		return 0;
 	}
 }
