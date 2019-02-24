@@ -16,12 +16,9 @@ ASSUMPTIONS :
 #include <stdlib.h>
 #include <conio.h>
 #include <Windows.h>
+#define NUMBER_OF_OBSTACLES 3
 
 /*
-
-Real life task, made into algorhithm. THINK LIKE A COMPUTER, divide it into tasks and execute
-
-Use normal C and just arrays to draw things, maybe WinAPI and extra thread for drawing ( or so ) and regex for clearscreen/console(veryfast)
 
 - Going to store (with a map from arrays)
 - Buying groceries (navigate aswell?), can pick whatever you want
@@ -30,18 +27,17 @@ Use normal C and just arrays to draw things, maybe WinAPI and extra thread for d
 
 */
 
-/*
-1. create a array grid/representatino of a map (as a struct)
-2. create a player struct ( with position )
-3. use keyboard inputs ( put it in a function ) to move player around the map
-4. look into changing player color.
-*/
+enum ObstacleType {
+	Home=0,
+	VegetablesShop,
+	CandyStore,
+};
 
 #pragma region FunctionINIT
 
 void FillMap();
 void DrawMap();
-void ChangePosition(struct player p);
+void ChangePosition(struct collidable p);
 int Inputs();
 void AllDrawingActions();
 
@@ -51,50 +47,81 @@ void cls(HANDLE hConsole);
 
 #pragma endregion
 
-
 #pragma region Structs
 
 struct map {
 	int size[25][25];
-
 };
 
-struct player {
-	int playerNumber;
+struct collidable {
+	int numberRepresentation;
 	int Xpos;
 	int Ypos;
 	int size;
+	enum ObstacleType type;
 };
+
 
 #pragma endregion
 
 
-
+// to not have to pass them to functions
 #pragma region Global Struct definitions
 
 	struct map firstMap;
-	struct player player1;
+	struct collidable player1;
+	struct collidable obstacles[NUMBER_OF_OBSTACLES];
 
 #pragma endregion
 	
 
-// global input
+// global input, simplified this way
 int key = 0;
 
 
 int main() 
 {
-	
-	//PLAYER INIT.
-	player1.playerNumber = 6;
-	player1.size = 2;
-	player1.Xpos = 11;
-	player1.Ypos = 22;
 
-	//Initial drawing of the field
-	FillMap();
-	ChangePosition(player1);
-	DrawMap();
+	#pragma region INIT values/actions
+
+		//PLAYER INIT.
+		player1.numberRepresentation = 6;
+		player1.size = 2;
+		player1.Xpos = 11;
+		player1.Ypos = 22;
+
+		//Obstacles INIT
+			//home obstacle
+			obstacles[0].type = Home;
+			obstacles[0].numberRepresentation = 3;
+			obstacles[0].size = 4;
+			obstacles[0].Xpos = 6;
+			obstacles[0].Ypos = 19;
+			//shop1
+			obstacles[1].type = VegetablesShop;
+			obstacles[1].numberRepresentation = 9;
+			obstacles[1].size = 8;
+			obstacles[1].Xpos = 15;
+			obstacles[1].Ypos = 2;
+			//shop2
+			obstacles[2].type = CandyStore;
+			obstacles[2].numberRepresentation = 2;
+			obstacles[2].size = 5;
+			obstacles[2].Xpos = 0;
+			obstacles[2].Ypos = 0;
+
+		//Initial drawing of the field
+		FillMap();
+		ChangePosition(player1);
+		//set all buildings/obstacles
+		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
+			ChangePosition(obstacles[i]);
+		}
+		DrawMap();
+
+	#pragma endregion
+
+
 
 	//infinite game loop
 	while (1) {
@@ -147,12 +174,12 @@ void DrawMap() {
 
 }
 
-void ChangePosition(struct player p) {
+void ChangePosition(struct collidable p) {
 	
 	// set it in map space. Make player of size depending on its size attribute ( in cube shape )
 	for (int i = 0; i < p.size; i++) {
 		for (int j = 0; j < p.size; j++) {
-			firstMap.size[p.Ypos + i][p.Xpos + j] = p.playerNumber;
+			firstMap.size[p.Ypos + i][p.Xpos + j] = p.numberRepresentation;
 		}
 	}
 	
@@ -210,6 +237,9 @@ void AllDrawingActions() {
 	cls(hStdout);
 	FillMap();
 	ChangePosition(player1);
+	for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
+		ChangePosition(obstacles[i]);
+	}
 	DrawMap();
 
 }
