@@ -131,8 +131,6 @@ int main()
 			AllDrawingActions();
 		}
 
-
-
 		// miliseconds to wait
 		Sleep(20);
 	}
@@ -144,6 +142,7 @@ int main()
 
 #pragma region FunctionDefinitions
 
+// function for refilling the map with default values ( dirty solution )
 void FillMap(){
 	int i, j;
 	for (i = 0; i < 25; i++) {
@@ -155,6 +154,7 @@ void FillMap(){
 	}
 }
 
+// function for performing all of the drawing of objects/player after the positions are changed
 void DrawMap() {
 	int i, j;
 	for (i = 0; i < 25; i++) {
@@ -174,6 +174,8 @@ void DrawMap() {
 
 }
 
+
+// function for SETTING position of both player and obstacles on the map
 void ChangePosition(struct collidable p) {
 	
 	// set it in map space. Make player of size depending on its size attribute ( in cube shape )
@@ -189,14 +191,20 @@ void ChangePosition(struct collidable p) {
 
 int Inputs() {
 
+	//temp position for player ( for checking collisions )
+	int tempY = player1.Ypos;
+	int tempX = player1.Xpos;
+
 	if (_kbhit()) {
 
+		//dont forget, getch() returns INTS!
 		key = _getch();
 
 		//only proc update if input keys are pressed
 		if (key == 'w' || key == 's' || key == 'd' || key == 'a') {
 
 			// remember difference in ASCII value between capital letters and not
+
 			// take care of proper inputs/collisions
 			if (key == 'w') {
 				if (player1.Ypos > 0) {
