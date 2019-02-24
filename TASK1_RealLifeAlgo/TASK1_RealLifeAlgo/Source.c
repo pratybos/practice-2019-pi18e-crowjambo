@@ -17,6 +17,7 @@ ASSUMPTIONS :
 #include <conio.h>
 #include <Windows.h>
 #define NUMBER_OF_OBSTACLES 3
+#define MAP_SIZE 40
 
 /*
 
@@ -50,7 +51,8 @@ void cls(HANDLE hConsole);
 #pragma region Structs
 
 struct map {
-	int size[25][25];
+	int size[MAP_SIZE][MAP_SIZE];
+	int graphics;
 };
 
 struct collidable {
@@ -84,31 +86,34 @@ int main()
 
 	#pragma region INIT values/actions
 
-		//PLAYER INIT.
+	// MAP graphics INIT
+		firstMap.graphics = 0;
+
+	//PLAYER INIT.
 		player1.numberRepresentation = 6;
 		player1.size = 2;
 		player1.Xpos = 11;
 		player1.Ypos = 22;
 
-		//Obstacles INIT
-			//home obstacle
-			obstacles[0].type = Home;
-			obstacles[0].numberRepresentation = 3;
-			obstacles[0].size = 4;
-			obstacles[0].Xpos = 6;
-			obstacles[0].Ypos = 19;
-			//shop1
-			obstacles[1].type = VegetablesShop;
-			obstacles[1].numberRepresentation = 9;
-			obstacles[1].size = 8;
-			obstacles[1].Xpos = 15;
-			obstacles[1].Ypos = 2;
-			//shop2
-			obstacles[2].type = CandyStore;
-			obstacles[2].numberRepresentation = 2;
-			obstacles[2].size = 5;
-			obstacles[2].Xpos = 0;
-			obstacles[2].Ypos = 0;
+	//Obstacles INIT
+		//home obstacle
+		obstacles[0].type = Home;
+		obstacles[0].numberRepresentation = 3;
+		obstacles[0].size = 4;
+		obstacles[0].Xpos = 6;
+		obstacles[0].Ypos = 19;
+		//shop1
+		obstacles[1].type = VegetablesShop;
+		obstacles[1].numberRepresentation = 9;
+		obstacles[1].size = 8;
+		obstacles[1].Xpos = 15;
+		obstacles[1].Ypos = 2;
+		//shop2
+		obstacles[2].type = CandyStore;
+		obstacles[2].numberRepresentation = 2;
+		obstacles[2].size = 5;
+		obstacles[2].Xpos = 0;
+		obstacles[2].Ypos = 0;
 
 		//Initial drawing of the field
 		FillMap();
@@ -120,8 +125,6 @@ int main()
 		DrawMap();
 
 	#pragma endregion
-
-
 
 	//infinite game loop
 	while (1) {
@@ -135,7 +138,7 @@ int main()
 		Sleep(20);
 	}
 
-	system("Pause");
+	//system("Pause");
 	return 0;
 }
 
@@ -145,10 +148,10 @@ int main()
 // function for refilling the map with default values ( dirty solution )
 void FillMap(){
 	int i, j;
-	for (i = 0; i < 25; i++) {
-		for (j = 0; j < 25; j++) {
+	for (i = 0; i < MAP_SIZE; i++) {
+		for (j = 0; j < MAP_SIZE; j++) {
 			// value to fill the map with
-			firstMap.size[i][j] = 0;
+			firstMap.size[i][j] = firstMap.graphics;
 
 		}
 	}
@@ -157,10 +160,10 @@ void FillMap(){
 // function for performing all of the drawing of objects/player after the positions are changed
 void DrawMap() {
 	int i, j;
-	for (i = 0; i < 25; i++) {
-		for (j = 0; j < 25; j++) {
+	for (i = 0; i < MAP_SIZE; i++) {
+		for (j = 0; j < MAP_SIZE; j++) {
 			// make the map look square or rectangle. Draw new line at the end of each 10 elements.
-			if (j == 24) {
+			if (j == MAP_SIZE-1) {
 				printf("%d \n", firstMap.size[i][j]);
 				continue;
 			}
@@ -169,9 +172,14 @@ void DrawMap() {
 		}
 	}
 	// new line after print for cleanup
-	printf("\n\n\n");
-	printf("x pos : %d , y pos : %d", player1.Xpos, player1.Ypos);
 
+	//debugging print values
+	
+	//printf("\n\n\n");
+	//printf("x pos : %d , y pos : %d \n", player1.Xpos, player1.Ypos);
+	//printf("y+1 : %d | x+1: %d ", firstMap.size[player1.Ypos + 1][player1.Xpos], firstMap.size[player1.Ypos][player1.Xpos + 1]);
+
+	
 }
 
 
@@ -189,11 +197,8 @@ void ChangePosition(struct collidable p) {
 
 }
 
+// Handles all inputs and proper collisions detection
 int Inputs() {
-
-	//temp position for player ( for checking collisions )
-	int tempY = player1.Ypos;
-	int tempX = player1.Xpos;
 
 	if (_kbhit()) {
 
@@ -207,27 +212,29 @@ int Inputs() {
 
 			// take care of proper inputs/collisions
 			if (key == 'w') {
-				if (player1.Ypos > 0) {
+				// check if position above player(by 1) is tile 0 or something else, (0 is the default ground number atm)
+				if (player1.Ypos > 0 && firstMap.size[player1.Ypos-1][player1.Xpos] == firstMap.graphics && firstMap.size[player1.Ypos - 1][player1.Xpos + player1.size - 1] == firstMap.graphics) {
 					player1.Ypos -= 1;
 				}
 			}
 
-			// taking into account bigger player size
+			// taking into account bigger player size.
 			if (key == 's') {
-				if (player1.Ypos+player1.size-1 < 24) {
+				if (player1.Ypos + player1.size < MAP_SIZE && firstMap.size[player1.Ypos + player1.size][player1.Xpos] == firstMap.graphics && firstMap.size[player1.Ypos + player1.size][player1.Xpos + player1.size - 1] == firstMap.graphics) {
 					player1.Ypos += 1;
 				}
 			}
 
-			// taking into account bigger player size
+			// taking into account bigger player size. 
 			if (key == 'd') {
-				if (player1.Xpos+player1.size-1 < 24) {
+				if (player1.Xpos+player1.size < MAP_SIZE && firstMap.size[player1.Ypos][player1.Xpos+player1.size] == firstMap.graphics && firstMap.size[player1.Ypos + player1.size-1][player1.Xpos + player1.size] == firstMap.graphics) {
 					player1.Xpos += 1;
 				}
 			}
 
+			//check for COMPLETELY OUT OF BOUNDS && if next tile is walkable ground tile or something else
 			if (key == 'a') {
-				if (player1.Xpos > 0) {
+				if (player1.Xpos > 0 && firstMap.size[player1.Ypos][player1.Xpos-1] == firstMap.graphics && firstMap.size[player1.Ypos + player1.size - 1][player1.Xpos - 1] == firstMap.graphics) {
 					player1.Xpos -= 1;
 				}
 			}
