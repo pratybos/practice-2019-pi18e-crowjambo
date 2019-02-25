@@ -102,10 +102,17 @@ struct player {
 	// global progress tracking
 	int currentObj = 0;
 
-	// global event tracking
+	// global position tracking
 	int isNearHome = 0;
 	int isNearSuperMarket = 0;
 	int isNearCandyStore = 0;
+
+	// global quest status tracking
+	int WentToSuperMarket = 0;
+	int wentToCandyStore = 0;
+
+	// task complete
+	int isFinished = 0;
 
 #pragma endregion
 
@@ -145,7 +152,7 @@ int main()
 	#pragma endregion
 
 	//infinite game loop
-	while (1) {
+	while (!isFinished) {
 
 		// only draw if correct inputs were made
 		if (Inputs()) {
@@ -156,7 +163,9 @@ int main()
 		Sleep(20);
 	}
 
-	//system("Pause");
+	system("cls");
+	printf("\n\n Your daily chores are complete! \n\n");
+	system("Pause");
 	return 0;
 }
 
@@ -297,7 +306,7 @@ int Inputs() {
 		key = _getch();
 
 		//only proc update if input keys are pressed
-		if (key == 'w' || key == 's' || key == 'd' || key == 'a') {
+		if (key == 'w' || key == 's' || key == 'd' || key == 'a' || key == 'e') {
 
 			// remember difference in ASCII value between capital letters and not
 
@@ -330,8 +339,20 @@ int Inputs() {
 				}
 			}
 
-
-
+			//action key
+			if (key == 'e') {
+				if (isNearSuperMarket) {
+					WentToSuperMarket = 1;
+					currentObj = 1;
+				}
+				else if (isNearCandyStore) {
+					wentToCandyStore = 1;
+					currentObj = 2;
+				}
+				else if (isNearHome && WentToSuperMarket && wentToCandyStore) {
+					isFinished = 1;
+				}
+			}
 
 			return 1;
 		}
