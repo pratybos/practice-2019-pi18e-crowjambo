@@ -165,17 +165,31 @@ void FillMap(){
 }
 
 // function for performing all of the drawing of objects/player after the positions are changed
-void DrawMap() {
-	int i, j;
+void DrawMap() {	
 
-	char testWords[] = "Enter Home";
+#pragma region TextOutputs
+
+	//strings
+	char nearHomeText[] = "Enter Home";
+	char nearSuperMarketText[] = "Enter SuperMarket";
+	char nearCandyStoreText[] = "Enter CandyStore";
+	//logic
 	if (player1.Xpos == obstacles[0].Xtrigger && player1.Ypos == obstacles[0].Ytrigger) {
-		printf("\n\n %s \n\n", testWords);
+		printf("\n\n %s \n\n", nearHomeText);
+	}
+	else if (player1.Xpos == obstacles[1].Xtrigger && player1.Ypos == obstacles[1].Ytrigger) {
+		printf("\n\n %s \n\n", nearSuperMarketText);
+	}
+	else if (player1.Xpos == obstacles[2].Xtrigger && player1.Ypos == obstacles[2].Ytrigger) {
+		printf("\n\n %s \n\n", nearCandyStoreText);
 	}
 	else {
-		printf("\n\n \n\n");
+		printf("\n\n\n\n");
 	}
 
+#pragma endregion
+
+	int i, j;
 	for (i = 0; i < MAP_SIZE; i++) {
 		for (j = 0; j < MAP_SIZE; j++) {
 			// make the map look square or rectangle. Draw new line at the end of each 10 elements.
