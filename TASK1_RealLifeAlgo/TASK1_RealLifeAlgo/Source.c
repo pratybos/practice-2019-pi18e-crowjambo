@@ -45,9 +45,11 @@ enum ObstacleType {
 
 void FillMap();
 void DrawMap();
-void ChangePosition(struct collidable p);
+void ChangePositionCollidable(struct collidable p);
+void ChangePosition(struct player p);
 int Inputs();
 void AllDrawingActions();
+struct collidable ObstacleInit(struct collidable x, enum ObstacleType type, int graphics, int size, int Xpos, int Ypos);
 
 //utility , faster cls
 void cls(HANDLE hConsole);
@@ -72,6 +74,13 @@ struct collidable {
 	int Ytrigger;
 };
 
+struct player {
+	int numberRepresentation;
+	int Xpos;
+	int Ypos;
+	int size;
+};
+
 
 #pragma endregion
 
@@ -80,7 +89,7 @@ struct collidable {
 #pragma region Global Struct definitions
 
 	struct map firstMap;
-	struct collidable player1;
+	struct player player1;
 	struct collidable obstacles[NUMBER_OF_OBSTACLES];
 
 #pragma endregion
@@ -96,45 +105,31 @@ int main()
 	#pragma region INIT values/actions
 
 	// MAP graphics INIT
-		firstMap.graphics = 0;
+	firstMap.graphics = 0;
 
 	//PLAYER INIT.
-		player1.numberRepresentation = 6;
-		player1.size = 2;
-		player1.Xpos = 11;
-		player1.Ypos = 22;
+	player1.numberRepresentation = 6;
+	player1.size = 2;
+	player1.Xpos = 11;
+	player1.Ypos = 22;
 
 	//Obstacles INIT
-		//home obstacle
-		obstacles[0].type = Home;
-		obstacles[0].numberRepresentation = 3;
-		obstacles[0].size = 4;
-		obstacles[0].Xpos = 6;
-		obstacles[0].Ypos = 19;
-		//make doors be in the middle bottom of obstacle
-		obstacles[0].Xtrigger = obstacles[0].Xpos + obstacles[0].size / 2;
-		obstacles[0].Ytrigger = obstacles[0].Ypos + obstacles[0].size;
-		//shop1
-		obstacles[1].type = SuperMarket;
-		obstacles[1].numberRepresentation = 9;
-		obstacles[1].size = 8;
-		obstacles[1].Xpos = 15;
-		obstacles[1].Ypos = 2;
-		//shop2
-		obstacles[2].type = CandyStore;
-		obstacles[2].numberRepresentation = 2;
-		obstacles[2].size = 5;
-		obstacles[2].Xpos = 0;
-		obstacles[2].Ypos = 0;
+	//home obstacle
+	// didnt work unless I return in. Hm.
+	obstacles[0] = ObstacleInit(obstacles[0],Home,3,4,6,19);	
+	//shop1
+	obstacles[1] = ObstacleInit(obstacles[1],SuperMarket,9,8,15,2);
+	//shop2
+	obstacles[2] = ObstacleInit(obstacles[2],CandyStore,2,5,0,0);
 
-		//Initial drawing of the field
-		FillMap();
-		ChangePosition(player1);
-		//set all buildings/obstacles
-		for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
-			ChangePosition(obstacles[i]);
-		}
-		DrawMap();
+	//Initial drawing of the field
+	FillMap();
+	ChangePosition(player1);
+	//set all buildings/obstacles
+	for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
+		ChangePositionCollidable(obstacles[i]);
+	}
+	DrawMap();
 
 	#pragma endregion
 
@@ -172,8 +167,9 @@ void FillMap(){
 // function for performing all of the drawing of objects/player after the positions are changed
 void DrawMap() {
 	int i, j;
+
 	char testWords[] = "Enter Home";
-	if (player1.Xpos == obstacles[0].Xtrigger) {
+	if (player1.Xpos == obstacles[0].Xtrigger && player1.Ypos == obstacles[0].Ytrigger) {
 		printf("\n\n %s \n\n", testWords);
 	}
 	else {
@@ -193,9 +189,7 @@ void DrawMap() {
 	}
 	printf("\n Current objective : Go to supermarket \n\n You = 6 ; HOME = 3 ; SUPERMARKET = 9");
 	// new line after print for cleanup
-
 	//debugging print values
-	
 	//printf("\n\n\n");
 	//printf("x pos : %d , y pos : %d \n", player1.Xpos, player1.Ypos);
 	//printf("y+1 : %d | x+1: %d ", firstMap.size[player1.Ypos + 1][player1.Xpos], firstMap.size[player1.Ypos][player1.Xpos + 1]);
@@ -203,9 +197,8 @@ void DrawMap() {
 	
 }
 
-
 // function for SETTING position of both player and obstacles on the map
-void ChangePosition(struct collidable p) {
+void ChangePosition(struct player p) {
 	
 	// set it in map space. Make player of size depending on its size attribute ( in cube shape )
 	for (int i = 0; i < p.size; i++) {
@@ -213,9 +206,15 @@ void ChangePosition(struct collidable p) {
 			firstMap.size[p.Ypos + i][p.Xpos + j] = p.numberRepresentation;
 		}
 	}
-	
+}
 
-
+// same placement function, but for obstacles
+void ChangePositionCollidable(struct collidable p) {
+	for (int i = 0; i < p.size; i++) {
+		for (int j = 0; j < p.size; j++) {
+			firstMap.size[p.Ypos + i][p.Xpos + j] = p.numberRepresentation;
+		}
+	}
 }
 
 // Handles all inputs and proper collisions detection
@@ -275,10 +274,26 @@ void AllDrawingActions() {
 	FillMap();
 	ChangePosition(player1);
 	for (int i = 0; i < NUMBER_OF_OBSTACLES; i++) {
-		ChangePosition(obstacles[i]);
+		ChangePositionCollidable(obstacles[i]);
 	}
 	DrawMap();
 
+}
+
+struct collidable ObstacleInit(struct collidable x, enum ObstacleType type ,int graphics, int size, int Xpos, int Ypos) {
+
+	x.type = type;
+	x.numberRepresentation = graphics;
+	x.size = size;
+	x.Xpos = Xpos;
+	x.Ypos = Ypos;
+
+	//make doors be in the middle bottom of obstacle
+	x.Xtrigger = x.Xpos + x.size / 2;
+	x.Ytrigger = x.Ypos + x.size;
+
+	return x;
+	
 }
 
 void cls(HANDLE hConsole)
