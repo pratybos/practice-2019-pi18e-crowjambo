@@ -3,27 +3,20 @@
 TASK 1 - REAL LIFE ALGORITHM
 EVALDAS PAULAUSKAS - PI18E group
 
-ALGORITHM :
-INPUT :
-OUTPUT :
+ALGORITHM : Do daily chores of going to the supermarket and picking up a package in the post office
+INPUT : W,A,S,D and E keyboard buttons to navigate and interract
+OUTPUT : Graphical representation in console of walking to the store etc.
 STEPS :
+
+	- Navigate using WASD to the next objective ( listed in text ) 
+	- Using E interract with buildings and complete objective
+	- Complete all objectives
+	- Go back home
+
 ASSUMPTIONS :
 
-
-*/
-
-/*
-
-ADD : 
-	- interraction with buildings
-	- extra input to intteract with building
-	- some refactoring
-	- fulfill actual objective by reaching a building, interracting with it and going home, then breaking the loop
-
-- Going to store (with a map from arrays)
-- Buying groceries (navigate aswell?), can pick whatever you want
-- Paying
-- Going home
+	- Assumes that all doors are located at the bottom/middle of each building
+	- That there are no other obstacles/objects in the world other than those dependent on your goal
 
 */
 
@@ -39,7 +32,7 @@ ADD :
 enum ObstacleType {
 	Home=0,
 	SuperMarket,
-	CandyStore,
+	PostOffice,
 };
 
 #pragma region FunctionINIT
@@ -105,11 +98,11 @@ struct player {
 	// global position tracking
 	int isNearHome = 0;
 	int isNearSuperMarket = 0;
-	int isNearCandyStore = 0;
+	int isNearPostOffice = 0;
 
 	// global quest status tracking
 	int WentToSuperMarket = 0;
-	int wentToCandyStore = 0;
+	int wentToPostOffice = 0;
 
 	// task complete
 	int isFinished = 0;
@@ -131,7 +124,7 @@ int main()
 	//shop1
 	obstacles[1] = ObstacleInit(obstacles[1],SuperMarket,9,8,15,2);
 	//shop2
-	obstacles[2] = ObstacleInit(obstacles[2],CandyStore,2,5,0,0);
+	obstacles[2] = ObstacleInit(obstacles[2],PostOffice,2,5,0,0);
 
 	//PLAYER INIT.
 	player1.numberRepresentation = 6;
@@ -198,12 +191,12 @@ void DrawMap() {
 		isNearSuperMarket = 1;
 	}
 	else if (player1.Xpos == obstacles[2].Xtrigger && player1.Ypos == obstacles[2].Ytrigger) {
-		isNearCandyStore = 1;
+		isNearPostOffice = 1;
 	}
 	else {
 		isNearHome = 0;
 		isNearSuperMarket = 0;
-		isNearCandyStore = 0;
+		isNearPostOffice = 0;
 	}
 
 #pragma endregion
@@ -213,7 +206,7 @@ void DrawMap() {
 	//strings
 	char nearHomeText[] = "Enter Home";
 	char nearSuperMarketText[] = "Enter SuperMarket";
-	char nearCandyStoreText[] = "Enter CandyStore";
+	char nearCandyStoreText[] = "Enter PostOffice";
 	//logic
 	if (isNearHome) {
 		printf("\n\n %s \n\n", nearHomeText);
@@ -221,7 +214,7 @@ void DrawMap() {
 	else if (isNearSuperMarket) {
 		printf("\n\n %s \n\n", nearSuperMarketText);
 	}
-	else if (isNearCandyStore) {
+	else if (isNearPostOffice) {
 		printf("\n\n %s \n\n", nearCandyStoreText);
 	}
 	else {
@@ -247,7 +240,7 @@ void DrawMap() {
 
 	//strings
 	char firstObjective[] = "Go to SuperMarket";
-	char secondObjective[] = "Go to CandyStore";
+	char secondObjective[] = "Go to PostOffice";
 	char thirdObjective[] = "Go home";
 	char currentObjective[100];
 
@@ -264,7 +257,8 @@ void DrawMap() {
 
 	//output
 	printf("\n Current objective : %s \n\n", currentObjective);
-	printf("You = %d; HOME = %d; SUPERMARKET = %d; CANDYSTORE = %d", player1.numberRepresentation, obstacles[0].numberRepresentation, obstacles[1].numberRepresentation, obstacles[0].numberRepresentation);
+	printf("You = %d; HOME = %d; SUPERMARKET = %d; PostOffice = %d", player1.numberRepresentation, obstacles[0].numberRepresentation, obstacles[1].numberRepresentation, obstacles[0].numberRepresentation);
+	printf("\n\n CONTROLS : W, A, S, D || E = ACTION BUTTON ");
 
 #pragma endregion
 
@@ -345,11 +339,11 @@ int Inputs() {
 					WentToSuperMarket = 1;
 					currentObj = 1;
 				}
-				else if (isNearCandyStore) {
-					wentToCandyStore = 1;
+				else if (isNearPostOffice) {
+					wentToPostOffice = 1;
 					currentObj = 2;
 				}
-				else if (isNearHome && WentToSuperMarket && wentToCandyStore) {
+				else if (isNearHome && WentToSuperMarket && wentToPostOffice) {
 					isFinished = 1;
 				}
 			}
