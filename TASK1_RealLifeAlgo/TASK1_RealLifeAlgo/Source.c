@@ -31,10 +31,11 @@ ADD :
 #include <stdlib.h>
 #include <conio.h>
 #include <Windows.h>
+#include <string.h>
 #define NUMBER_OF_OBSTACLES 3
 #define MAP_SIZE 40
 
-
+// not really used yet
 enum ObstacleType {
 	Home=0,
 	SuperMarket,
@@ -84,7 +85,6 @@ struct player {
 
 #pragma endregion
 
-
 // to not have to pass them to functions
 #pragma region Global Struct definitions
 
@@ -94,10 +94,20 @@ struct player {
 
 #pragma endregion
 	
+#pragma region Global variables
 
-// global input, simplified this way
-int key = 0;
+	// global input, simplified this way
+	int key = 0;
 
+	// global progress tracking
+	int currentObj = 0;
+
+	// global event tracking
+	int isNearHome = 0;
+	int isNearSuperMarket = 0;
+	int isNearCandyStore = 0;
+
+#pragma endregion
 
 int main() 
 {
@@ -107,20 +117,21 @@ int main()
 	// MAP graphics INIT
 	firstMap.graphics = 0;
 
-	//PLAYER INIT.
-	player1.numberRepresentation = 6;
-	player1.size = 2;
-	player1.Xpos = 11;
-	player1.Ypos = 22;
-
 	//Obstacles INIT
-	//home obstacle
-	// didnt work unless I return in. Hm.
+
+	//home obstacle						 // type,graphics,size,xpos,ypos
 	obstacles[0] = ObstacleInit(obstacles[0],Home,3,4,6,19);	
 	//shop1
 	obstacles[1] = ObstacleInit(obstacles[1],SuperMarket,9,8,15,2);
 	//shop2
 	obstacles[2] = ObstacleInit(obstacles[2],CandyStore,2,5,0,0);
+
+	//PLAYER INIT.
+	player1.numberRepresentation = 6;
+	player1.size = 2;
+	// always spawn at the doors of home
+	player1.Xpos = obstacles[0].Xtrigger;
+	player1.Ypos = obstacles[0].Ytrigger;
 
 	//Initial drawing of the field
 	FillMap();
@@ -141,7 +152,7 @@ int main()
 			AllDrawingActions();
 		}
 
-		// miliseconds to wait
+		// miliseconds to wait, for optimization
 		Sleep(20);
 	}
 
@@ -167,20 +178,41 @@ void FillMap(){
 // function for performing all of the drawing of objects/player after the positions are changed
 void DrawMap() {	
 
-#pragma region TextOutputs
+#pragma region EventLogic/Positioning
+
+	// its here so that it draws once at the start to showcase that you are near home
+
+	if (player1.Xpos == obstacles[0].Xtrigger && player1.Ypos == obstacles[0].Ytrigger) {
+		isNearHome = 1;
+	}
+	else if (player1.Xpos == obstacles[1].Xtrigger && player1.Ypos == obstacles[1].Ytrigger) {
+		isNearSuperMarket = 1;
+	}
+	else if (player1.Xpos == obstacles[2].Xtrigger && player1.Ypos == obstacles[2].Ytrigger) {
+		isNearCandyStore = 1;
+	}
+	else {
+		isNearHome = 0;
+		isNearSuperMarket = 0;
+		isNearCandyStore = 0;
+	}
+
+#pragma endregion
+
+#pragma region Top_Screen_TextOutputs
 
 	//strings
 	char nearHomeText[] = "Enter Home";
 	char nearSuperMarketText[] = "Enter SuperMarket";
 	char nearCandyStoreText[] = "Enter CandyStore";
 	//logic
-	if (player1.Xpos == obstacles[0].Xtrigger && player1.Ypos == obstacles[0].Ytrigger) {
+	if (isNearHome) {
 		printf("\n\n %s \n\n", nearHomeText);
 	}
-	else if (player1.Xpos == obstacles[1].Xtrigger && player1.Ypos == obstacles[1].Ytrigger) {
+	else if (isNearSuperMarket) {
 		printf("\n\n %s \n\n", nearSuperMarketText);
 	}
-	else if (player1.Xpos == obstacles[2].Xtrigger && player1.Ypos == obstacles[2].Ytrigger) {
+	else if (isNearCandyStore) {
 		printf("\n\n %s \n\n", nearCandyStoreText);
 	}
 	else {
@@ -201,14 +233,39 @@ void DrawMap() {
 
 		}
 	}
-	printf("\n Current objective : Go to supermarket \n\n You = 6 ; HOME = 3 ; SUPERMARKET = 9");
+
+#pragma region Bottom_Screen_TextOutputs
+
+	//strings
+	char firstObjective[] = "Go to SuperMarket";
+	char secondObjective[] = "Go to CandyStore";
+	char thirdObjective[] = "Go home";
+	char currentObjective[100];
+
+	//logic
+	if (currentObj == 1) {
+		strcpy_s(currentObjective, 100, secondObjective);
+	}
+	else if (currentObj == 2) {
+		strcpy_s(currentObjective, 100, thirdObjective);
+	}
+	else {
+		strcpy_s(currentObjective, 100, firstObjective);
+	}
+
+	//output
+	printf("\n Current objective : %s \n\n", currentObjective);
+	printf("You = %d; HOME = %d; SUPERMARKET = %d; CANDYSTORE = %d", player1.numberRepresentation, obstacles[0].numberRepresentation, obstacles[1].numberRepresentation, obstacles[0].numberRepresentation);
+
+#pragma endregion
+
+
 	// new line after print for cleanup
 	//debugging print values
 	//printf("\n\n\n");
 	//printf("x pos : %d , y pos : %d \n", player1.Xpos, player1.Ypos);
 	//printf("y+1 : %d | x+1: %d ", firstMap.size[player1.Ypos + 1][player1.Xpos], firstMap.size[player1.Ypos][player1.Xpos + 1]);
 
-	
 }
 
 // function for SETTING position of both player and obstacles on the map
@@ -272,6 +329,9 @@ int Inputs() {
 					player1.Xpos -= 1;
 				}
 			}
+
+
+
 
 			return 1;
 		}
