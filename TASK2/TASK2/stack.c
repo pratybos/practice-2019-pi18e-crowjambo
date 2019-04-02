@@ -8,6 +8,10 @@ struct node {
 	struct node *next;
 };
 
+void greetings(int x) {
+	printf("\n\n%d\n\n hello", x);
+}
+
 void displayStack(struct node *top) {
 	struct node *ptr;
 	ptr = top;

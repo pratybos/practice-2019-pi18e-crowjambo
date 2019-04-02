@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ADTs.h"
+#include <math.h>
 
 struct node{
 	int data;
@@ -8,23 +8,23 @@ struct node{
 }*front, *rear, *temp, *front1;
 
 
-int count = 0;
+static int count = 0;
 
 
 /* Create an empty queue */
-void create()
+static void create()
 {
 	front = rear = NULL;
 }
 
 /* Returns queue size */
-void queuesize()
+static void queuesize()
 {
 	printf("\n Queue size : %d", count);
 }
 
 /* Enqueing the queue */
-void enq(int data)
+static void enq(int data)
 {
 	if (rear == NULL)
 	{
@@ -45,8 +45,9 @@ void enq(int data)
 	count++;
 }
 
+
 /* Displaying the queue elements */
-void display()
+static void display()
 {
 	front1 = front;
 
@@ -65,7 +66,7 @@ void display()
 }
 
 /* Dequeing the queue */
-void deq()
+static void deq()
 {
 	front1 = front;
 
@@ -93,7 +94,7 @@ void deq()
 }
 
 /* Returns the front element of queue */
-int frontelement()
+static int frontelement()
 {
 	if ((front != NULL) && (rear != NULL))
 		return(front->data);
@@ -102,7 +103,7 @@ int frontelement()
 }
 
 /* Display if queue is empty or not */
-void empty()
+static void empty()
 {
 	if ((front == NULL) && (rear == NULL))
 		printf("\n Queue empty");

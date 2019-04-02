@@ -9,14 +9,10 @@ EVALDAS PAULAUSKAS - PI18E group
 
 int main(){
 
-	//printf("Hello");
 	create();
-	enq(50);
-	enq(15);
-	enq(666);
+	enq(5);
 	display();
-	deq();
-	display();
+	
 
 	system("pause");
 	return 0;

@@ -21,13 +21,13 @@
     <ClCompile Include="singleList.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Queue.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="binaryTree.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stack.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Queue.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
