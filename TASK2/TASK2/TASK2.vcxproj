@@ -121,6 +121,9 @@
     <ClCompile Include="singleList.c" />
     <ClCompile Include="stack.c" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ADTs.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

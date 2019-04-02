@@ -2,12 +2,13 @@
 #include <stdlib.h>
 #include <malloc.h>
 
+
 struct node {
 	int data;
 	struct node *next;
 };
 
-void display(struct node *top) {
+void displayStack(struct node *top) {
 	struct node *ptr;
 	ptr = top;
 	if (top == NULL) {
@@ -51,7 +52,7 @@ struct node *pop(struct node *top) {
 	return top;
 }
 
-
+/*
 int main() {
 
 	struct node *top = NULL;
@@ -65,3 +66,4 @@ int main() {
 	system("pause");
 	return 0;
 }
+*/

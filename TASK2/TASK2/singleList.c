@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 
+
 struct node {
 	int data;
 	struct node *next;
@@ -80,6 +81,7 @@ struct node *deleteEnd(struct node *start) {
 	return start;
 };
 
+/*
 int main() {
 	struct node *start = NULL;
 	start = createList(start, 5);
@@ -97,3 +99,5 @@ int main() {
 	system("pause");
 	return 0;
 };
+
+*/
