@@ -60,6 +60,10 @@ int main() {
 	insert_to_tree(newTree, 20);
 	//send the root tree_node, not tree itself!
 	display_tree(newTree->root,3);
+	
+	system("Pause");
+	destroy_tree(newTree->root);
+	//display_tree(newTree->root,1);
 
 	printf("\n\n"); 
 	system("pause");

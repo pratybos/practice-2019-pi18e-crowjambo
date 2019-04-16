@@ -24,7 +24,7 @@ typedef struct tree tree;
 tree *create_tree();
 bool is_tree_empty(tree *t);
 void insert_to_tree(tree *t, int data);
-void display_tree(tree_node *temp, int selection);
-
+void display_tree(tree_node *tempRoot, int displayModeSelection);
+void destroy_tree(tree *tempRoot);
 
 #endif
