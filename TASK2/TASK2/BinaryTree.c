@@ -12,7 +12,7 @@ bool is_tree_empty(tree *t) {
 	return t->size == 0;
 }
 
-void insert_tree(tree *t, int data) {
+void insert_to_tree(tree *t, int data) {
 	tree_node *temp = (tree_node*)malloc(sizeof(tree_node));
 	temp->left_child = temp->right_child = NULL;
 	temp->data = data;
@@ -59,4 +59,54 @@ void insert_tree(tree *t, int data) {
 			break;
 		}
 	}
+}
+
+// Pay attention that you have to send in tree->root !!! else it works,but crashes
+void display_tree(tree_node *temp, int selection) {
+	if (temp == NULL) {
+		return;
+	}
+
+	switch (selection) {
+	case 1:
+		#pragma region Ordered from smallest to biggest
+		display_tree(temp->left_child,1);
+		printf("%d\t", temp->data);
+		display_tree(temp->right_child,1);
+		#pragma endregion
+		break;
+	case 2:
+		#pragma region Biggest to smallest
+		display_tree(temp->right_child,2);
+		printf("%d\t", temp->data);
+		display_tree(temp->left_child,2);
+		#pragma endregion
+		break;
+
+	case 3:
+		#pragma region root first, then the rest
+		printf("%d\t", temp->data);
+		display_tree(temp->right_child,3);
+		display_tree(temp->left_child,3);
+		#pragma endregion
+		break;
+
+	case 4:
+		// only root
+		printf("%d\t", temp->data);
+		break;
+
+	default:
+		return;
+	}
+
+
+
+
+
+
+
+
+
+
 }
