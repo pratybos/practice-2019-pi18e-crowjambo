@@ -44,27 +44,23 @@ int main() {
 
 //#pragma region BINARY TREE USAGE
 //
-//	
-//	
-////	insert_tree(treeTest, 5);
+//	tree *newTree;
+//	newTree = create_tree();
+//	insert_to_tree(newTree, 5);
+//	insert_to_tree(newTree, 1);
+//	insert_to_tree(newTree, 2);
+//	insert_to_tree(newTree, 8);
+//	insert_to_tree(newTree, 20);
+//	//send the root tree_node, not tree itself!
+//	display_tree(newTree->root, 1);
 //
 //#pragma endregion
 
-	// ctrl + K + U (uncomment) , ctrl+K+C (comment)
-	tree *newTree;
-	newTree = create_tree();
-	insert_to_tree(newTree, 5);
-	insert_to_tree(newTree, 1);
-	insert_to_tree(newTree, 2);
-	insert_to_tree(newTree, 8);
-	insert_to_tree(newTree, 20);
-	//send the root tree_node, not tree itself!
-	display_tree(newTree->root,3);
-	
-	system("Pause");
-	destroy_tree(newTree->root);
-	//display_tree(newTree->root,1);
 
+
+
+
+	// ctrl + K + U (uncomment) , ctrl+K+C (comment)
 	printf("\n\n"); 
 	system("pause");
 	return(0);
