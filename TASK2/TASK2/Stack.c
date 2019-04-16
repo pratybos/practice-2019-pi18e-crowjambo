@@ -8,7 +8,7 @@ stack * create_stack() {
 }
 // return true or false depending if stack is empty or not
 bool is_stack_empty(stack *s) {
-	return s->size == 0;
+	return s->top == NULL;
 }
 
 // stack to push to and a value
@@ -31,3 +31,30 @@ int pop_stack(stack *s) {
 	free(temp);
 	return data;
 }
+
+int peek_stack(stack *s) {
+	return s->top->data;
+}
+
+void display_whole_stack(stack *s) {
+	// temp value for traversing the stack
+	stack_node *temp = s->top;
+	while (temp != NULL) {
+		printf("%d \n",temp->data);
+		temp = temp->next;
+	}
+}
+
+void destroy_stack(stack *s){
+	stack_node *current = s->top;
+	stack_node *next;
+	while (current != NULL) {
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	s->size = NULL;
+	s->top = NULL;
+	free(s);
+}
+
