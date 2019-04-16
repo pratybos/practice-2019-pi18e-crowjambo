@@ -10,6 +10,7 @@ EVALDAS PAULAUSKAS - PI18E group
 #include <ctype.h>
 #include <stdbool.h>
 #include "Stack.h"
+#include "Queue.h"
 
 
 int main() {
@@ -31,12 +32,25 @@ int main() {
 	push_stack(s, 3);
 	push_stack(s, pop_stack(s) + pop_stack(s));
 	push_stack(s, pop_stack(s)*pop_stack(s));
-	display_whole_stack(s);
+	display_stack(s);
 #pragma endregion
 */
 
+// QUEUE USAGE
+/*
+#pragma region QUEUE USAGE
 
+	queue *test = create_queue();
+	push_queue(test, 15);
+	push_queue(test, 55);
+	push_queue(test, 12);
+	printf("%s", is_queue_empty(test) ? "true\n" : "false\n");
+	display_queue(test);
+	pop_queue(test);
+	display_queue(test);
 
+#pragma endregion
+*/
 
 
 

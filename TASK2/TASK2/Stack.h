@@ -16,10 +16,12 @@ struct stack {
 };
 typedef struct stack stack;
 
+
+// FUNCTIONS
 stack * create_stack();
 bool is_stack_empty(stack *s);
 void push_stack(stack *s, int data);
 int pop_stack(stack *s);
 int peek_stack(stack *s);
-void display_whole_stack(stack *s);
+void display_stack(stack *s);
 void destroy_stack(stack *s);

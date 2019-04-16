@@ -21,6 +21,10 @@ void push_stack(stack *s, int data) {
 }
 
 int pop_stack(stack *s) {
+	if (is_stack_empty(s)) {
+		printf("can't pop, stack is empty");
+		return 0;
+	}
 	// store data of node that is going to be deleted
 	int data = s->top->data;
 	// saving address of current top node to free it later
@@ -33,10 +37,18 @@ int pop_stack(stack *s) {
 }
 
 int peek_stack(stack *s) {
+	if (is_stack_empty(s)) {
+		printf("can't peek, stack is empty");
+		return;
+	}
 	return s->top->data;
 }
 
-void display_whole_stack(stack *s) {
+void display_stack(stack *s) {
+	if (is_stack_empty(s)) {
+		printf("can't print, stack is empty");
+		return;
+	}
 	// temp value for traversing the stack
 	stack_node *temp = s->top;
 	while (temp != NULL) {
@@ -46,6 +58,12 @@ void display_whole_stack(stack *s) {
 }
 
 void destroy_stack(stack *s){
+	if (is_stack_empty(s)) {
+		s->size = NULL;
+		s->top = NULL;
+		free(s);
+		return;
+	}
 	stack_node *current = s->top;
 	stack_node *next;
 	while (current != NULL) {
