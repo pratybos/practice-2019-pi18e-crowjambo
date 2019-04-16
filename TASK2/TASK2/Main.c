@@ -11,6 +11,7 @@ EVALDAS PAULAUSKAS - PI18E group
 #include <stdbool.h>
 #include "Stack.h"
 #include "Queue.h"
+#include "BinaryTree.h"
 
 
 int main() {

@@ -1,4 +1,7 @@
 #pragma once
+
+#ifndef QUEUE_H
+#define QUEUE_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -23,3 +26,5 @@ void enqueue(queue *q, int data);
 int dequeue(queue *q);
 void destroy_queue(queue *q);
 void display_queue(queue *q);
+
+#endif

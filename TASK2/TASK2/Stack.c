@@ -6,6 +6,7 @@ stack * create_stack() {
 	s->top = NULL;
 	return s;
 }
+
 // return true or false depending if stack is empty or not
 bool is_stack_empty(stack *s) {
 	return s->top == NULL;
@@ -20,6 +21,7 @@ void push_stack(stack *s, int data) {
 	s->size++;
 }
 
+// remove top element, and return its value as int
 int pop_stack(stack *s) {
 	if (is_stack_empty(s)) {
 		printf("can't pop, stack is empty");
@@ -57,6 +59,7 @@ void display_stack(stack *s) {
 	}
 }
 
+// Traverse through stack and turn everything into NULL's and free nodes
 void destroy_stack(stack *s){
 	if (is_stack_empty(s)) {
 		s->size = NULL;
@@ -77,16 +80,19 @@ void destroy_stack(stack *s){
 }
 
 int StackCalculation_Postfix(char* exp, stack* s) {
-
 	for (int i = 0; i < strlen(exp); i++) {
-
+		// if current char is operator, pop 2 from stack and perform the needed operation
 		if (exp[i] == '+' || exp[i] == '-' || exp[i] == '*' || exp[i] == '/') {
 			int number2 = pop_stack(s);
 			int number1 = pop_stack(s);
-			int result = Operations(exp[i], number1, number2);
+			// performing operation here
+			int result = Calculate(exp[i], number1, number2);
+			// push the result back to stack
 			push_stack(s, result);
 		}
+		// if char is number push it to stack
 		else {
+			// - '0' to convert chars to ints 
 			int number = exp[i] - '0';
 			push_stack(s, number);
 		}
@@ -94,7 +100,8 @@ int StackCalculation_Postfix(char* exp, stack* s) {
 	return peek_stack(s);
 }
 
-int Operations(char* operation, int number1, int number2) {
+// Basic if statements to determine which operation to perform
+int Calculate(char* operation, int number1, int number2) {
 	if (operation == '+') {
 		return number1 + number2;
 	}

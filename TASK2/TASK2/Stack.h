@@ -1,4 +1,7 @@
 #pragma once
+#ifndef STACK_H
+#define STACK_H
+
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -26,3 +29,5 @@ int peek_stack(stack *s);
 void display_stack(stack *s);
 void destroy_stack(stack *s);
 int StackCalculation_Postfix(char* exp, stack* s);
+
+#endif
