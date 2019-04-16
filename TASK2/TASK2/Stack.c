@@ -76,3 +76,36 @@ void destroy_stack(stack *s){
 	free(s);
 }
 
+int StackCalculation_Postfix(char* exp, stack* s) {
+
+	for (int i = 0; i < strlen(exp); i++) {
+
+		if (exp[i] == '+' || exp[i] == '-' || exp[i] == '*' || exp[i] == '/') {
+			int number2 = pop_stack(s);
+			int number1 = pop_stack(s);
+			int result = Operations(exp[i], number1, number2);
+			push_stack(s, result);
+		}
+		else {
+			int number = exp[i] - '0';
+			push_stack(s, number);
+		}
+	}
+	return peek_stack(s);
+}
+
+int Operations(char* operation, int number1, int number2) {
+	if (operation == '+') {
+		return number1 + number2;
+	}
+	else if (operation == '-') {
+		return number1 - number2;
+	}
+	else if (operation == '*') {
+		return number1 * number2;
+	}
+	else if (operation == '/') {
+		return number1 / number2;
+	}
+
+}

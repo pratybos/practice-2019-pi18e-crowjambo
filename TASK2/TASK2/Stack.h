@@ -25,3 +25,4 @@ int pop_stack(stack *s);
 int peek_stack(stack *s);
 void display_stack(stack *s);
 void destroy_stack(stack *s);
+int StackCalculation_Postfix(char* exp, stack* s);

@@ -11,7 +11,7 @@ bool is_queue_empty(queue *q) {
 	return q->front == NULL;
 }
 
-void push_queue(queue *q, int data) {
+void enqueue(queue *q, int data) {
 	queue_node *temp = (queue_node *)malloc(sizeof(queue_node));
 	temp->next = NULL;
 	temp->data = data;
@@ -30,7 +30,7 @@ void push_queue(queue *q, int data) {
 }
 
 // pops and returns value of recent pop
-int pop_queue(queue *q) {
+int dequeue(queue *q) {
 	if (is_queue_empty(q)) {
 		printf("Queue is empty, can't pop");
 		return 0;

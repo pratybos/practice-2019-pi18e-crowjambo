@@ -19,7 +19,7 @@ typedef struct queue queue;
 // FUNCTIONS
 queue *create_queue();
 bool is_queue_empty(queue *q);
-void push_queue(queue *q, int data);
-int pop_queue(queue *q);
+void enqueue(queue *q, int data);
+int dequeue(queue *q);
 void destroy_queue(queue *q);
 void display_queue(queue *q);
