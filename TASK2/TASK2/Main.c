@@ -40,7 +40,18 @@ int main() {
 #pragma endregion
 */
 
+// TREE USAGE
+#pragma region BINARY TREE USAGE
 
+	
+	
+//	insert_tree(treeTest, 5);
+
+#pragma endregion
+
+	tree *newTree;
+	newTree = create_tree();
+	printf("%d \n", is_tree_empty(newTree));
 
 	printf("\n\n"); 
 	system("pause");

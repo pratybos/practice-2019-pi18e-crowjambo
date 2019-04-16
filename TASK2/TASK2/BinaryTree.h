@@ -20,9 +20,10 @@ struct tree {
 };
 typedef struct tree tree;
 
-
-
-
+// FUNCTIONS
+tree *create_tree();
+bool is_tree_empty(tree *t);
+void insert_tree(tree *t, int data);
 
 
 

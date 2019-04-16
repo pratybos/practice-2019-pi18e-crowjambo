@@ -9,7 +9,7 @@ stack * create_stack() {
 
 // return true or false depending if stack is empty or not
 bool is_stack_empty(stack *s) {
-	return s->top == NULL;
+	return s->size == 0;
 }
 
 // stack to push to and a value

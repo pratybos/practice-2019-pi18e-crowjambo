@@ -8,7 +8,7 @@ queue *create_queue() {
 }
 
 bool is_queue_empty(queue *q) {
-	return q->front == NULL;
+	return q->size == 0;
 }
 
 void enqueue(queue *q, int data) {

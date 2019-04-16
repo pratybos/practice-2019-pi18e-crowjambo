@@ -9,7 +9,7 @@ tree *create_tree() {
 }
 
 bool is_tree_empty(tree *t) {
-	return t->root = NULL;
+	return t->size == 0;
 }
 
 void insert_tree(tree *t, int data) {
