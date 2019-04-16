@@ -3,12 +3,7 @@ TASK 2 - ADT's
 EVALDAS PAULAUSKAS - PI18E group
 */
 
-
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <stdbool.h>
+#include "UtilityLibs.h"
 #include "Stack.h"
 #include "Queue.h"
 #include "BinaryTree.h"

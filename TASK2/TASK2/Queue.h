@@ -1,10 +1,9 @@
 #pragma once
 
+#include "UtilityLibs.h"
+
 #ifndef QUEUE_H
 #define QUEUE_H
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 
 struct queue_node {
 	int data;

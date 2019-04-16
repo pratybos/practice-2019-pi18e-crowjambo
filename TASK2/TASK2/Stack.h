@@ -1,11 +1,9 @@
 #pragma once
+
+#include "UtilityLibs.h"
+
 #ifndef STACK_H
 #define STACK_H
-
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
-
 
 struct stack_node {
 	int data;
