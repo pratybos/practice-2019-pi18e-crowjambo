@@ -28,9 +28,16 @@ typedef struct tree tree;
 
 // FUNCTIONS
 tree *create_tree();
+tree_node *createTreeNode(int data);
 bool is_tree_empty(tree *t);
 void insert_to_tree(tree *t, int data);
-void display_tree(tree_node *tempRoot, enum PrintMode_Tree);
+void display_tree(tree_node *tempRoot, enum PrintMode_Tree x);
 void destroy_tree(tree_node *tempRoot);
+void insert_left(tree_node *n, int data);
+void insert_right(tree_node *n, int data);
+void set_root(tree *Tree, int data);
+int get_root(tree *Tree);
+int get_left_child(tree_node *n);
+int get_right_child(tree_node *n);
 
 #endif

@@ -56,7 +56,21 @@ int main() {
 //
 //#pragma endregion
 
+// TREE SECONDARY USAGE
 
+//#pragma region Binary Tree, secondary functions
+//
+//	tree *Tree2;
+//	Tree2 = create_tree();
+//	set_root(Tree2, 5);
+//	printf("root value: %d", get_root(Tree2));
+//	insert_left(Tree2->root, 10);
+//	printf("left value: %d", get_left_child(Tree2->root));
+//	set_root(Tree2, 25);
+//	printf("root value: %d", get_root(Tree2));
+//
+//#pragma endregion
+//
 
 
 

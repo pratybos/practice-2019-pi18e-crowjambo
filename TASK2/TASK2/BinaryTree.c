@@ -8,14 +8,20 @@ tree *create_tree() {
 	return t;
 }
 
+tree_node *createTreeNode(int data) {
+	tree_node *temp = (tree_node*)malloc(sizeof(tree_node));
+	temp->left_child = temp->right_child = NULL;
+	temp->data = data;
+	return temp;
+}
+
 bool is_tree_empty(tree *t) {
 	return t->size == 0;
 }
 
+// Insert new values all ordered by value size automatically
 void insert_to_tree(tree *t, int data) {
-	tree_node *temp = (tree_node*)malloc(sizeof(tree_node));
-	temp->left_child = temp->right_child = NULL;
-	temp->data = data;
+	tree_node *temp = createTreeNode(data);
 	// if empty, just become the root
 	if (is_tree_empty(t)) {
 		t->root = temp;
@@ -110,4 +116,47 @@ void destroy_tree(tree_node *tempRoot) {
 	destroy_tree(tempRoot->left_child);
 	destroy_tree(tempRoot->right_child);
 	free(tempRoot);
+}
+
+// insert value to left, if left child already exist, continue down the tree until left child is empty
+void insert_left(tree_node *n, int data) {
+	if (n->left_child == NULL) {
+		n->left_child = createTreeNode(data);
+		return;
+	}
+	insert_left(n->left_child, data);
+}
+
+//traverse until empty spot and add to the right
+void insert_right(tree_node *n, int data) {
+	if (n->right_child == NULL) {
+		n->right_child = createTreeNode(data);
+		return;
+	}
+	insert_left(n->right_child, data);
+}
+
+// insert new root, if root exist, replace it
+void set_root(tree *Tree, int data) {
+	if (Tree->root == NULL) {
+		Tree->root = createTreeNode(data);
+		return;
+	}
+	tree_node *temp = Tree->root;
+	Tree->root = createTreeNode(data);
+	Tree->root->left_child = temp->left_child;
+	Tree->root->right_child = temp->right_child;
+	free(temp);
+}
+
+int get_root(tree *Tree) {
+	return Tree->root->data;
+}
+
+int get_left_child(tree_node *n) {
+	return n->left_child->data;
+}
+
+int get_right_child(tree_node *n) {
+	return n->right_child->data;
 }
