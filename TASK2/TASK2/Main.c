@@ -52,7 +52,7 @@ int main() {
 //	insert_to_tree(newTree, 8);
 //	insert_to_tree(newTree, 20);
 //	//send the root tree_node, not tree itself!
-//	display_tree(newTree->root, 1);
+//	display_tree(newTree->root, ReverseOrder);
 //
 //#pragma endregion
 

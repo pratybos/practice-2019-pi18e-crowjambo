@@ -62,12 +62,13 @@ void insert_to_tree(tree *t, int data) {
 }
 
 // Pay attention that you have to send in tree->root !!! else it works,but crashes
-void display_tree(tree_node *tempRoot, int displayModeSelection) {
+// 1 ordered from small. 2 big to small. 3 root first then rest. 4 only root
+void display_tree(tree_node *tempRoot, enum PrintMode_Tree x) {
 	if (tempRoot == NULL) {
 		return;
 	}
 
-	switch (displayModeSelection) {
+	switch (x) {
 	case 1:
 		#pragma region Ordered from smallest to biggest
 		display_tree(tempRoot->left_child,1);
