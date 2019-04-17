@@ -116,12 +116,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BinaryTree.c" />
+    <ClCompile Include="LinkedList.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Queue.c" />
     <ClCompile Include="Stack.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BinaryTree.h" />
+    <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="UtilityLibs.h" />

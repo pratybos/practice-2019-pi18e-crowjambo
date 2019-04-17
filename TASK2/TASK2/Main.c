@@ -7,11 +7,12 @@ EVALDAS PAULAUSKAS - PI18E group
 #include "Stack.h"
 #include "Queue.h"
 #include "BinaryTree.h"
+#include "LinkedList.h"
 
 
 int main() {
 
-// STACK USAGE
+// STACK ALGORITHM [DONE]
 
 //#pragma region STACK USAGE
 //
@@ -24,53 +25,32 @@ int main() {
 //#pragma endregion
 //
 
-// QUEUE USAGE
+// QUEUE ALGORITHM
 
 //#pragma region QUEUE USAGE
 //
-//	queue *test = create_queue();
-//	enqueue(test, 15);
-//	enqueue(test, 55);
-//	enqueue(test, 12);
-//	printf("%s", is_queue_empty(test) ? "true\n" : "false\n");
-//	display_queue(test);
-//	dequeue(test);
-//	display_queue(test);
-//
+// Think of something simple, like waiting time calc
+// if theres average waiting time, depending on how many people are waiting, you step into queue and it gives you the waiting time
 //#pragma endregion
 //
 
-// TREE USAGE
+// TREE ALGORITHM
 
 //#pragma region BINARY TREE USAGE
 //
-//	tree *newTree;
-//	newTree = create_tree();
-//	insert_to_tree(newTree, 5);
-//	insert_to_tree(newTree, 1);
-//	insert_to_tree(newTree, 2);
-//	insert_to_tree(newTree, 8);
-//	insert_to_tree(newTree, 20);
-//	//send the root tree_node, not tree itself!
-//	display_tree(newTree->root, ReverseOrder);
+// PARSE TREE ALGORITHM
 //
 //#pragma endregion
 
-// TREE SECONDARY USAGE
 
-//#pragma region Binary Tree, secondary functions
+// LINKED LIST ALGORITHM
+
+//#pragma region LINKED LIST USAGE
 //
-//	tree *Tree2;
-//	Tree2 = create_tree();
-//	set_root(Tree2, 5);
-//	printf("root value: %d", get_root(Tree2));
-//	insert_left(Tree2->root, 10);
-//	printf("left value: %d", get_left_child(Tree2->root));
-//	set_root(Tree2, 25);
-//	printf("root value: %d", get_root(Tree2));
+// find the average value of all values in linked list
 //
 //#pragma endregion
-//
+
 
 
 
