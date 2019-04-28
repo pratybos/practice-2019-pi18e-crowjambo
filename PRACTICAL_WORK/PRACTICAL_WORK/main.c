@@ -24,10 +24,10 @@ idea = ASCII touge racing game!, use real images and convert to ascii, load with
 
 int main() {
 
-	int key;
-
-	printf("enter number");
-	key = _getch();
+	//console input shown in allegro testing
+	//int key;
+	//printf("enter number");
+	//key = _getch();
 
 	//required inits
 	al_init();
@@ -55,16 +55,22 @@ int main() {
 	al_set_window_title(display, "Practical work game");
 	
 	// COLORS
-	ALLEGRO_COLOR testColor = al_map_rgb(255,255,255);
+	//ALLEGRO_COLOR testColor = al_map_rgb(255,255,255);
 
+	//keyboard, allows to use it
+	al_install_keyboard();
 
+	//create event queue
+	ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
+	//register the event into the created queue
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
 
 	//change background color
-	al_clear_to_color(al_map_rgb(0, 0, 0));
+	//al_clear_to_color(al_map_rgb(0, 0, 0));
 	//draw text, centered in the middle of the screen + taking into considerationg font size!!
-	al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH/2, SCREEN_HEIGHT/2-36, ALLEGRO_ALIGN_CENTER, "Hello world");
+	//al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH/2, SCREEN_HEIGHT/2-36, ALLEGRO_ALIGN_CENTER, "Hello world");
 	//draw text, but with variable
-	al_draw_textf(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "my number = %c", key);
+	//al_draw_textf(font, al_map_rgb(255, 255, 255), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_CENTER, "my number = %c", key);
 
 	//al_draw_pixel(100, 100, testColor);
 	//al_draw_line(100, 100, 750, 100, testColor, 5);
@@ -75,15 +81,57 @@ int main() {
 	//al_draw_rounded_rectangle(400, 300, 500, 350, 20, 20, testColor, 1);
 	//al_draw_filled_rectangle(100, 100, 150, 125, testColor);
 
-	//load backbuffer (prevents flickering)
-	al_flip_display();
+	int state = NULL;
+	bool done = false;
+
+	int x = 10;
+	int y = 10;
+	int moveSpeed = 3;
+
+	//gameloop
+	while (!done) {
+		//whenever event is fired, this variable will store its information
+		ALLEGRO_EVENT event;
+		//waiting for key to be pressed, and react to event
+		al_wait_for_event(event_queue, &event);
+		if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+			switch (event.keyboard.keycode) {
+			case ALLEGRO_KEY_DOWN:
+				y += moveSpeed;
+				break;
+			case ALLEGRO_KEY_UP:
+				y -= moveSpeed;
+				break;
+			case ALLEGRO_KEY_RIGHT:
+				x += moveSpeed;
+				break;
+			case ALLEGRO_KEY_LEFT:
+				x -= moveSpeed;
+				break;
+			case ALLEGRO_KEY_ESCAPE:
+				done = true;
+				break;
+			}
+		}
+		//draw player rectangle
+		al_draw_rectangle(x, y, x + 20, y + 20, al_map_rgb(255, 255, 255), 2);
+		//load backbuffer (prevents flickering)
+		al_flip_display();
+		//draw background
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+
+	}
+
+
 
 	//wait 5 seconds
-	al_rest(5);
+	//al_rest(5);
 	
 	//required clean up!
 	al_destroy_font(font);
+	al_destroy_font(fontSmall);
 	al_destroy_display(display);
+	al_destroy_event_queue(event_queue);
 
 	//system("pause");
 	return 0;
