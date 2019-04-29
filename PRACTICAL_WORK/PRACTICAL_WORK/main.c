@@ -22,6 +22,8 @@ idea = ASCII touge racing game!, use real images and convert to ascii, load with
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 
+enum KEYS{ DOWN, UP, RIGHT, LEFT};
+
 int main() {
 
 	//console input shown in allegro testing
@@ -64,6 +66,8 @@ int main() {
 	ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
 	//register the event into the created queue
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	//catch {display} window events (like X icon etc.)
+	al_register_event_source(event_queue, al_get_display_event_source(display));
 
 	//change background color
 	//al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -88,6 +92,8 @@ int main() {
 	int y = 10;
 	int moveSpeed = 3;
 
+	bool keys[4] = { false,false,false,false };
+
 	//gameloop
 	while (!done) {
 		//whenever event is fired, this variable will store its information
@@ -97,22 +103,54 @@ int main() {
 		if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
 			switch (event.keyboard.keycode) {
 			case ALLEGRO_KEY_DOWN:
-				y += moveSpeed;
+				keys[DOWN] = true;
 				break;
 			case ALLEGRO_KEY_UP:
-				y -= moveSpeed;
+				keys[UP] = true;
 				break;
 			case ALLEGRO_KEY_RIGHT:
-				x += moveSpeed;
+				keys[RIGHT] = true;
 				break;
 			case ALLEGRO_KEY_LEFT:
-				x -= moveSpeed;
+				keys[LEFT] = true;
 				break;
 			case ALLEGRO_KEY_ESCAPE:
 				done = true;
 				break;
 			}
 		}
+		else if (event.type == ALLEGRO_EVENT_KEY_UP) {
+			switch (event.keyboard.keycode) {
+			case ALLEGRO_KEY_DOWN:
+				keys[DOWN] = false;
+				break;
+			case ALLEGRO_KEY_UP:
+				keys[UP] = false;
+				break;
+			case ALLEGRO_KEY_RIGHT:
+				keys[RIGHT] = false;
+				break;
+			case ALLEGRO_KEY_LEFT:
+				keys[LEFT] = false;
+				break;
+			case ALLEGRO_KEY_ESCAPE:
+				done = false;
+				break;
+			}
+		}
+
+		// makes X button work!
+		else if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			done = true;
+		}
+
+		// this + true/false statements above allow for continuous movement, and moving diagonally
+		y -= keys[UP] * 10;
+		y += keys[DOWN] * 10;
+		x -= keys[LEFT] * 10;
+		x += keys[RIGHT] * 10;
+
+
 		//draw player rectangle
 		al_draw_rectangle(x, y, x + 20, y + 20, al_map_rgb(255, 255, 255), 2);
 		//load backbuffer (prevents flickering)
