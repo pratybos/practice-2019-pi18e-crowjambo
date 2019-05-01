@@ -27,6 +27,22 @@ void MergeArraysAndMultiply(int arr1[], int arr2[], int length1, int length2) {
 
 
 
+int main(void) {
+
+	while ("hello") {
+		printf("Goodbye!");
+		while ("Goodbye") {
+			printf("Hello ");
+			break;
+		}
+	}
+
+
+	printf("\n\n");
+	system("pause");
+	return 0;
+}
+
 /*
 
 1
@@ -56,6 +72,9 @@ int main(void) {
 ====================================================================================================
 
 3
+
+
+
 ====================================================================================================
 
 4
@@ -158,6 +177,9 @@ all true
 
 
 10
+
+1. Goodbye!Hello  2.Goodbye!Hello 3.Goodbye!Hello 4.Goodbye!Hello
+First program enters infinite loop("hello") and prints Goodbye, then enters secondary loop("Goodbye") which prints "Hello " and breaks, which returns to the first infinite loop("hello") and prints everything again over and over infinitely.
 
 ====================================================================================================
 
