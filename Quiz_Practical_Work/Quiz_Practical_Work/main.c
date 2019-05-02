@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -26,15 +26,31 @@ void MergeArraysAndMultiply(int arr1[], int arr2[], int length1, int length2) {
 }
 
 
+void CopyToArray(int src[], int dest[], int srcLength) {
 
-int main(void) {
-
-	while ("hello") {
-		printf("Goodbye!");
-		while ("Goodbye") {
-			printf("Hello ");
-			break;
+	int i;
+	for (i = 0; i < srcLength; i++) {
+		if (src[i] == 0) {
+			dest[i] = -1;
 		}
+		else {
+			dest[i] = src[i];
+		}
+	}
+
+
+}
+
+int main() {
+
+	int temp[10] = { 5, 5, 9, 1, 2, 3 };
+	int source[40];
+
+	CopyToArray(temp, source, sizeof(temp)/sizeof(temp[0]));
+
+	int i;
+	for (i = 0; i < 40; i++) {
+		printf("final values : %d \n", source[i]);
 	}
 
 
