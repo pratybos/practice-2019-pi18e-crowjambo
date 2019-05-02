@@ -178,6 +178,23 @@ all true
 
 9
 
+float CalculateSigma(int k) {
+
+	int n;
+	float sum = 0;
+	for (n = 1; n <= k; n++) {
+		sum += (2 * n + 1)*(n - 2);
+		printf("curent sum %.1f\n", sum);
+	}
+	return sum;
+}
+
+int main() {
+
+	printf("\n Final Result = %.1f", CalculateSigma(5));
+
+	return 0;
+}
 
 ====================================================================================================
 
