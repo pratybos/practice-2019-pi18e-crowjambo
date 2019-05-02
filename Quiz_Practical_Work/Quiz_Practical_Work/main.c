@@ -1,61 +1,22 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
-void MergeArraysAndMultiply(int arr1[], int arr2[], int length1, int length2) {
-	char temp[30] = { NULL };
-	char combined1[30] = { NULL };
-	char combined2[30] = { NULL };
-	int i, num1,num2;
 
-	for (i = 0; i < length1; i++) {
-		sprintf(temp, "%d", arr1[i]);
-		strcat(combined1, temp);
+float CalculateSigma(int k) {
+
+	int n;
+	float sum = 0;
+	for (n = 1; n <= k; n++) {
+		sum += (2 * n + 1)*(n - 2);
+		printf("curent sum %.1f\n", sum);
 	}
-	num1 = atoi(combined1);
-
-	for (i = 0; i < length2; i++) {
-		sprintf(temp, "%d", arr2[i]);
-		strcat(combined2, temp);
-	}
-	num2 = atoi(combined2);
-	
-	printf("final outcome : %d", num1*num2);
-	
-}
-
-
-void CopyToArray(int src[], int dest[], int srcLength) {
-
-	int i;
-	for (i = 0; i < srcLength; i++) {
-		if (src[i] == 0) {
-			dest[i] = -1;
-		}
-		else {
-			dest[i] = src[i];
-		}
-	}
-
-
+	return sum;
 }
 
 int main() {
 
-	int temp[10] = { 5, 5, 9, 1, 2, 3 };
-	int source[40];
+	printf("\n Final Result = %.1f", CalculateSigma(5));
 
-	CopyToArray(temp, source, sizeof(temp)/sizeof(temp[0]));
-
-	int i;
-	for (i = 0; i < 40; i++) {
-		printf("final values : %d \n", source[i]);
-	}
-
-
-	printf("\n\n");
-	system("pause");
 	return 0;
 }
 
@@ -89,7 +50,36 @@ int main(void) {
 
 3
 
+void CopyToArray(int src[], int dest[], int srcLength) {
 
+	int i;
+	for (i = 0; i < srcLength; i++) {
+		if (src[i] == 0) {
+			dest[i] = -1;
+		}
+		else {
+			dest[i] = src[i];
+		}
+	}
+}
+
+int main() {
+
+	int temp[10] = { 5, 5, 9, 1, 2, 3 };
+	int source[40];
+
+	CopyToArray(temp, source, sizeof(temp)/sizeof(temp[0]));
+
+	int i;
+	for (i = 0; i < 40; i++) {
+		printf("final values : %d \n", source[i]);
+	}
+
+
+	printf("\n\n");
+	system("pause");
+	return 0;
+}
 
 ====================================================================================================
 
