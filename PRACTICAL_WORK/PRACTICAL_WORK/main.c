@@ -10,6 +10,7 @@
 //standard imports
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 //custom imports
 
 #pragma endregion
@@ -26,6 +27,16 @@ enum BUTTONSTATE {
 	CLICK
 };
 
+int number2 = 5;
+
+void incrementNumber(int *x) {
+	x += 1;
+}
+void testFunction() {
+	number2 += 1;
+}
+
+
 
 struct button {
 	int x;
@@ -36,12 +47,13 @@ struct button {
 	ALLEGRO_COLOR color2;
 	ALLEGRO_COLOR color3;
 	ALLEGRO_COLOR color4;
+	void(*function)(void);
 	char label[20];
 	int state;
 };
 typedef struct button button;
 
-button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color1, ALLEGRO_COLOR color2, ALLEGRO_COLOR color3, ALLEGRO_COLOR color4, char text[]) {
+button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color1, ALLEGRO_COLOR color2, ALLEGRO_COLOR color3, ALLEGRO_COLOR color4, void *function ,char text[]) {
 	button btn;
 	btn.x = x;
 	btn.y = y;
@@ -51,6 +63,7 @@ button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color1, ALLE
 	btn.color4 = color4;
 	btn.sizeH = sizeH;
 	btn.sizeV = sizeV;
+	btn.function = function;
 	strcpy_s(btn.label, 20, text);
 	btn.state = DEFAULT;
 	return btn;
@@ -64,6 +77,7 @@ void checkButton(button *btn, int mouse_x, int mouse_y, bool clicked) {
 		mouse_y <= btn->y + btn->sizeV) {
 		if (clicked) {
 			btn->state = CLICK;
+			btn->function();
 			}
 		else {
 			btn->state = HOVER;
@@ -81,6 +95,7 @@ void drawButton(button btn, ALLEGRO_FONT *font, int fontSize) {
 	if (btn.state == CLICK) {
 		al_draw_rectangle(btn.x+2, btn.y+2, btn.x + btn.sizeH-2, btn.y + btn.sizeV-2, btn.color2, 5);
 		al_draw_textf(font, btn.color2, btn.x + btn.sizeH / 2 , (btn.y + btn.sizeV / 2 - fontSize) + fontSize / 7 * 2.5, ALLEGRO_ALIGN_CENTER, "%s", btn.label);
+
 	}
 	else if (btn.state == HOVER) {
 		al_draw_rectangle(btn.x, btn.y, btn.x + btn.sizeH, btn.y + btn.sizeV, btn.color1, 5);
@@ -172,10 +187,11 @@ int main() {
 			//button press
 			int number = 1;
 			bool leftClick = false;
-			button testbtn = buttonInit(10, 10, 100, 50, color1,color2,color3,color4, "testText");
-			button oldBtn = buttonInit(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 50, color1, color2, color3, color4, "some old text");
-			button oldBtn2 = buttonInit(100, SCREEN_HEIGHT-200, 200, 100, color1, color2, color3, color4, "text");
-			
+			//button testbtn = buttonInit(10, 10, 100, 50, color1,color2,color3,color4, "testText");
+			//button oldBtn = buttonInit(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 50, color1, color2, color3, color4, "some old text");
+			//button oldBtn2 = buttonInit(100, SCREEN_HEIGHT-200, 200, 100, color1, color2, color3, color4, "text");
+			button oldBtn2 = buttonInit(100, SCREEN_HEIGHT - 200, 200, 100, color1, color2, color3, color4, &testFunction, "text");
+
 	#pragma endregion
 
 
@@ -216,14 +232,14 @@ int main() {
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			//display mouse position for debugging
 			al_draw_textf(font16, color1, SCREEN_WIDTH, SCREEN_HEIGHT-16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
-			
+			al_draw_textf(font16, color1, 300, 50, ALLEGRO_ALIGN_CENTER, "value %d", number2);
 
-			checkButton(&testbtn, x, y, leftClick);
-			checkButton(&oldBtn, x, y, leftClick);
+			//checkButton(&testbtn, x, y, leftClick);
+			//checkButton(&oldBtn, x, y, leftClick);
 			checkButton(&oldBtn2, x, y, leftClick);
 
-			drawButton(testbtn, font22, 22);
-			drawButton(oldBtn, font16, 16);
+			//drawButton(testbtn, font22, 22);
+			//drawButton(oldBtn, font16, 16);
 			drawButton(oldBtn2, font36, 36);
 		
 			al_flip_display();
