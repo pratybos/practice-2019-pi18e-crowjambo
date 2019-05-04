@@ -32,17 +32,23 @@ struct button {
 	int y;
 	int sizeH;
 	int sizeV;
-	ALLEGRO_COLOR color;
+	ALLEGRO_COLOR color1;
+	ALLEGRO_COLOR color2;
+	ALLEGRO_COLOR color3;
+	ALLEGRO_COLOR color4;
 	char label[20];
 	int state;
 };
 typedef struct button button;
 
-button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color, char text[]) {
+button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color1, ALLEGRO_COLOR color2, ALLEGRO_COLOR color3, ALLEGRO_COLOR color4, char text[]) {
 	button btn;
 	btn.x = x;
 	btn.y = y;
-	btn.color = color;
+	btn.color1 = color1;
+	btn.color2 = color2;
+	btn.color3 = color3;
+	btn.color4 = color4;
 	btn.sizeH = sizeH;
 	btn.sizeV = sizeV;
 	strcpy_s(btn.label, 20, text);
@@ -50,14 +56,19 @@ button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color, char 
 	return btn;
 }
 
-void checkButton(button *btn, int mouse_x, int mouse_y) {
+void checkButton(button *btn, int mouse_x, int mouse_y, bool clicked) {
+	
 	if (btn->x <= mouse_x &&
 		mouse_x <= btn->x + btn->sizeH &&
 		btn->y <= mouse_y &&
 		mouse_y <= btn->y + btn->sizeV) {
-
-		btn->state = HOVER;
-	}
+		if (clicked) {
+			btn->state = CLICK;
+			}
+		else {
+			btn->state = HOVER;
+			}	
+		}
 	else {
 		btn->state = DEFAULT;
 	}
@@ -66,14 +77,18 @@ void checkButton(button *btn, int mouse_x, int mouse_y) {
 	//return 0;
 }
 
-void drawButton(button btn, ALLEGRO_FONT *font) {
-	if (btn.state == DEFAULT) {
-		al_draw_rectangle(btn.x, btn.y, btn.x + btn.sizeH, btn.y + btn.sizeV, btn.color, 1);
-		al_draw_textf(font, btn.color, btn.x + btn.sizeH / 2, btn.y + btn.sizeV / 2, ALLEGRO_ALIGN_CENTER, "%s", btn.label);
+void drawButton(button btn, ALLEGRO_FONT *font, int fontSize) {
+	if (btn.state == CLICK) {
+		al_draw_rectangle(btn.x+2, btn.y+2, btn.x + btn.sizeH-2, btn.y + btn.sizeV-2, btn.color2, 5);
+		al_draw_textf(font, btn.color2, btn.x + btn.sizeH / 2 , (btn.y + btn.sizeV / 2 - fontSize) + fontSize / 7 * 2.5, ALLEGRO_ALIGN_CENTER, "%s", btn.label);
+	}
+	else if (btn.state == HOVER) {
+		al_draw_rectangle(btn.x, btn.y, btn.x + btn.sizeH, btn.y + btn.sizeV, btn.color1, 5);
+		al_draw_textf(font, btn.color1, btn.x + btn.sizeH / 2, (btn.y + btn.sizeV / 2 - fontSize) + fontSize / 7 * 2.5, ALLEGRO_ALIGN_CENTER, "%s", btn.label);
 	}
 	else {
-		al_draw_rectangle(btn.x, btn.y, btn.x + btn.sizeH, btn.y + btn.sizeV, btn.color, 5);
-		al_draw_textf(font, btn.color, btn.x + btn.sizeH / 2, btn.y + btn.sizeV / 2, ALLEGRO_ALIGN_CENTER, "%s", btn.label);
+		al_draw_rectangle(btn.x, btn.y, btn.x + btn.sizeH, btn.y + btn.sizeV, btn.color1, 1);
+		al_draw_textf(font, btn.color1, btn.x + btn.sizeH / 2, (btn.y + btn.sizeV / 2 - fontSize ) + fontSize/7*2.5, ALLEGRO_ALIGN_CENTER, "%s", btn.label);
 	}
 
 }
@@ -126,6 +141,9 @@ int main() {
 		#pragma region Colors
 
 			ALLEGRO_COLOR color1 = al_map_rgb(255, 255, 255);
+			ALLEGRO_COLOR color2 = al_map_rgb(255, 0, 0);
+			ALLEGRO_COLOR color3 = al_map_rgb(0, 0, 255);
+			ALLEGRO_COLOR color4 = al_map_rgb(0, 255, 0);
 
 		#pragma endregion
 
@@ -153,7 +171,10 @@ int main() {
 			int y = 0;
 			//button press
 			int number = 1;
-			button testbtn = buttonInit(10, 10, 100, 50, color1, "testText");
+			bool leftClick = false;
+			button testbtn = buttonInit(10, 10, 100, 50, color1,color2,color3,color4, "testText");
+			button oldBtn = buttonInit(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 50, color1, color2, color3, color4, "some old text");
+			button oldBtn2 = buttonInit(100, SCREEN_HEIGHT-200, 200, 100, color1, color2, color3, color4, "text");
 			
 	#pragma endregion
 
@@ -168,7 +189,8 @@ int main() {
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			redraw = true;
 
-			checkButton(&testbtn, x, y);
+
+			//checkButton(&testbtn, x, y);
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
 			x = event.mouse.x;
@@ -178,13 +200,14 @@ int main() {
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			// 1 is left click, 2 is right
 			if (event.mouse.button & 1) {
-				//detecting whether test button is clicked or not
-				if (SCREEN_WIDTH / 2 <= x &&
-					x < SCREEN_WIDTH / 2 +100 &&
-					SCREEN_HEIGHT /2 <= y &&
-					y < SCREEN_HEIGHT /2 +50) {
-					number += 1;
-				}
+				leftClick = true;
+				
+			}
+		}
+		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+			if (event.mouse.button & 1) {
+				leftClick = false;
+				
 			}
 		}
 	
@@ -194,10 +217,14 @@ int main() {
 			//display mouse position for debugging
 			al_draw_textf(font16, color1, SCREEN_WIDTH, SCREEN_HEIGHT-16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
 			
-			al_draw_rectangle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2 + 50, color1, 1);
-			al_draw_textf(font12, color1, SCREEN_WIDTH / 2+50, SCREEN_HEIGHT / 2 +17, ALLEGRO_ALIGN_CENTER, "%d", number);
 
-			drawButton(testbtn, font12);
+			checkButton(&testbtn, x, y, leftClick);
+			checkButton(&oldBtn, x, y, leftClick);
+			checkButton(&oldBtn2, x, y, leftClick);
+
+			drawButton(testbtn, font22, 22);
+			drawButton(oldBtn, font16, 16);
+			drawButton(oldBtn2, font36, 36);
 		
 			al_flip_display();
 			al_clear_to_color(al_map_rgb(0, 0, 0));
