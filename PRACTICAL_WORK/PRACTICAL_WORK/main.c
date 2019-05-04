@@ -9,6 +9,7 @@
 #include <allegro5/allegro_primitives.h>
 //standard imports
 #include <stdio.h>
+#include <string.h>
 //custom imports
 
 #pragma endregion
@@ -19,7 +20,63 @@
 #define SCREEN_HEIGHT 768
 
 //global variables
+enum BUTTONSTATE {
+	DEFAULT,
+	HOVER,
+	CLICK
+};
 
+
+struct button {
+	int x;
+	int y;
+	int sizeH;
+	int sizeV;
+	ALLEGRO_COLOR color;
+	char label[20];
+	int state;
+};
+typedef struct button button;
+
+button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color, char text[]) {
+	button btn;
+	btn.x = x;
+	btn.y = y;
+	btn.color = color;
+	btn.sizeH = sizeH;
+	btn.sizeV = sizeV;
+	strcpy_s(btn.label, 20, text);
+	btn.state = DEFAULT;
+	return btn;
+}
+
+void checkButton(button *btn, int mouse_x, int mouse_y) {
+	if (btn->x <= mouse_x &&
+		mouse_x <= btn->x + btn->sizeH &&
+		btn->y <= mouse_y &&
+		mouse_y <= btn->y + btn->sizeV) {
+
+		btn->state = HOVER;
+	}
+	else {
+		btn->state = DEFAULT;
+	}
+
+
+	//return 0;
+}
+
+void drawButton(button btn, ALLEGRO_FONT *font) {
+	if (btn.state == DEFAULT) {
+		al_draw_rectangle(btn.x, btn.y, btn.x + btn.sizeH, btn.y + btn.sizeV, btn.color, 1);
+		al_draw_textf(font, btn.color, btn.x + btn.sizeH / 2, btn.y + btn.sizeV / 2, ALLEGRO_ALIGN_CENTER, "%s", btn.label);
+	}
+	else {
+		al_draw_rectangle(btn.x, btn.y, btn.x + btn.sizeH, btn.y + btn.sizeV, btn.color, 5);
+		al_draw_textf(font, btn.color, btn.x + btn.sizeH / 2, btn.y + btn.sizeV / 2, ALLEGRO_ALIGN_CENTER, "%s", btn.label);
+	}
+
+}
 
 #pragma endregion
 
@@ -96,6 +153,8 @@ int main() {
 			int y = 0;
 			//button press
 			int number = 1;
+			button testbtn = buttonInit(10, 10, 100, 50, color1, "testText");
+			
 	#pragma endregion
 
 
@@ -109,10 +168,12 @@ int main() {
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			redraw = true;
 
+			checkButton(&testbtn, x, y);
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
 			x = event.mouse.x;
 			y = event.mouse.y;
+			
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			// 1 is left click, 2 is right
@@ -135,6 +196,8 @@ int main() {
 			
 			al_draw_rectangle(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 2 + 50, color1, 1);
 			al_draw_textf(font12, color1, SCREEN_WIDTH / 2+50, SCREEN_HEIGHT / 2 +17, ALLEGRO_ALIGN_CENTER, "%d", number);
+
+			drawButton(testbtn, font12);
 		
 			al_flip_display();
 			al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -149,6 +212,7 @@ int main() {
 		al_destroy_font(font22);
 		al_destroy_font(font36);
 		al_destroy_display(display);
+		//add event queues here later
 
 	#pragma endregion
 	return 0;
