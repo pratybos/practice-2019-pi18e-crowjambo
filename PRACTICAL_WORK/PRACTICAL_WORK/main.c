@@ -27,14 +27,14 @@ enum BUTTONSTATE {
 	CLICK
 };
 
-int number2 = 5;
+int closeButton() {
+	return 0;
+}
 
-void incrementNumber(int *x) {
-	x += 1;
+int incrementNumber(int x) {
+	return x += 1;
 }
-void testFunction() {
-	number2 += 1;
-}
+
 
 
 
@@ -47,7 +47,7 @@ struct button {
 	ALLEGRO_COLOR color2;
 	ALLEGRO_COLOR color3;
 	ALLEGRO_COLOR color4;
-	void(*function)(void);
+	int(*function)(int);
 	char label[20];
 	int state;
 };
@@ -69,7 +69,7 @@ button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color1, ALLE
 	return btn;
 }
 
-void checkButton(button *btn, int mouse_x, int mouse_y, bool clicked) {
+int checkButton(button *btn, int mouse_x, int mouse_y, bool clicked, int functionVal) {
 	
 	if (btn->x <= mouse_x &&
 		mouse_x <= btn->x + btn->sizeH &&
@@ -77,14 +77,17 @@ void checkButton(button *btn, int mouse_x, int mouse_y, bool clicked) {
 		mouse_y <= btn->y + btn->sizeV) {
 		if (clicked) {
 			btn->state = CLICK;
-			btn->function();
+			if(btn->function != NULL)
+			return btn->function(functionVal);
 			}
 		else {
 			btn->state = HOVER;
+			return functionVal;
 			}	
 		}
 	else {
 		btn->state = DEFAULT;
+		return functionVal;
 	}
 
 
@@ -185,12 +188,12 @@ int main() {
 			int x = 0;
 			int y = 0;
 			//button press
-			int number = 1;
+			int number = 0;
 			bool leftClick = false;
-			//button testbtn = buttonInit(10, 10, 100, 50, color1,color2,color3,color4, "testText");
+			button testbtn = buttonInit(10, 10, 100, 50, color1,color2,color3,color4,&closeButton, "testText");
 			//button oldBtn = buttonInit(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 100, 50, color1, color2, color3, color4, "some old text");
 			//button oldBtn2 = buttonInit(100, SCREEN_HEIGHT-200, 200, 100, color1, color2, color3, color4, "text");
-			button oldBtn2 = buttonInit(100, SCREEN_HEIGHT - 200, 200, 100, color1, color2, color3, color4, &testFunction, "text");
+			button oldBtn2 = buttonInit(100, SCREEN_HEIGHT - 200, 200, 100, color1, color2, color3, color4, &incrementNumber, "text");
 
 	#pragma endregion
 
@@ -232,13 +235,18 @@ int main() {
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			//display mouse position for debugging
 			al_draw_textf(font16, color1, SCREEN_WIDTH, SCREEN_HEIGHT-16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
-			al_draw_textf(font16, color1, 300, 50, ALLEGRO_ALIGN_CENTER, "value %d", number2);
+			al_draw_textf(font16, color1, 300, 50, ALLEGRO_ALIGN_CENTER, "value %d", number);
 
-			//checkButton(&testbtn, x, y, leftClick);
+			
 			//checkButton(&oldBtn, x, y, leftClick);
-			checkButton(&oldBtn2, x, y, leftClick);
 
-			//drawButton(testbtn, font22, 22);
+			if (number) {
+				number = checkButton(&testbtn, x, y, leftClick, number);
+				drawButton(testbtn, font22, 22);
+			}
+			number = checkButton(&oldBtn2, x, y, leftClick, number);
+
+			
 			//drawButton(oldBtn, font16, 16);
 			drawButton(oldBtn2, font36, 36);
 		
