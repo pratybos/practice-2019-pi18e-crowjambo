@@ -1,8 +1,8 @@
 #include "Button.h"
 
 
-button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color1, ALLEGRO_COLOR color2, ALLEGRO_COLOR color3, ALLEGRO_COLOR color4, void *function, char text[]) {
-	button btn;
+Button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color1, ALLEGRO_COLOR color2, ALLEGRO_COLOR color3, ALLEGRO_COLOR color4, void *function, char text[]) {
+	Button btn;
 	btn.x = x;
 	btn.y = y;
 	btn.color1 = color1;
@@ -17,7 +17,7 @@ button buttonInit(int x, int y, int sizeH, int sizeV, ALLEGRO_COLOR color1, ALLE
 	return btn;
 }
 
-int checkButton(button *btn, int mouse_x, int mouse_y, bool isClicked, int functionVal) {
+int checkButton(Button *btn, int mouse_x, int mouse_y, bool isClicked, int functionVal) {
 	if (btn->x <= mouse_x &&
 		mouse_x <= btn->x + btn->sizeH &&
 		btn->y <= mouse_y &&
@@ -38,7 +38,7 @@ int checkButton(button *btn, int mouse_x, int mouse_y, bool isClicked, int funct
 	}
 }
 
-void drawButton(button btn, ALLEGRO_FONT *font, int fontSize) {
+void drawButton(Button btn, ALLEGRO_FONT *font, int fontSize) {
 	//click state
 	if (btn.state == CLICK) {
 		al_draw_rectangle(btn.x + 2, btn.y + 2, btn.x + btn.sizeH - 2, btn.y + btn.sizeV - 2, btn.color2, 5);

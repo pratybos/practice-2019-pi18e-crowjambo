@@ -1,14 +1,12 @@
 
 #pragma region Headers
 
-//allegro imports
+//allegro and custom imports
 #include "MainLibs.h"
 //standard imports
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-//custom imports
-#include "Button.h"
 
 #pragma endregion
 #pragma region Globals
@@ -18,6 +16,15 @@
 #define SCREEN_HEIGHT 768
 
 //global variables
+
+
+
+
+
+
+
+
+
 
 
 #pragma endregion
@@ -96,14 +103,12 @@ int main() {
 			al_register_event_source(event_queue, al_get_mouse_event_source());
 
 	#pragma endregion
-	#pragma region Test Variables
-
-
-	#pragma endregion
-
 
 	//main loop
 	while (!done) {
+
+		#pragma region Events
+
 		ALLEGRO_EVENT event;
 		al_wait_for_event(event_queue, &event);
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
@@ -112,40 +117,44 @@ int main() {
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			redraw = true;
 
+			//could add+1 to some variable here and have an IF statement at certain value to create an even that triggers every X amount of frames, rather than using seperate timer ( for example a slower animation than 60fps etc.)
+
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
 			x = event.mouse.x;
 			y = event.mouse.y;
-			
+
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
 			// 1 is left click, 2 is right
 			if (event.mouse.button & 1) {
 				leftClick = true;
-				
+
 			}
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
 			if (event.mouse.button & 1) {
 				leftClick = false;
-				
+
 			}
 		}
-	
 
+		#pragma endregion
+		#pragma region Drawing
 
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			//display mouse position for debugging
-			al_draw_textf(font16, color1, SCREEN_WIDTH, SCREEN_HEIGHT-16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
+			al_draw_textf(font16, color1, SCREEN_WIDTH, SCREEN_HEIGHT - 16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
 
 
 
 
-		
+
 			al_flip_display();
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 		}
 
+		#pragma endregion
 
 	}
 	#pragma region Clean up / destroy
@@ -156,6 +165,7 @@ int main() {
 		al_destroy_font(font36);
 		al_destroy_display(display);
 		al_destroy_event_queue(event_queue);
+		al_destroy_timer(timer);
 		//destroy everything here
 
 	#pragma endregion
