@@ -510,6 +510,21 @@ int Main_Scene(){
 	buttonsCarShop[10] = buttonInit(SCREEN_WIDTH - 300, SCREEN_HEIGHT - 100, 200, 50, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Sell");
 
 	#pragma endregion
+	#pragma region PagePartsShop
+
+	//number of buttons
+	const int buttonsNMBPartsShop = 15;
+	//menu button detection variable(one for each button)
+	int buttonValPartsShop[15] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+	//all buttons
+	Button buttonsPartsShop[15];
+	//quick button init
+	for (i = 0; i < buttonsNMBPartsShop; i++) {
+		buttonsPartsShop[i] = buttonInit(200, 112 + i * 20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Buy");
+	}
+
+
+	#pragma endregion
 
 
 
@@ -643,7 +658,7 @@ int Main_Scene(){
 				for (i = 0; i < 10; i++) {
 					al_draw_textf(font16, colors[0], 10, 112 + i * 20, NULL, "%s  Price: %d", carsForSale[i].name, carsForSale[i].price );
 				}
-				//	buttonsCarShop[i] = buttonInit(200, 112 + i * 20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Buy");
+	
 
 				//text about selling your current car
 				al_draw_text(font22, colors[0], SCREEN_WIDTH - 300, SCREEN_HEIGHT - 130, NULL, "Sell your current car?");
@@ -654,6 +669,16 @@ int Main_Scene(){
 			case 4:
 				#pragma region PageParts
 
+				//button checking and drawing
+				for (i = 0; i < buttonsNMBPartsShop; i++) {
+					buttonValPartsShop[i] = checkButton(&buttonsPartsShop[i], x, y, leftClick, buttonValPartsShop[i]);
+					drawButton(buttonsPartsShop[i], font16, 16);
+				}
+
+				//draw all possible parts from inventory LIST
+				for (i = 0; i < 15; i++) {
+					al_draw_textf(font16, colors[0], 20, 112+i*20, NULL, "%s", inventory_ToName(i));
+				}
 
 				#pragma endregion
 				break;
