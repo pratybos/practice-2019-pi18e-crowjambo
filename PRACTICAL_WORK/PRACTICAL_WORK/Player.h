@@ -1,10 +1,12 @@
 #pragma once
-#include "MainLibs.h"
+#include "Inventory.h"
+#include "Car.h"
 
 struct Player {
 	char name[20];
 	Inventory inventory;
-	Car car;
+	int currentCar;
+	Car ownedCars[10];
 	int money;
 };
 typedef struct Player Player;

@@ -1,11 +1,23 @@
+/*
+
+2019 PRACTICAL WORK PI18E - EVALDAS PAULAUSKAS
+
+*/
 #pragma region Headers
 
 //allegro and custom imports
 #include "MainLibs.h"
+#include "Button.h"
+#include "Inventory.h"
+#include "Car.h"
+#include "GameManager.h"
+#include "Player.h"
 //standard imports
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+//for shellexecute to work(to open website ranking)
+#include <Windows.h>
 
 #pragma endregion
 #pragma region Globals
@@ -38,15 +50,32 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 #pragma endregion
 #pragma region FUNCTIONS
 
+//convert enums used for days into strings
+char *EnumsToString(enum DAYS day) {
+	switch (day) {
+	case MONDAY: return "MONDAY";
+	case TUESDAY: return "TUESDAY";
+	case WEDNESDAY: return "WEDNESDAY";
+	case THURSDAY: return "THURSDAY";
+	case FRIDAY: return "FRIDAY";
+	case SATURDAY: return "SATURDAY";
+	case SUNDAY: return "SUNDAY";
+	}
+}
+
+//multi purpose used to check if button was pressed or not each frame
 int ReturnOne() {
 	return 1;
 }
 
-int TestFun2() {
+//windows.h function to open a set file
+int OpenRankings() {
+	ShellExecute(NULL, "open", "\rankings.html", NULL, NULL, 0);
 	return 1;
 };
+
 //useful for multi-init of buttons, in case they all need very different functionality
-int(*buttonFuncArray[3]) = { ReturnOne, TestFun2, NULL};
+int(*buttonFuncArray[3]) = { ReturnOne, OpenRankings, NULL};
 
 #pragma endregion
 #pragma region SCENES
@@ -86,6 +115,7 @@ int Start_Scene() {
 		//assign different names for buttons
 		strcpy_s(buttonsMain[0].label, 20, "Start Game");
 		strcpy_s(buttonsMain[1].label, 20, "Rankings");
+		buttonsMain[1].function = OpenRankings;
 		strcpy_s(buttonsMain[2].label, 20, "Quit Game");
 
 		#pragma endregion
@@ -274,8 +304,6 @@ int Start_Scene() {
 	#pragma region Drawing
 
 		if (redraw && al_is_event_queue_empty(event_queue)) {
-			//display mouse position for debugging
-			al_draw_textf(font16, colors[0], SCREEN_WIDTH, SCREEN_HEIGHT - 16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
 
 			switch (currentPage) {
 			case 1:
@@ -297,7 +325,7 @@ int Start_Scene() {
 				}
 				//ranking button
 				else if (buttonVal[1] == 1) {
-					//printf("ranking was pressed");
+
 				}
 				//quit button
 				else if (buttonVal[2] == 1) {
@@ -374,11 +402,271 @@ int Start_Scene() {
 	sceneLoad();
 	return 0;
 }
-int Main_Scene(){}
-int Home_Scene(){}
-int CarShop_Scene(){}
-int PartsShop_Scene(){}
-int Race_Scene(){}
+int Main_Scene(){
+
+	#pragma region Variables
+	//temps
+	int i = 0;
+	char temp[20];
+	//mouse position
+	int x = 0;
+	int y = 0;
+	//mouse left click hold detection
+	bool leftClick = false;
+	//function main loop end condition
+	bool done = false;
+	bool redraw = false;
+	//navigation vars
+	int currentPage = 1;
+
+
+	#pragma endregion
+	#pragma region Buttons
+
+	#pragma region Page1
+
+	//number of buttons
+	const int buttonsNMB1 = 5;
+	//menu button detection variable(one for each button)
+	int buttonVal[5] = { 0,0,0,0,0 };
+	//all buttons
+	Button buttonsPage1[5];
+	//quick button init
+	for (i = 0; i < buttonsNMB1; i++) {
+		buttonsPage1[i] = buttonInit(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 3 + i * 100, 200, 50, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Empty");
+	}
+	//assign different names for buttons
+	strcpy_s(buttonsPage1[0].label, 20, "Home");
+	strcpy_s(buttonsPage1[1].label, 20, "Car Shop");
+	strcpy_s(buttonsPage1[2].label, 20, "Parts Shop");
+	strcpy_s(buttonsPage1[3].label, 20, "Race");
+	strcpy_s(buttonsPage1[4].label, 20, "Achievements");
+
+	#pragma endregion
+	#pragma region PageHome
+
+	//number of buttons
+	const int buttonsNMB2 = 3;
+	//menu button detection variable(one for each button)
+	int buttonVal2[3] = { 0,0,0 };
+	//all buttons
+	Button buttonsHome[3];
+	//quick button init
+	for (i = 0; i < buttonsNMB2; i++) {
+		buttonsHome[i] = buttonInit( 100+i*250, SCREEN_HEIGHT -100, 200, 50, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Empty");
+	}
+	//assign different names for buttons
+	strcpy_s(buttonsHome[0].label, 20, "Garage");
+	strcpy_s(buttonsHome[1].label, 20, "Messages");
+	strcpy_s(buttonsHome[2].label, 20, "Sleep");
+
+	#pragma endregion
+
+
+	#pragma endregion
+
+	//main loop
+	while (!done) {
+
+	#pragma region Events
+
+		ALLEGRO_EVENT event;
+		al_wait_for_event(event_queue, &event);
+		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			fullyDone = true;
+			done = true;
+		}
+		else if (event.type == ALLEGRO_EVENT_TIMER) {
+			redraw = true;
+
+			//button value reset
+			for (i = 0; i < buttonsNMB1; i++) {
+				buttonVal[i] = 0;
+			}
+			for (i = 0; i < buttonsNMB2; i++) {
+				buttonVal2[i] = 0;
+			}
+		}
+		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
+			x = event.mouse.x;
+			y = event.mouse.y;
+
+		}
+		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+			// 1 is left click, 2 is right
+			if (event.mouse.button & 1) {
+				leftClick = true;
+
+			}
+		}
+		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+			if (event.mouse.button & 1) {
+				leftClick = false;
+
+			}
+		}
+		else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+				//Return to main page
+				currentPage = 1;
+			}
+		}
+	#pragma endregion
+	#pragma region Drawing
+
+		if (redraw && al_is_event_queue_empty(event_queue)) {
+
+			#pragma region Top and Bottom status bar
+
+			//top bar
+			al_draw_textf(font16, colors[0], SCREEN_WIDTH - 10, 10, ALLEGRO_ALIGN_RIGHT, "Day : %s ; Hour : %d", EnumsToString(mng.currentDay), mng.currentHour);
+			//bot bar
+			al_draw_textf(font16, colors[0], 10, SCREEN_HEIGHT - 20, ALLEGRO_ALIGN_LEFT, "Money : %d ; Car : %s", player1.money, player1.ownedCars[player1.currentCar].name);
+
+			#pragma endregion
+
+			switch (currentPage) {
+			case 1:
+				#pragma region Page1
+
+				//button checking and drawing
+				for (i = 0; i < buttonsNMB1; i++) {
+					buttonVal[i] = checkButton(&buttonsPage1[i], x, y, leftClick, buttonVal[i]);
+					drawButton(buttonsPage1[i], font16, 16);
+				}
+
+				//button home
+				if (buttonVal[0] == 1) {
+					currentPage = 2;
+				}
+				//button carshop
+				if (buttonVal[1] == 1) {
+					currentPage = 3;
+				}
+				//button partsshop
+				if (buttonVal[2] == 1) {
+					currentPage = 4;
+				}
+				//button race
+				if (buttonVal[3] == 1) {
+					currentPage = 5;
+				}
+				//button achievements
+				if (buttonVal[4] == 1) {
+					currentPage = 8;
+				}
+
+				#pragma endregion
+				break;
+			case 2:
+				#pragma region PageHome
+
+				//button checking and drawing
+				for (i = 0; i < buttonsNMB2; i++) {
+					buttonVal2[i] = checkButton(&buttonsHome[i], x, y, leftClick, buttonVal2[i]);
+					drawButton(buttonsHome[i], font16, 16);
+				}
+
+				//button garage
+				if (buttonVal2[0] == 1) {
+					//show garage screen with inventory/cars/parts and equip if can/want
+					currentPage = 6;
+				}
+				//button messages
+				if (buttonVal2[1] == 1) {
+					//show message screen
+					currentPage = 7;
+				}
+				//button sleep
+				if (buttonVal2[2] == 1) {
+					//some function to skip time to next day 8 AM.
+					currentPage = 1;
+				}
+
+
+				#pragma endregion
+				break;
+			case 3:
+				#pragma region PageCars
+				
+
+
+				#pragma endregion
+				break;
+			case 4:
+				#pragma region PageParts
+
+
+				#pragma endregion
+				break;
+			case 5:
+				#pragma region PageRace
+
+				
+
+				#pragma endregion
+				break;
+			case 6:
+				#pragma region PageGarage
+
+				//owned cars container +text
+				al_draw_rectangle(10, 100, 310, SCREEN_HEIGHT - 50, colors[0], 1);
+				al_draw_text(font16, colors[0], 10, 100 - 30, NULL, "Owned Cars");
+				for (i = 0; i < 10; i++) {
+					al_draw_textf(font16, colors[0], 15, 110+i*20, NULL, "%s", player1.ownedCars[i].name);
+				}
+
+				//owned parts container +text
+				al_draw_rectangle(310+20, 100, 310+20+300, SCREEN_HEIGHT - 50, colors[0], 1);
+				al_draw_text(font16, colors[0], 310 + 20, 100 - 30, NULL, "Owned Parts");
+				//simply print out ALL of available spaces for parts and what they are, basic as fuck
+				for (i = 0; i < 20; i++) {
+					al_draw_textf(font16, colors[0], 310+20+5, 110 + i * 20, NULL, "%s", inventory_ToName(player1.inventory.items[i]));
+				}
+
+				//current car display
+				al_draw_textf(font36, colors[0], 310 + 20 + 300 + 150, SCREEN_HEIGHT / 2 - 50, NULL, "%s", player1.ownedCars[player1.currentCar].name);
+
+				#pragma endregion
+				break;
+			case 7:
+				#pragma region PageMessages
+
+
+
+				#pragma endregion
+				break;
+			case 8:
+				#pragma region PageAchievements
+
+				
+				break;
+				#pragma endregion
+
+			}
+		}
+		al_flip_display();
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+	}
+
+	#pragma endregion
+
+
+	#pragma region Clean up / destroy
+
+	//destroy everything local here
+
+	#pragma endregion
+	sceneLoad();
+	return 0;
+
+}
+int Race_Scene(){
+
+	printf("this is race scene");
+
+	return 1;
+}
 
 #pragma endregion
 
@@ -396,19 +684,10 @@ int sceneLoad() {
 		Start_Scene();
 		break;
 	case MAIN:
-
-		break;
-	case HOME:
-
-		break;
-	case CAR_SHOP:
-
-		break;
-	case PARTS_SHOP:
-
+		Main_Scene();
 		break;
 	case RACE:
-
+		Race_Scene();
 		break;
 	}
 }
@@ -429,7 +708,7 @@ int main() {
 	#pragma region DISPLAY
 
 	display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
-	al_set_window_title(display, "Practical work game");
+	al_set_window_title(display, "Practical work game{PROTOTYPE}");
 	if (!display) {
 		al_show_native_message_box(NULL, NULL, NULL, "failed to init display", NULL, NULL);
 		return -1;

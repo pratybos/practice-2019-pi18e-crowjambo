@@ -1,12 +1,8 @@
 #pragma once
-#include "MainLibs.h"
 
 enum SCENES {
 	START,
 	MAIN,
-	HOME,
-	CAR_SHOP,
-	PARTS_SHOP,
 	RACE
 };
 

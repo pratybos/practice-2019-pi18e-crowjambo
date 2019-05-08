@@ -1,6 +1,5 @@
 #pragma once
 
-
 struct Car {
 	char name[20];
 	int HorsePower;
@@ -9,3 +8,5 @@ struct Car {
 
 };
 typedef struct Car Car;
+
+Car car_init();

@@ -30,6 +30,12 @@
     <ClCompile Include="Player.c">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="Car.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

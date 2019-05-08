@@ -2,11 +2,16 @@
 
 
 Player player_init() {
+	int i = 0;
+
 	Player pl;
-	//init car too?
-	//init inventory?
+	pl.currentCar = 0;
+	pl.inventory = inventory_init();
 	pl.money = 1000;
 	strcpy_s(pl.name, 20, "");
+	for (i = 0; i < 10; i++) {
+		pl.ownedCars[i] = car_init();
+	}
 
 	return pl;
 }
