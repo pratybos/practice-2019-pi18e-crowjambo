@@ -461,7 +461,34 @@ int Main_Scene(){
 	strcpy_s(buttonsHome[2].label, 20, "Sleep");
 
 	#pragma endregion
+	#pragma region PageGarage
 
+	//number of buttons
+	const int buttonsNMBGarage = 10;
+	//menu button detection variable(one for each button)
+	int buttonValGarage[10] = { 0,0,0,0,0,0,0,0,0,0 };
+	//all buttons
+	Button buttonsGarage[10];
+	//quick button init
+	for (i = 0; i < buttonsNMBGarage; i++) {
+		buttonsGarage[i] = buttonInit(310-100, 112+i*20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Equip");
+	}
+
+	#pragma endregion
+	#pragma region PageGarage2
+
+	//number of buttons
+	const int buttonsNMBGarage2 = 20;
+	//menu button detection variable(one for each button)
+	int buttonValGarage2[20] = { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 };
+	//all buttons
+	Button buttonsGarage2[20];
+	//quick button init
+	for (i = 0; i < buttonsNMBGarage2; i++) {
+		buttonsGarage2[i] = buttonInit(310 + 20 + 300 - 100, 112 + i * 20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Equip");
+	}
+
+	#pragma endregion
 
 	#pragma endregion
 
@@ -615,17 +642,30 @@ int Main_Scene(){
 				for (i = 0; i < 10; i++) {
 					al_draw_textf(font16, colors[0], 15, 110+i*20, NULL, "%s", player1.ownedCars[i].name);
 				}
+				//equip buttons check/draw
+				for (i = 0; i < buttonsNMBGarage; i++) {
+					buttonValGarage[i] = checkButton(&buttonsGarage[i], x, y, leftClick, buttonValGarage[i]);
+					drawButton(buttonsGarage[i], font12, 12);
+				}
+				//equiping logic here/if/switch checks etc.
+				//
+
 
 				//owned parts container +text
 				al_draw_rectangle(310+20, 100, 310+20+300, SCREEN_HEIGHT - 50, colors[0], 1);
 				al_draw_text(font16, colors[0], 310 + 20, 100 - 30, NULL, "Owned Parts");
-				//simply print out ALL of available spaces for parts and what they are, basic as fuck
 				for (i = 0; i < 20; i++) {
 					al_draw_textf(font16, colors[0], 310+20+5, 110 + i * 20, NULL, "%s", inventory_ToName(player1.inventory.items[i]));
+				}
+				//equip buttons check/draw
+				for (i = 0; i < buttonsNMBGarage2; i++) {
+					buttonValGarage2[i] = checkButton(&buttonsGarage2[i], x, y, leftClick, buttonValGarage2[i]);
+					drawButton(buttonsGarage2[i], font12, 12);
 				}
 
 				//current car display
 				al_draw_textf(font36, colors[0], 310 + 20 + 300 + 150, SCREEN_HEIGHT / 2 - 50, NULL, "%s", player1.ownedCars[player1.currentCar].name);
+				//later print out here equipped parts and horse power etc. KM driven
 
 				#pragma endregion
 				break;
