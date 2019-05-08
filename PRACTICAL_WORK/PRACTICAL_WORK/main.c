@@ -106,6 +106,23 @@ int Start_Scene() {
 
 
 		#pragma endregion
+		#pragma region Page3
+
+		//number of buttons
+		const int buttonsNMB3 = 1;
+		//menu button detection variable(one for each button)
+		int buttonVal3[3] = { 0,0,0 };
+		//all buttons
+		Button buttonsPage3[1];
+		//quick button init
+		for (i = 0; i < buttonsNMB3; i++) {
+			buttonsPage3[i] = buttonInit(SCREEN_WIDTH - 300, SCREEN_HEIGHT / 1.2 + i * 100, 200, 50, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Empty");
+		}
+		//assign different names for buttons
+		strcpy_s(buttonsPage3[0].label, 20, "Continue");
+
+		#pragma endregion
+
 
 #pragma endregion
 	//main loop
@@ -295,7 +312,6 @@ int Start_Scene() {
 				//text input box
 				al_draw_text(font22, colors[0], SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 3 - 55, NULL, "Input Name :");
 				al_draw_rectangle(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 3 -25, SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 3 + 25, colors[0], 1);
-				//al_draw_textf(font16, colors[0], SCREEN_WIDTH / 2 - 95, SCREEN_HEIGHT / 3 - 20, NULL, "%s", input);
 				al_draw_textf(font16, colors[0], SCREEN_WIDTH / 2 - 95, SCREEN_HEIGHT / 3 - 20, NULL, player1.name);
 
 				//button checks		
@@ -311,20 +327,37 @@ int Start_Scene() {
 				//button results check
 				//OK button
 				if (buttonVal2[0] == 1) {
-					currentPage = 1;
+					currentPage = 3;
 				}
 
 				#pragma endregion
 				break;
+			case 3:
+				#pragma region Page3
+
+				//Story text
+				al_draw_multiline_textf(font16, colors[0], 100, SCREEN_HEIGHT / 2 - 100, SCREEN_WIDTH - 200, 30, NULL, "HELLO %s , Welcome to THE GAME!\n Objectives : \n 1. Have fun \n 2. Testing \n All clear? Okay! Press continue to play", player1.name);
+				
+				//button checks		
+				for (i = 0; i < buttonsNMB3; i++) {
+					buttonVal3[i] = checkButton(&buttonsPage3[i], x, y, leftClick, buttonVal3[i]);
+				}
+
+				//button drawing
+				for (i = 0; i < buttonsNMB1; i++) {
+					drawButton(buttonsPage3[i], font16, 16);
+				}
+
+				//button results check
+				//Continue button , switch scenes
+				if (buttonVal3[0] == 1) {
+					mng.currentScene = MAIN;
+					done = true;
+				}
+				#pragma endregion
+				break;
 			}
-
-			
-
-
-
 		}
-
-
 
 			al_flip_display();
 			al_clear_to_color(al_map_rgb(0, 0, 0));
