@@ -18,6 +18,7 @@
 bool fullyDone = false;
 GameManager mng;
 int FPS = 60;
+Player player1;
 
 #pragma endregion
 #pragma region ALLEGRO VARIABLES
@@ -37,27 +38,25 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 #pragma endregion
 #pragma region FUNCTIONS
 
-int QuitGame() {
-	return 1;
-}
-
-int TestFun() {
+int ReturnOne() {
 	return 1;
 }
 
 int TestFun2() {
 	return 1;
 };
-
-int(*buttonFuncArray[3]) = { TestFun, TestFun2, QuitGame};
+//useful for multi-init of buttons, in case they all need very different functionality
+int(*buttonFuncArray[3]) = { ReturnOne, TestFun2, NULL};
 
 #pragma endregion
 #pragma region SCENES
 
 int Start_Scene() {
 
-#pragma region Variables
+	#pragma region Variables
+	//temps
 	int i = 0;
+	char temp[20];
 	//mouse position
 	int x = 0;
 	int y = 0;
@@ -66,34 +65,52 @@ int Start_Scene() {
 	//function main loop end condition
 	bool done = false;
 	bool redraw = false;
-	//menu button detection variable
-	int buttonVal[3] = { 0,0,0 };
+	//navigation vars
+	int currentPage = 1;
 
+
+	#pragma endregion
 	#pragma region Buttons
+		#pragma region Page1
 
-	Button buttonsMain[3];
-	for (i = 0; i < 3; i++) {
-		buttonsMain[i] = buttonInit(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 3+i*100, 200, 50, colors[0], colors[1], colors[2], colors[3], buttonFuncArray[i], "Empty");
-	}
-	strcpy_s(buttonsMain[0].label, 20, "Start Game");
+		//number of buttons
+		const int buttonsNMB1 = 3;
+		//menu button detection variable(one for each button)
+		int buttonVal[3] = { 0,0,0 };
+		//all buttons
+		Button buttonsMain[3];
+		//quick button init
+		for (i = 0; i < buttonsNMB1; i++) {
+			buttonsMain[i] = buttonInit(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 3 + i * 100, 200, 50, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Empty");
+		}
+		//assign different names for buttons
+		strcpy_s(buttonsMain[0].label, 20, "Start Game");
+		strcpy_s(buttonsMain[1].label, 20, "Rankings");
+		strcpy_s(buttonsMain[2].label, 20, "Quit Game");
 
-	strcpy_s(buttonsMain[1].label, 20, "Rankings");
+		#pragma endregion
+		#pragma region Page2
 
-	strcpy_s(buttonsMain[2].label, 20, "Quit Game");
+		//number of buttons
+		const int buttonsNMB2 = 1;
+		//menu button detection variable(one for each button)
+		int buttonVal2[3] = { 0,0,0 };
+		//all buttons
+		Button buttonsPage2[1];
+		//quick button init
+		for (i = 0; i < buttonsNMB2; i++) {
+			buttonsPage2[i] = buttonInit(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 1.2 + i * 100, 200, 50, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Empty");
+		}
+		//assign different names for buttons
+		strcpy_s(buttonsPage2[0].label, 20, "OK");
 
 
-	#pragma endregion
+		#pragma endregion
 
-
-	#pragma endregion
-
+#pragma endregion
 	//main loop
 	while (!done) {
-		//reset button press values
-		for (i = 0; i < 3; i++) {
-			buttonVal[i] = 0;
-		}
-
+		
 	#pragma region Events
 
 		ALLEGRO_EVENT event;
@@ -105,7 +122,14 @@ int Start_Scene() {
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			redraw = true;
 
-			//could add+1 to some variable here and have an IF statement at certain value to create an even that triggers every X amount of frames, rather than using seperate timer ( for example a slower animation than 60fps etc.)
+			//reset button press values
+			for (i = 0; i < buttonsNMB1; i++) {
+				buttonVal[i] = 0;
+			}
+			for (i = 0; i < buttonsNMB2; i++) {
+				buttonVal2[i] = 0;
+			}
+
 
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
@@ -127,6 +151,108 @@ int Start_Scene() {
 			}
 		}
 
+		else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+				currentPage -= 1;
+				if (currentPage < 1) {
+					currentPage = 1;
+				}
+			}
+			if (currentPage == 2) {
+				#pragma region TextBox Input
+				if (event.keyboard.keycode == ALLEGRO_KEY_BACKSPACE) {
+					strcpy_s(player1.name, 20, "");
+				}
+				if (strlen(player1.name) < 15) {
+					switch (event.keyboard.keycode) {
+					case ALLEGRO_KEY_A:
+						strcat_s(player1.name, 20, "A");
+						break;
+					case ALLEGRO_KEY_B:
+						strcat_s(player1.name, 20, "B");
+						break;
+					case ALLEGRO_KEY_C:
+						strcat_s(player1.name, 20, "C");
+						break;
+					case ALLEGRO_KEY_D:
+						strcat_s(player1.name, 20, "D");
+						break;
+					case ALLEGRO_KEY_E:
+						strcat_s(player1.name, 20, "E");
+						break;
+					case ALLEGRO_KEY_F:
+						strcat_s(player1.name, 20, "F");
+						break;
+					case ALLEGRO_KEY_G:
+						strcat_s(player1.name, 20, "G");
+						break;
+					case ALLEGRO_KEY_H:
+						strcat_s(player1.name, 20, "H");
+						break;
+					case ALLEGRO_KEY_I:
+						strcat_s(player1.name, 20, "I");
+						break;
+					case ALLEGRO_KEY_J:
+						strcat_s(player1.name, 20, "J");
+						break;
+					case ALLEGRO_KEY_K:
+						strcat_s(player1.name, 20, "K");
+						break;
+					case ALLEGRO_KEY_L:
+						strcat_s(player1.name, 20, "L");
+						break;
+					case ALLEGRO_KEY_M:
+						strcat_s(player1.name, 20, "M");
+						break;
+					case ALLEGRO_KEY_N:
+						strcat_s(player1.name, 20, "N");
+						break;
+					case ALLEGRO_KEY_O:
+						strcat_s(player1.name, 20, "O");
+						break;
+					case ALLEGRO_KEY_P:
+						strcat_s(player1.name, 20, "P");
+						break;
+					case ALLEGRO_KEY_Q:
+						strcat_s(player1.name, 20, "Q");
+						break;
+					case ALLEGRO_KEY_R:
+						strcat_s(player1.name, 20, "R");
+						break;
+					case ALLEGRO_KEY_S:
+						strcat_s(player1.name, 20, "S");
+						break;
+					case ALLEGRO_KEY_T:
+						strcat_s(player1.name, 20, "T");
+						break;
+					case ALLEGRO_KEY_U:
+						strcat_s(player1.name, 20, "U");
+						break;
+					case ALLEGRO_KEY_V:
+						strcat_s(player1.name, 20, "V");
+						break;
+					case ALLEGRO_KEY_W:
+						strcat_s(player1.name, 20, "W");
+						break;
+					case ALLEGRO_KEY_X:
+						strcat_s(player1.name, 20, "X");
+						break;
+					case ALLEGRO_KEY_Y:
+						strcat_s(player1.name, 20, "Y");
+						break;
+					case ALLEGRO_KEY_Z:
+						strcat_s(player1.name, 20, "Z");
+
+						break;
+					}
+				}
+				
+
+				#pragma endregion
+			}
+		}
+
+
 	#pragma endregion
 	#pragma region Drawing
 
@@ -134,27 +260,68 @@ int Start_Scene() {
 			//display mouse position for debugging
 			al_draw_textf(font16, colors[0], SCREEN_WIDTH, SCREEN_HEIGHT - 16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
 
-			//button checks		
-			for (i = 0; i < 3; i++) {
-				buttonVal[i] = checkButton(&buttonsMain[i], x, y, leftClick, buttonVal[i]);
+			switch (currentPage) {
+			case 1:
+				#pragma region Page1
+				//button checks		
+				for (i = 0; i < buttonsNMB1; i++) {
+					buttonVal[i] = checkButton(&buttonsMain[i], x, y, leftClick, buttonVal[i]);
+				}
+
+				//button drawing
+				for (i = 0; i < buttonsNMB1; i++) {
+					drawButton(buttonsMain[i], font16, 16);
+				}
+
+				//button results check
+				//start button
+				if (buttonVal[0] == 1) {
+					currentPage = 2;
+				}
+				//ranking button
+				else if (buttonVal[1] == 1) {
+					//printf("ranking was pressed");
+				}
+				//quit button
+				else if (buttonVal[2] == 1) {
+					fullyDone = true;
+					done = true;
+				}
+				#pragma endregion
+				break;
+			case 2:
+				#pragma region Page2
+
+				//text input box
+				al_draw_text(font22, colors[0], SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 3 - 55, NULL, "Input Name :");
+				al_draw_rectangle(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 3 -25, SCREEN_WIDTH / 2 + 100, SCREEN_HEIGHT / 3 + 25, colors[0], 1);
+				//al_draw_textf(font16, colors[0], SCREEN_WIDTH / 2 - 95, SCREEN_HEIGHT / 3 - 20, NULL, "%s", input);
+				al_draw_textf(font16, colors[0], SCREEN_WIDTH / 2 - 95, SCREEN_HEIGHT / 3 - 20, NULL, player1.name);
+
+				//button checks		
+				for (i = 0; i < buttonsNMB2; i++) {
+					buttonVal2[i] = checkButton(&buttonsPage2[i], x, y, leftClick, buttonVal2[i]);
+				}
+
+				//button drawing
+				for (i = 0; i < buttonsNMB1; i++) {
+					drawButton(buttonsPage2[i], font16, 16);
+				}
+
+				//button results check
+				//OK button
+				if (buttonVal2[0] == 1) {
+					currentPage = 1;
+				}
+
+				#pragma endregion
+				break;
 			}
 
-			//button drawing
-			for (i = 0; i < 3; i++) {
-				drawButton(buttonsMain[i], font16, 16);
-			}
-				
-			//button results check
-			if (buttonVal[0] == 1) {
-				printf("start was pressed");
-			}
-			else if (buttonVal[1] == 1) {
-				printf("ranking was pressed");
-			}
-			else if (buttonVal[2] == 1) {
-				fullyDone = true;
-				done = true;
-			}
+			
+
+
+
 		}
 
 
@@ -267,6 +434,9 @@ int main() {
 	al_register_event_source(event_queue, al_get_mouse_event_source());
 
 	#pragma endregion
+
+	//default player init
+	player1 = player_init();
 
 	//default values set on game manager
 	mng = GameManager_Init();

@@ -134,6 +134,7 @@
     <ClCompile Include="Button.c" />
     <ClCompile Include="GameManager.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="Player.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

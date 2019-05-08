@@ -1,4 +1,5 @@
 #pragma once
+#include "MainLibs.h"
 
 struct Player {
 	char name[20];
@@ -7,3 +8,6 @@ struct Player {
 	int money;
 };
 typedef struct Player Player;
+
+
+Player player_init();
