@@ -1,4 +1,3 @@
-
 #pragma region Headers
 
 //allegro and custom imports
@@ -16,159 +15,67 @@
 #define SCREEN_HEIGHT 768
 
 //global variables
-bool done = false;
 bool redraw = false;
-int started = 0;
+bool fullyDone = false;
+GameManager mng;
+int FPS = 60;
 
-//maybe useful for scene usage
-void allegro_inits() {
-	al_init();
-	al_init_font_addon();
-	al_init_ttf_addon();
-	al_init_primitives_addon();
-}
-void allegro_installs() {
-	al_install_keyboard();
-	al_install_mouse();
-}
-void allegro_queueSetUp(ALLEGRO_EVENT_QUEUE *event_queue, ALLEGRO_DISPLAY *display, ALLEGRO_TIMER *timer) {
-	al_register_event_source(event_queue, al_get_keyboard_event_source());
-	al_register_event_source(event_queue, al_get_display_event_source(display));
-	al_register_event_source(event_queue, al_get_timer_event_source(timer));
-	al_register_event_source(event_queue, al_get_mouse_event_source());
-}
 
 #pragma region ButtonFunctions
 
 //general
 void QuitGame() {
-	done = true;
+	fullyDone = true;
 }
 
 
 	#pragma endregion
 
-
-
 #pragma endregion
-
-struct GameConfig {
-	int fps;
-	ALLEGRO_FONT *font[4];
-	ALLEGRO_DISPLAY *display;
-	ALLEGRO_TIMER *timer;
-	ALLEGRO_COLOR colors[4];
-	ALLEGRO_EVENT_QUEUE *event_queue;
-};
-typedef struct GameConfig GameConfig;
+#pragma region ALLEGRO VARIABLES
+//display
+ALLEGRO_DISPLAY *display;
+//fonts
+ALLEGRO_FONT *font12;
+ALLEGRO_FONT *font16;
+ALLEGRO_FONT *font22;
+ALLEGRO_FONT *font36;
+//colors
+ALLEGRO_COLOR colors[4];
+//timers
+ALLEGRO_TIMER *timer;
+//event queues
+ALLEGRO_EVENT_QUEUE *event_queue;
+#pragma endregion
+#pragma region SCENES
 
 int Start_Scene() {
 
-#pragma region Inits
-
-	al_init();
-	al_init_font_addon();
-	al_init_ttf_addon();
-	al_init_primitives_addon();
-
-#pragma endregion
 #pragma region Custom Variables
 
 	int i = 0;
-	int FPS = 60;
-
 	//mouse position
 	int x = 0;
 	int y = 0;
 	//mouse left click hold detection
 	bool leftClick = false;
-	//initial gmanager values
-	GameManager mng = GameManager_Init();
+	//function main loop end condition
+	bool done = false;
 
-#pragma endregion
-#pragma region ALLEGRO Variables
-
-#pragma region Fonts
-
-	ALLEGRO_FONT *font12 = al_load_font("Roboto-Regular.ttf", 12, NULL);
-	ALLEGRO_FONT *font16 = al_load_font("Roboto-Regular.ttf", 16, NULL);
-	ALLEGRO_FONT *font22 = al_load_font("Roboto-Regular.ttf", 22, NULL);
-	ALLEGRO_FONT *font36 = al_load_font("Roboto-Regular.ttf", 36, NULL);
-
-#pragma endregion
-#pragma region Display
-
-	ALLEGRO_DISPLAY *display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
-	al_set_window_title(display, "Practical work game");
-	if (!display) {
-		al_show_native_message_box(NULL, NULL, NULL, "failed to init display", NULL, NULL);
-		return -1;
-	}
-
-#pragma endregion
-#pragma region Timers
-
-	ALLEGRO_TIMER *timer = al_create_timer(1.0 / FPS);
-	al_start_timer(timer);
-
-#pragma endregion
-#pragma region Colors
-
-	ALLEGRO_COLOR color1 = al_map_rgb(255, 255, 255);
-	ALLEGRO_COLOR color2 = al_map_rgb(255, 0, 0);
-	ALLEGRO_COLOR color3 = al_map_rgb(0, 0, 255);
-	ALLEGRO_COLOR color4 = al_map_rgb(0, 255, 0);
 
 #pragma endregion
 
-#pragma endregion
-#pragma region Installs
-
-	al_install_keyboard();
-	al_install_mouse();
-
-#pragma endregion
-#pragma region Event sources and Queues
-
-	ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
-	al_register_event_source(event_queue, al_get_keyboard_event_source());
-	al_register_event_source(event_queue, al_get_display_event_source(display));
-	al_register_event_source(event_queue, al_get_timer_event_source(timer));
-	al_register_event_source(event_queue, al_get_mouse_event_source());
-
-#pragma endregion
-
-
+	done = false;
 	//main loop
 	while (!done) {
 
-		//Check which Scene I am in
-		switch (mng.currentScene) {
-		case START:
-
-			break;
-		case MAIN:
-
-			break;
-		case HOME:
-
-			break;
-		case CAR_SHOP:
-
-			break;
-		case PARTS_SHOP:
-
-			break;
-		case RACE:
-
-			break;
-		}
 
 #pragma region Events
 
 		ALLEGRO_EVENT event;
 		al_wait_for_event(event_queue, &event);
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			fullyDone = true;
 			done = true;
 		}
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
@@ -186,6 +93,8 @@ int Start_Scene() {
 			// 1 is left click, 2 is right
 			if (event.mouse.button & 1) {
 				leftClick = true;
+				mng.currentScene = MAIN;
+				done = true;
 
 			}
 		}
@@ -201,7 +110,9 @@ int Start_Scene() {
 
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			//display mouse position for debugging
-			al_draw_textf(font16, color1, SCREEN_WIDTH, SCREEN_HEIGHT - 16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
+			al_draw_textf(font16, colors[0], SCREEN_WIDTH, SCREEN_HEIGHT - 16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
+
+			al_draw_text(font16, colors[0], SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "this is start scene");
 
 			al_flip_display();
 			al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -212,125 +123,38 @@ int Start_Scene() {
 	}
 #pragma region Clean up / destroy
 
-	al_destroy_font(font12);
-	al_destroy_font(font16);
-	al_destroy_font(font22);
-	al_destroy_font(font36);
-	al_destroy_display(display);
-	al_destroy_event_queue(event_queue);
-	al_destroy_timer(timer);
-	//destroy everything here
+	//destroy everything local here
 
 #pragma endregion
+	sceneLoad();
 	return 0;
 }
-
-Other_Scene() {
-#pragma region Inits
-
-	al_init();
-	al_init_font_addon();
-	al_init_ttf_addon();
-	al_init_primitives_addon();
-
-#pragma endregion
+int Other_Scene() {
 #pragma region Custom Variables
 
 	int i = 0;
-	int FPS = 60;
-
 	//mouse position
 	int x = 0;
 	int y = 0;
 	//mouse left click hold detection
 	bool leftClick = false;
-	//initial gmanager values
-	GameManager mng = GameManager_Init();
+	//function main loop end condition
+	bool done = false;
 
-#pragma endregion
-#pragma region ALLEGRO Variables
-
-#pragma region Fonts
-
-	ALLEGRO_FONT *font12 = al_load_font("Roboto-Regular.ttf", 12, NULL);
-	ALLEGRO_FONT *font16 = al_load_font("Roboto-Regular.ttf", 16, NULL);
-	ALLEGRO_FONT *font22 = al_load_font("Roboto-Regular.ttf", 22, NULL);
-	ALLEGRO_FONT *font36 = al_load_font("Roboto-Regular.ttf", 36, NULL);
-
-#pragma endregion
-#pragma region Display
-
-	ALLEGRO_DISPLAY *display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
-	al_set_window_title(display, "Practical work game");
-	if (!display) {
-		al_show_native_message_box(NULL, NULL, NULL, "failed to init display", NULL, NULL);
-		return -1;
-	}
-
-#pragma endregion
-#pragma region Timers
-
-	ALLEGRO_TIMER *timer = al_create_timer(1.0 / FPS);
-	al_start_timer(timer);
-
-#pragma endregion
-#pragma region Colors
-
-	ALLEGRO_COLOR color1 = al_map_rgb(255, 255, 255);
-	ALLEGRO_COLOR color2 = al_map_rgb(255, 0, 0);
-	ALLEGRO_COLOR color3 = al_map_rgb(0, 0, 255);
-	ALLEGRO_COLOR color4 = al_map_rgb(0, 255, 0);
 
 #pragma endregion
 
-#pragma endregion
-#pragma region Installs
-
-	al_install_keyboard();
-	al_install_mouse();
-
-#pragma endregion
-#pragma region Event sources and Queues
-
-	ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
-	al_register_event_source(event_queue, al_get_keyboard_event_source());
-	al_register_event_source(event_queue, al_get_display_event_source(display));
-	al_register_event_source(event_queue, al_get_timer_event_source(timer));
-	al_register_event_source(event_queue, al_get_mouse_event_source());
-
-#pragma endregion
-
-
+	done = false;
 	//main loop
 	while (!done) {
 
-		//Check which Scene I am in
-		switch (mng.currentScene) {
-		case START:
-
-			break;
-		case MAIN:
-
-			break;
-		case HOME:
-
-			break;
-		case CAR_SHOP:
-
-			break;
-		case PARTS_SHOP:
-
-			break;
-		case RACE:
-
-			break;
-		}
 
 #pragma region Events
 
 		ALLEGRO_EVENT event;
 		al_wait_for_event(event_queue, &event);
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			fullyDone = true;
 			done = true;
 		}
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
@@ -348,6 +172,8 @@ Other_Scene() {
 			// 1 is left click, 2 is right
 			if (event.mouse.button & 1) {
 				leftClick = true;
+				mng.currentScene = START;
+				done = true;
 
 			}
 		}
@@ -363,9 +189,9 @@ Other_Scene() {
 
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 			//display mouse position for debugging
-			al_draw_textf(font16, color1, SCREEN_WIDTH, SCREEN_HEIGHT - 16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
+			al_draw_textf(font16, colors[0], SCREEN_WIDTH, SCREEN_HEIGHT - 16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
 
-			al_draw_textf(font16, color1, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
+			al_draw_text(font16, colors[0], SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, ALLEGRO_ALIGN_RIGHT, "this is main scene");
 
 			al_flip_display();
 			al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -376,184 +202,117 @@ Other_Scene() {
 	}
 #pragma region Clean up / destroy
 
-	al_destroy_font(font12);
-	al_destroy_font(font16);
-	al_destroy_font(font22);
-	al_destroy_font(font36);
-	al_destroy_display(display);
-	al_destroy_event_queue(event_queue);
-	al_destroy_timer(timer);
-	//destroy everything here
+	//destroy everything local here
 
 #pragma endregion
+	sceneLoad();
 	return 0;
 }
 
+#pragma endregion
+
+//Scene loading and main initialization
+int sceneLoad() {
+	
+	//close the game
+	if (fullyDone) {
+		return 0;
+	}
+	
+	//load scenes
+	switch (mng.currentScene) {
+	case START:
+		Start_Scene();
+		break;
+	case MAIN:
+		Other_Scene();
+		break;
+	case HOME:
+
+		break;
+	case CAR_SHOP:
+
+		break;
+	case PARTS_SHOP:
+
+		break;
+	case RACE:
+
+		break;
+	}
+}
 int main() {
 
-	if (started == 1) {
-		Start_Scene();
+	//default game variables init
+	#pragma region INITS / INSTALLS
+
+	al_init();
+	al_init_font_addon();
+	al_init_ttf_addon();
+	al_init_primitives_addon();
+
+	al_install_keyboard();
+	al_install_mouse();
+
+	#pragma endregion
+	#pragma region DISPLAY
+
+	display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
+	al_set_window_title(display, "Practical work game");
+	if (!display) {
+		al_show_native_message_box(NULL, NULL, NULL, "failed to init display", NULL, NULL);
+		return -1;
 	}
-	else {
-		Other_Scene();
-	}
-	//#pragma region Inits
 
-	//al_init();
-	//al_init_font_addon();
-	//al_init_ttf_addon();
-	//al_init_primitives_addon();
+	#pragma endregion
+	#pragma region FONTS
 
-	//#pragma endregion
-	//#pragma region Custom Variables
-	//	
-	//	int i = 0;
-	//	int FPS = 60;
-	//	
-	//	//mouse position
-	//	int x = 0;
-	//	int y = 0;
-	//	//mouse left click hold detection
-	//	bool leftClick = false;
-	//	//initial gmanager values
-	//	GameManager mng = GameManager_Init();
+	font12 = al_load_font("Roboto-Regular.ttf", 12, NULL);
+	font16 = al_load_font("Roboto-Regular.ttf", 16, NULL);
+	font22 = al_load_font("Roboto-Regular.ttf", 22, NULL);
+	font36 = al_load_font("Roboto-Regular.ttf", 36, NULL);
 
-	//#pragma endregion
-	//#pragma region ALLEGRO Variables
+	#pragma endregion
+	#pragma region TIMERS
 
-	//	#pragma region Fonts
+	timer = al_create_timer(1.0 / FPS);
+	al_start_timer(timer);
 
-	//		ALLEGRO_FONT *font12 = al_load_font("Roboto-Regular.ttf", 12, NULL);
-	//		ALLEGRO_FONT *font16 = al_load_font("Roboto-Regular.ttf", 16, NULL);
-	//		ALLEGRO_FONT *font22 = al_load_font("Roboto-Regular.ttf", 22, NULL);
-	//		ALLEGRO_FONT *font36 = al_load_font("Roboto-Regular.ttf", 36, NULL);
+	#pragma endregion
+	#pragma region COLORS
 
-	//	#pragma endregion
-	//	#pragma region Display
+	colors[0] = al_map_rgb(255, 255, 255);
+	colors[1] = al_map_rgb(255, 0, 0);
+	colors[2] = al_map_rgb(0, 255, 0);
+	colors[3] = al_map_rgb(0, 0, 255);
 
-	//		ALLEGRO_DISPLAY *display = al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
-	//		al_set_window_title(display, "Practical work game");
-	//		if (!display) {
-	//			al_show_native_message_box(NULL, NULL, NULL, "failed to init display", NULL, NULL);
-	//			return -1;
-	//		}
+	#pragma endregion
+	#pragma region EVENT_QUEUES
 
-	//	#pragma endregion
-	//	#pragma region Timers
+	event_queue = al_create_event_queue();
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	al_register_event_source(event_queue, al_get_mouse_event_source());
 
-	//		ALLEGRO_TIMER *timer = al_create_timer(1.0 / FPS);
-	//		al_start_timer(timer);
+	#pragma endregion
 
-	//	#pragma endregion
-	//	#pragma region Colors
+	//default values set on game manager
+	mng = GameManager_Init();
+	//game start
+	sceneLoad();
 
-	//		ALLEGRO_COLOR color1 = al_map_rgb(255, 255, 255);
-	//		ALLEGRO_COLOR color2 = al_map_rgb(255, 0, 0);
-	//		ALLEGRO_COLOR color3 = al_map_rgb(0, 0, 255);
-	//		ALLEGRO_COLOR color4 = al_map_rgb(0, 255, 0);
+	#pragma region Clean up / destroy
 
-	//	#pragma endregion
+	al_destroy_font(font12);
+	al_destroy_font(font16);
+	al_destroy_font(font22);
+	al_destroy_font(font36);
+	al_destroy_display(display);
+	al_destroy_event_queue(event_queue);
+	al_destroy_timer(timer);
+	//destroy everything here
 
-	//#pragma endregion
-	//#pragma region Installs
-
-	//		al_install_keyboard();
-	//		al_install_mouse();
-
-	//#pragma endregion
-	//#pragma region Event sources and Queues
-
-	//		ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
-	//		al_register_event_source(event_queue, al_get_keyboard_event_source());
-	//		al_register_event_source(event_queue, al_get_display_event_source(display));
-	//		al_register_event_source(event_queue, al_get_timer_event_source(timer));
-	//		al_register_event_source(event_queue, al_get_mouse_event_source());
-
-	//#pragma endregion
-
-	//
-	////main loop
-	//while (!done) {
-
-	//	//Check which Scene I am in
-	//	switch (mng.currentScene) {
-	//	case START:
-
-	//		break;
-	//	case MAIN:
-
-	//		break;
-	//	case HOME:
-
-	//		break;
-	//	case CAR_SHOP:
-
-	//		break;
-	//	case PARTS_SHOP:
-
-	//		break;
-	//	case RACE:
-
-	//		break;
-	//	}
-
-	//	#pragma region Events
-
-	//	ALLEGRO_EVENT event;
-	//	al_wait_for_event(event_queue, &event);
-	//	if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-	//		done = true;
-	//	}
-	//	else if (event.type == ALLEGRO_EVENT_TIMER) {
-	//		redraw = true;
-
-	//		//could add+1 to some variable here and have an IF statement at certain value to create an even that triggers every X amount of frames, rather than using seperate timer ( for example a slower animation than 60fps etc.)
-
-	//	}
-	//	else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
-	//		x = event.mouse.x;
-	//		y = event.mouse.y;
-
-	//	}
-	//	else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
-	//		// 1 is left click, 2 is right
-	//		if (event.mouse.button & 1) {
-	//			leftClick = true;
-
-	//		}
-	//	}
-	//	else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
-	//		if (event.mouse.button & 1) {
-	//			leftClick = false;
-
-	//		}
-	//	}
-
-	//	#pragma endregion
-	//	#pragma region Drawing
-
-	//	if (redraw && al_is_event_queue_empty(event_queue)) {
-	//		//display mouse position for debugging
-	//		al_draw_textf(font16, color1, SCREEN_WIDTH, SCREEN_HEIGHT - 16, ALLEGRO_ALIGN_RIGHT, "x = %d ; y = %d", x, y);
-
-	//		al_flip_display();
-	//		al_clear_to_color(al_map_rgb(0, 0, 0));
-	//	}
-
-	//	#pragma endregion
-
-	//}
-	//#pragma region Clean up / destroy
-
-	//	al_destroy_font(font12);
-	//	al_destroy_font(font16);
-	//	al_destroy_font(font22);
-	//	al_destroy_font(font36);
-	//	al_destroy_display(display);
-	//	al_destroy_event_queue(event_queue);
-	//	al_destroy_timer(timer);
-	//	//destroy everything here
-
-	//#pragma endregion
+	#pragma endregion
 	return 0;
 }
