@@ -25,6 +25,8 @@ int checkButton(Button *btn, int mouse_x, int mouse_y, bool isClicked, int funct
 		if (isClicked) {
 			btn->state = CLICK;
 			if (btn->function != NULL)
+				//quick fix for TOO fast button clicking leading to clicking a button on next page
+				al_rest(0.1);
 				return btn->function(functionVal);
 		}
 		else {

@@ -446,19 +446,18 @@ int Main_Scene(){
 	#pragma region PageHome
 
 	//number of buttons
-	const int buttonsNMB2 = 3;
+	const int buttonsNMB2 = 2;
 	//menu button detection variable(one for each button)
-	int buttonVal2[3] = { 0,0,0 };
+	int buttonVal2[2] = { 0,0 };
 	//all buttons
-	Button buttonsHome[3];
+	Button buttonsHome[2];
 	//quick button init
 	for (i = 0; i < buttonsNMB2; i++) {
 		buttonsHome[i] = buttonInit( 100+i*250, SCREEN_HEIGHT -100, 200, 50, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Empty");
 	}
 	//assign different names for buttons
 	strcpy_s(buttonsHome[0].label, 20, "Garage");
-	strcpy_s(buttonsHome[1].label, 20, "Messages");
-	strcpy_s(buttonsHome[2].label, 20, "Sleep");
+	strcpy_s(buttonsHome[1].label, 20, "Sleep");
 
 	#pragma endregion
 	#pragma region PageGarage
@@ -489,6 +488,8 @@ int Main_Scene(){
 	}
 
 	#pragma endregion
+
+
 
 	#pragma endregion
 
@@ -599,13 +600,8 @@ int Main_Scene(){
 					//show garage screen with inventory/cars/parts and equip if can/want
 					currentPage = 6;
 				}
-				//button messages
-				if (buttonVal2[1] == 1) {
-					//show message screen
-					currentPage = 7;
-				}
 				//button sleep
-				if (buttonVal2[2] == 1) {
+				if (buttonVal2[1] == 1) {
 					//some function to skip time to next day 8 AM.
 					currentPage = 1;
 				}
@@ -662,6 +658,8 @@ int Main_Scene(){
 					buttonValGarage2[i] = checkButton(&buttonsGarage2[i], x, y, leftClick, buttonValGarage2[i]);
 					drawButton(buttonsGarage2[i], font12, 12);
 				}
+				//equipping logic for car parts
+				//
 
 				//current car display
 				al_draw_textf(font36, colors[0], 310 + 20 + 300 + 150, SCREEN_HEIGHT / 2 - 50, NULL, "%s", player1.ownedCars[player1.currentCar].name);
