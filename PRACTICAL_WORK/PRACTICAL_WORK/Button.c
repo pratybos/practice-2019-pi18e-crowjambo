@@ -54,3 +54,4 @@ void drawButton(Button btn, ALLEGRO_FONT *font, int fontSize) {
 		al_draw_textf(font, btn.color1, btn.x + btn.sizeH / 2, (btn.y + btn.sizeV / 2 - fontSize) + fontSize / 7 * 2.5, ALLEGRO_ALIGN_CENTER, "%s", btn.label);
 	}
 }
+

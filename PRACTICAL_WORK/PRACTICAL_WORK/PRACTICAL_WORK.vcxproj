@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="backup.c" />
     <ClCompile Include="Button.c" />
+    <ClCompile Include="GameManager.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>

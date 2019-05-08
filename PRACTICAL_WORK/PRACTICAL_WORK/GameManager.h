@@ -1,4 +1,5 @@
 #pragma once
+#include "MainLibs.h"
 
 enum SCENES {
 	START,
@@ -9,6 +10,16 @@ enum SCENES {
 	RACE
 };
 
+enum DAYS {
+	MONDAY = 1,
+	TUESDAY,
+	WEDNESDAY,
+	THURSDAY,
+	FRIDAY,
+	SATURDAY,
+	SUNDAY
+};
+
 struct GameManager {
 	int currentScene;
 	int currentDay;
@@ -17,3 +28,7 @@ struct GameManager {
 
 };
 typedef struct GameManager GameManager;
+
+
+//functions
+GameManager GameManager_Init();

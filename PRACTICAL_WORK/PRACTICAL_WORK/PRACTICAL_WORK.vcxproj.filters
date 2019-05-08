@@ -24,6 +24,9 @@
     <ClCompile Include="Button.c">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
