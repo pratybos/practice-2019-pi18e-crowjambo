@@ -12,6 +12,7 @@
 #include "Car.h"
 #include "GameManager.h"
 #include "Player.h"
+#include "CarShop.h"
 //standard imports
 #include <stdio.h>
 #include <string.h>
@@ -418,6 +419,11 @@ int Main_Scene(){
 	bool redraw = false;
 	//navigation vars
 	int currentPage = 1;
+	//cars for sale generation
+	CarListing carsForSale[10];
+	for (i = 0; i < 10; i++) {
+		carsForSale[i] = generateListing();
+	}
 
 
 	#pragma endregion
@@ -486,6 +492,22 @@ int Main_Scene(){
 	for (i = 0; i < buttonsNMBGarage2; i++) {
 		buttonsGarage2[i] = buttonInit(310 + 20 + 300 - 100, 112 + i * 20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Equip");
 	}
+
+	#pragma endregion
+	#pragma region PageCarShop
+
+	//number of buttons
+	const int buttonsNMBCarShop = 11;
+	//menu button detection variable(one for each button)
+	int buttonValCarShop[11] = { 0,0,0,0,0,0,0,0,0,0,0};
+	//all buttons
+	Button buttonsCarShop[11];
+	//quick button init
+	for (i = 0; i < buttonsNMBCarShop-1; i++) {
+		buttonsCarShop[i] = buttonInit(200, 112 + i * 20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Buy");
+	}
+	//sell button
+	buttonsCarShop[10] = buttonInit(SCREEN_WIDTH - 300, SCREEN_HEIGHT - 100, 200, 50, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Sell");
 
 	#pragma endregion
 
@@ -612,6 +634,19 @@ int Main_Scene(){
 			case 3:
 				#pragma region PageCars
 				
+				//button checking and drawing
+				for (i = 0; i < buttonsNMBCarShop; i++) {
+					buttonValCarShop[i] = checkButton(&buttonsCarShop[i], x, y, leftClick, buttonValCarShop[i]);
+					drawButton(buttonsCarShop[i], font16, 16);
+				}
+				//car listings
+				for (i = 0; i < 10; i++) {
+					al_draw_textf(font16, colors[0], 10, 112 + i * 20, NULL, "%s  Price: %d", carsForSale[i].name, carsForSale[i].price );
+				}
+				//	buttonsCarShop[i] = buttonInit(200, 112 + i * 20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Buy");
+
+				//text about selling your current car
+				al_draw_text(font22, colors[0], SCREEN_WIDTH - 300, SCREEN_HEIGHT - 130, NULL, "Sell your current car?");
 
 
 				#pragma endregion
@@ -664,13 +699,6 @@ int Main_Scene(){
 				//current car display
 				al_draw_textf(font36, colors[0], 310 + 20 + 300 + 150, SCREEN_HEIGHT / 2 - 50, NULL, "%s", player1.ownedCars[player1.currentCar].name);
 				//later print out here equipped parts and horse power etc. KM driven
-
-				#pragma endregion
-				break;
-			case 7:
-				#pragma region PageMessages
-
-
 
 				#pragma endregion
 				break;
@@ -733,6 +761,8 @@ int main() {
 
 	//default game variables init
 	#pragma region INITS / INSTALLS
+	time_t t;
+	srand((unsigned)time(&t));
 
 	al_init();
 	al_init_font_addon();

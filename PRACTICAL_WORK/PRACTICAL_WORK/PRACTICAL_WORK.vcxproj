@@ -133,6 +133,7 @@
     <ClCompile Include="backup.c" />
     <ClCompile Include="Button.c" />
     <ClCompile Include="Car.c" />
+    <ClCompile Include="CarShop.c" />
     <ClCompile Include="GameManager.c" />
     <ClCompile Include="Inventory.c" />
     <ClCompile Include="main.c" />
@@ -144,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Car.h" />
+    <ClInclude Include="CarShop.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="MainLibs.h" />
