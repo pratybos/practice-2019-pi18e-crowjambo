@@ -31,7 +31,7 @@
 //variables
 bool fullyDone = false;
 GameManager mng;
-int FPS = 60;
+int FPS = 30;
 Player player1;
 
 #pragma endregion
@@ -559,13 +559,25 @@ int Main_Scene(){
 		}
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			redraw = true;
-
+			leftClick = false;
 			//button value reset
 			for (i = 0; i < buttonsNMB1; i++) {
 				buttonVal[i] = 0;
 			}
 			for (i = 0; i < buttonsNMB2; i++) {
 				buttonVal2[i] = 0;
+			}
+			for (i = 0; i < buttonsNMBGarage; i++) {
+				buttonValGarage[i] = 0;
+			}
+			for (i = 0; i < buttonsNMBGarage2; i++) {
+				buttonValGarage2[i] = 0;
+			}
+			for (i = 0; i < buttonsNMBCarShop; i++) {
+				buttonValCarShop[i] = 0;
+			}
+			for (i = 0; i < buttonsNMBPartsShop; i++) {
+				buttonValPartsShop[i] = 0;
 			}
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
@@ -694,6 +706,9 @@ int Main_Scene(){
 							player1.ownedCars[temp] = carsForSale[temp2].car;
 							player1.currentCar = temp;
 
+							//reset button so no multi purchase happens
+							buttonValCarShop[temp2] = 0;
+
 							//generate new car listing in place of old one
 							carsForSale[temp2].car = car_generate();
 							
@@ -748,7 +763,7 @@ int Main_Scene(){
 					drawButton(buttonsGarage[i], font12, 12);
 				}
 				//equiping logic here/if/switch checks etc.
-				//
+				
 
 
 				//owned parts container +text
