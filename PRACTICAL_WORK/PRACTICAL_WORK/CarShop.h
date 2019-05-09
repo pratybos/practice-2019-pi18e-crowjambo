@@ -1,12 +1,15 @@
 #pragma once
+#include "Car.h"
+#include "Button.h"
 
 
 struct CarListing{
-	int price;
-	char name[20];
-	//would need to generate car object with all the stats too later on
+	Car car;
+	//Button buyBtn;
 };
 typedef struct CarListing CarListing;
+
+
 
 CarListing generateListing();
 

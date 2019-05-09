@@ -439,6 +439,7 @@ int Main_Scene(){
 		strcat_s(achList[i].name, 20, tempBuffer);
 		strcpy_s(achList[i].description, 50, "Some description");
 	}
+	//example of one description
 	strcpy_s(achList[0].description, 50, "Check Garage");
 
 
@@ -520,7 +521,7 @@ int Main_Scene(){
 	Button buttonsCarShop[11];
 	//quick button init
 	for (i = 0; i < buttonsNMBCarShop-1; i++) {
-		buttonsCarShop[i] = buttonInit(200, 112 + i * 20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Buy");
+		buttonsCarShop[i] = buttonInit(500, 112 + i * 40, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Buy");
 	}
 	//sell button
 	buttonsCarShop[10] = buttonInit(SCREEN_WIDTH - 300, SCREEN_HEIGHT - 100, 200, 50, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Sell");
@@ -672,9 +673,36 @@ int Main_Scene(){
 				}
 				//car listings
 				for (i = 0; i < 10; i++) {
-					al_draw_textf(font16, colors[0], 10, 112 + i * 20, NULL, "%s  Price: %d", carsForSale[i].name, carsForSale[i].price );
+					al_draw_textf(font16, colors[0], 10, 112 + i * 40, NULL, "%s  Price: %d || Power : %d", carsForSale[i].car.name, carsForSale[i].car.price, carsForSale[i].car.HorsePower );
 				}
-	
+				//check which buy button was pressed
+				for (i = 0; i < 10; i++) {
+					if (buttonValCarShop[i] == 1) {
+						//buying
+						if (player1.money >= carsForSale[i].car.price) {
+							//reduce money from account
+							player1.money -= carsForSale[i].car.price;
+
+							int temp2 = i;
+							int temp = -1;
+							//find free spot in car inventory
+							for (i = 0; i < 10; i++) {
+								if (player1.ownedCars[i].price == 0) {
+									temp = i;
+								}
+							}
+							player1.ownedCars[temp] = carsForSale[temp2].car;
+							player1.currentCar = temp;
+
+							//generate new car listing in place of old one
+							carsForSale[temp2].car = car_generate();
+							
+							
+							
+						}
+						//
+					}
+				}
 
 				//text about selling your current car
 				al_draw_text(font22, colors[0], SCREEN_WIDTH - 300, SCREEN_HEIGHT - 130, NULL, "Sell your current car?");
@@ -747,11 +775,11 @@ int Main_Scene(){
 				#pragma region PageAchievements
 				//column one
 				for (i = 0; i < 15; i++) {
-					al_draw_textf(font16, colors[0], 100, 200+i*20, NULL, "%s  || %s || Status : %d", achList[i].name, achList[i].description, achList[i].isFinished);
+					al_draw_textf(font16, colors[0], 100, 200+i*20, NULL, "%s  || %s || Status : [ %d ]", achList[i].name, achList[i].description, achList[i].isFinished);
 				}
 				//column two
 				for (i = 15; i < 30; i++) {
-					al_draw_textf(font16, colors[0], 600, 200 + (i-15) * 20, NULL, "%s  || %s || Status : %d", achList[i].name, achList[i].description, achList[i].isFinished);
+					al_draw_textf(font16, colors[0], 600, 200 + (i-15) * 20, NULL, "%s  || %s || Status : [ %d ]", achList[i].name, achList[i].description, achList[i].isFinished);
 				}
 
 				break;
