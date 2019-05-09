@@ -169,7 +169,8 @@ int Start_Scene() {
 		}
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			redraw = true;
-
+			//makes sure your clicks dont carry over to next frame!
+			leftClick = false;
 			//reset button press values
 			for (i = 0; i < buttonsNMB1; i++) {
 				buttonVal[i] = 0;
@@ -751,26 +752,34 @@ int Main_Scene(){
 			case 6:
 				#pragma region PageGarage
 
+				#pragma region CarEquipping
+
 				//owned cars container +text
 				al_draw_rectangle(10, 100, 310, SCREEN_HEIGHT - 50, colors[0], 1);
 				al_draw_text(font16, colors[0], 10, 100 - 30, NULL, "Owned Cars");
 				for (i = 0; i < 10; i++) {
-					al_draw_textf(font16, colors[0], 15, 110+i*20, NULL, "%s", player1.ownedCars[i].name);
+					al_draw_textf(font16, colors[0], 15, 110 + i * 20, NULL, "%s", player1.ownedCars[i].name);
 				}
 				//equip buttons check/draw
 				for (i = 0; i < buttonsNMBGarage; i++) {
 					buttonValGarage[i] = checkButton(&buttonsGarage[i], x, y, leftClick, buttonValGarage[i]);
 					drawButton(buttonsGarage[i], font12, 12);
 				}
-				//equiping logic here/if/switch checks etc.
-				
+				//equiping logic here
+				for (i = 0; i < buttonsNMBGarage; i++) {
+					if (buttonValGarage[i] == 1) {
+						player1.currentCar = i;
+					}
+				}
 
+				#pragma endregion
+				#pragma region PartsEquipping
 
 				//owned parts container +text
-				al_draw_rectangle(310+20, 100, 310+20+300, SCREEN_HEIGHT - 50, colors[0], 1);
+				al_draw_rectangle(310 + 20, 100, 310 + 20 + 300, SCREEN_HEIGHT - 50, colors[0], 1);
 				al_draw_text(font16, colors[0], 310 + 20, 100 - 30, NULL, "Owned Parts");
 				for (i = 0; i < 20; i++) {
-					al_draw_textf(font16, colors[0], 310+20+5, 110 + i * 20, NULL, "%s", inventory_ToName(player1.inventory.items[i]));
+					al_draw_textf(font16, colors[0], 310 + 20 + 5, 110 + i * 20, NULL, "%s", inventory_ToName(player1.inventory.items[i]));
 				}
 				//equip buttons check/draw
 				for (i = 0; i < buttonsNMBGarage2; i++) {
@@ -780,9 +789,14 @@ int Main_Scene(){
 				//equipping logic for car parts
 				//
 
+				#pragma endregion
+				#pragma region CurrentCarDisplay
+
 				//current car display
 				al_draw_textf(font36, colors[0], 310 + 20 + 300 + 150, SCREEN_HEIGHT / 2 - 50, NULL, "%s", player1.ownedCars[player1.currentCar].name);
-				//later print out here equipped parts and horse power etc. KM driven
+				al_draw_multiline_textf(font16, colors[0], 310+300+100, SCREEN_HEIGHT / 2 + 50, 300, 25, NULL, "Power : %d || BrakePower : %d || Engine LVL : %d || Exhaust LVL : %d || Tire LVL : %d || Turbo LVL : %d || Aero LVL : %d ||", player1.ownedCars[player1.currentCar].HorsePower, player1.ownedCars[player1.currentCar].BrakePower, player1.ownedCars[player1.currentCar].engineItem, player1.ownedCars[player1.currentCar].exhaustItem, player1.ownedCars[player1.currentCar].tireItem, player1.ownedCars[player1.currentCar].turboItem, player1.ownedCars[player1.currentCar].aeroItem);
+				
+				#pragma endregion
 
 				#pragma endregion
 				break;
