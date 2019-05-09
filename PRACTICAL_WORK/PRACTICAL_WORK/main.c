@@ -748,8 +748,6 @@ int Main_Scene(){
 							player1.money -= itemsForSale[i].price;
 							player1.inventory.items[player1.inventory.size] = itemsForSale[i].itemNR;
 							player1.inventory.size += 1;
-
-
 						}
 					}
 				}
@@ -803,7 +801,152 @@ int Main_Scene(){
 				//equiping logic for parts
 				for (i = 0; i < buttonsNMBGarage2; i++) {
 					if (buttonValGarage2[i] == 1) {
-						//LOGIC HERE after INVENTORY / item buying is done!!
+						int tempInv = NONE;
+						//if car exists - equip logic
+						if (player1.ownedCars[player1.currentCar].price != 0) {
+
+							#pragma region Equipping logic
+
+							//returns the item code corresponding to button pressed on inventory
+							switch (player1.inventory.items[i]) {
+							case 0:
+							case 1:
+							case 2:
+								//one of the engine items is trying to be equipped
+								if (player1.ownedCars[player1.currentCar].engineItem == NONE) {
+									player1.ownedCars[player1.currentCar].engineItem = player1.inventory.items[i];
+									player1.inventory.items[i] = NONE;
+								}
+								else {
+									//already exists in that slot = exchange positions
+									tempInv = player1.inventory.items[i];
+									player1.inventory.items[i] = player1.ownedCars[player1.currentCar].engineItem;
+									player1.ownedCars[player1.currentCar].engineItem = tempInv;
+								}
+								break;
+							case 3:
+							case 4:
+							case 5:
+								if (player1.ownedCars[player1.currentCar].turboItem == NONE) {
+									player1.ownedCars[player1.currentCar].turboItem = player1.inventory.items[i];
+									player1.inventory.items[i] = NONE;
+								}
+								else {
+									//already exists in that slot = exchange positions
+									tempInv = player1.inventory.items[i];
+									player1.inventory.items[i] = player1.ownedCars[player1.currentCar].turboItem;
+									player1.ownedCars[player1.currentCar].turboItem = tempInv;
+								}
+								break;
+							case 6:
+							case 7:
+							case 8:
+								if (player1.ownedCars[player1.currentCar].tireItem == NONE) {
+									player1.ownedCars[player1.currentCar].tireItem = player1.inventory.items[i];
+									player1.inventory.items[i] = NONE;
+								}
+								else {
+									//already exists in that slot = exchange positions
+									tempInv = player1.inventory.items[i];
+									player1.inventory.items[i] = player1.ownedCars[player1.currentCar].tireItem;
+									player1.ownedCars[player1.currentCar].tireItem = tempInv;
+								}
+								break;
+							case 9:
+							case 10:
+							case 11:
+								if (player1.ownedCars[player1.currentCar].exhaustItem == NONE) {
+									player1.ownedCars[player1.currentCar].exhaustItem = player1.inventory.items[i];
+									player1.inventory.items[i] = NONE;
+								}
+								else {
+									//already exists in that slot = exchange positions
+									tempInv = player1.inventory.items[i];
+									player1.inventory.items[i] = player1.ownedCars[player1.currentCar].exhaustItem;
+									player1.ownedCars[player1.currentCar].exhaustItem = tempInv;
+								}
+								break;
+							case 12:
+							case 13:
+							case 14:
+								if (player1.ownedCars[player1.currentCar].aeroItem == NONE) {
+									player1.ownedCars[player1.currentCar].aeroItem = player1.inventory.items[i];
+									player1.inventory.items[i] = NONE;
+								}
+								else {
+									//already exists in that slot = exchange positions
+									tempInv = player1.inventory.items[i];
+									player1.inventory.items[i] = player1.ownedCars[player1.currentCar].aeroItem;
+									player1.ownedCars[player1.currentCar].aeroItem = tempInv;
+								}
+								break;
+							}
+
+							#pragma endregion
+
+								
+						/*	player1.ownedCars[player1.currentCar].HorsePower = player1.ownedCars[player1.currentCar].baseHorsePower + 50;*/
+							#pragma region New stats recalculation
+
+							switch (player1.ownedCars[player1.currentCar].engineItem) {
+							case 0:
+
+								break;
+							case 1:
+
+								break;
+							case 2:
+
+								break;
+							}
+							switch (player1.ownedCars[player1.currentCar].turboItem) {
+							case 3:
+
+								break;
+							case 4:
+
+								break;
+							case 5:
+
+								break;
+							}
+							switch (player1.ownedCars[player1.currentCar].tireItem) {
+							case 6:
+
+								break;
+							case 7:
+
+								break;
+							case 8:
+
+								break;
+							}
+							switch (player1.ownedCars[player1.currentCar].exhaustItem) {
+							case 9:
+
+								break;
+							case 10:
+
+								break;
+							case 11:
+
+								break;
+							}
+							switch (player1.ownedCars[player1.currentCar].aeroItem) {
+							case 12:
+
+								break;
+							case 13:
+
+								break;
+							case 14:
+
+								break;
+							}
+
+							#pragma endregion
+
+						}
 					}
 				}
 
@@ -812,7 +955,7 @@ int Main_Scene(){
 
 				//current car display
 				al_draw_textf(font36, colors[0], 310 + 20 + 300 + 150, SCREEN_HEIGHT / 2 - 50, NULL, "%s", player1.ownedCars[player1.currentCar].name);
-				al_draw_multiline_textf(font16, colors[0], 310+300+100, SCREEN_HEIGHT / 2 + 50, 300, 25, NULL, "Power : %d || BrakePower : %d || Engine LVL : %d || Exhaust LVL : %d || Tire LVL : %d || Turbo LVL : %d || Aero LVL : %d ||", player1.ownedCars[player1.currentCar].HorsePower, player1.ownedCars[player1.currentCar].BrakePower, player1.ownedCars[player1.currentCar].engineItem, player1.ownedCars[player1.currentCar].exhaustItem, player1.ownedCars[player1.currentCar].tireItem, player1.ownedCars[player1.currentCar].turboItem, player1.ownedCars[player1.currentCar].aeroItem);
+				al_draw_multiline_textf(font16, colors[0], 310+300+100, SCREEN_HEIGHT / 2 + 50, 300, 25, NULL, "Power : %d || BrakePower : %d || Engine : %s || Exhaust : %s || Tire : %s || Turbo : %s || Aero : %s ||", player1.ownedCars[player1.currentCar].HorsePower, player1.ownedCars[player1.currentCar].BrakePower, inventory_ToName(player1.ownedCars[player1.currentCar].engineItem), inventory_ToName(player1.ownedCars[player1.currentCar].exhaustItem), inventory_ToName(player1.ownedCars[player1.currentCar].tireItem), inventory_ToName(player1.ownedCars[player1.currentCar].turboItem), inventory_ToName(player1.ownedCars[player1.currentCar].aeroItem));
 				
 				#pragma endregion
 

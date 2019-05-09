@@ -3,6 +3,7 @@
 struct Car {
 	char name[20];
 	int HorsePower;
+	int baseHorsePower;
 	int BrakePower;
 	float CenterOfMass;
 	//upgrades | items
