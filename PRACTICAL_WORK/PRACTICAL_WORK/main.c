@@ -886,6 +886,11 @@ int Main_Scene(){
 				//button sleep
 				if (buttonVal2[1] == 1) {
 					//some function to skip time to next day 8 AM.
+					mng.currentDay += 1;
+					if (mng.currentDay > 7) {
+						mng.currentDay = 1;
+					}
+					mng.currentHour = 8;
 					currentPage = 1;
 				}
 
@@ -927,10 +932,7 @@ int Main_Scene(){
 							buttonValCarShop[temp2] = 0;
 
 							//generate new car listing in place of old one
-							carsForSale[temp2].car = car_generate();
-							
-							
-							
+							carsForSale[temp2].car = car_generate();				
 						}
 						//
 					}
@@ -938,7 +940,15 @@ int Main_Scene(){
 
 				//text about selling your current car
 				al_draw_text(font22, colors[0], SCREEN_WIDTH - 300, SCREEN_HEIGHT - 130, NULL, "Sell your current car?");
-
+				//sell button been pressed
+				if (buttonValCarShop[10] == 1) {
+					//car exists by checking its price
+					printf("sell button pressed");
+					if (player1.ownedCars[player1.currentCar].price != 0) {
+						player1.money += player1.ownedCars[player1.currentCar].price;
+						player1.ownedCars[player1.currentCar] = car_init();
+					}
+				}
 
 				#pragma endregion
 				break;
@@ -973,7 +983,10 @@ int Main_Scene(){
 			case 5:
 				#pragma region PageRace
 
-				
+				//set up races , choose races , choose opponents to race against ,progress story, make money etc.
+				//once all set up, load racing scene with all the data!
+
+				//stuff here depends on day/hour!!! (different opponents at different day/hour)
 
 				#pragma endregion
 				break;
