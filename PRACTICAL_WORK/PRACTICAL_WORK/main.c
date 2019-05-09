@@ -739,6 +739,20 @@ int Main_Scene(){
 				for (i = 0; i < 15; i++) {
 					al_draw_textf(font16, colors[0], 20, 112+i*20, NULL, "%s || Price: %d", inventory_ToName(itemsForSale[i].itemNR), itemsForSale[i].price );
 				}
+				//buying parts logic
+				for (i = 0; i < 15; i++) {
+					if (buttonValPartsShop[i] == 1) {
+						//buying
+						if (player1.money >= itemsForSale[i].price && player1.inventory.size < 20) {
+							//reduce money from account
+							player1.money -= itemsForSale[i].price;
+							player1.inventory.items[player1.inventory.size] = itemsForSale[i].itemNR;
+							player1.inventory.size += 1;
+
+
+						}
+					}
+				}
 
 				#pragma endregion
 				break;
@@ -786,8 +800,12 @@ int Main_Scene(){
 					buttonValGarage2[i] = checkButton(&buttonsGarage2[i], x, y, leftClick, buttonValGarage2[i]);
 					drawButton(buttonsGarage2[i], font12, 12);
 				}
-				//equipping logic for car parts
-				//
+				//equiping logic for parts
+				for (i = 0; i < buttonsNMBGarage2; i++) {
+					if (buttonValGarage2[i] == 1) {
+						//LOGIC HERE after INVENTORY / item buying is done!!
+					}
+				}
 
 				#pragma endregion
 				#pragma region CurrentCarDisplay
