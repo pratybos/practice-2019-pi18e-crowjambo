@@ -13,6 +13,11 @@ struct Car {
 	int aeroItem;
 	int tireItem;
 	int price;
+	int performanceRatio;
+	float frontGrip;
+	float rearGrip;
+	int weigth;
+	float downForce;
 };
 typedef struct Car Car;
 

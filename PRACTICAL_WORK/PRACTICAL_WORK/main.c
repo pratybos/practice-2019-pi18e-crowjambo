@@ -52,6 +52,222 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 #pragma endregion
 #pragma region FUNCTIONS
 
+//car stats recalculation without exchange
+void recalculate_car_stats_normal(int EquippedItem) {
+
+	switch (EquippedItem) {
+	case 0:
+		player1.ownedCars[player1.currentCar].HorsePower += 50;
+		break;
+	case 1:
+		player1.ownedCars[player1.currentCar].HorsePower += 100;
+		break;
+	case 2:
+		player1.ownedCars[player1.currentCar].HorsePower += 150;
+		break;
+	case 3:
+		player1.ownedCars[player1.currentCar].HorsePower += 50;
+		break;
+	case 4:
+		player1.ownedCars[player1.currentCar].HorsePower += 100;
+		break;
+	case 5:
+		player1.ownedCars[player1.currentCar].HorsePower += 150;
+		break;
+	case 6:
+		player1.ownedCars[player1.currentCar].frontGrip += 0.1f;
+		player1.ownedCars[player1.currentCar].rearGrip += 0.1f;
+		break;
+	case 7:
+		player1.ownedCars[player1.currentCar].frontGrip += 0.2f;
+		player1.ownedCars[player1.currentCar].rearGrip += 0.2f;
+		break;
+	case 8:
+		player1.ownedCars[player1.currentCar].frontGrip += 0.3f;
+		player1.ownedCars[player1.currentCar].rearGrip += 0.3f;
+		break;
+	case 9:
+		player1.ownedCars[player1.currentCar].HorsePower += 10;
+		break;
+	case 10:
+		player1.ownedCars[player1.currentCar].HorsePower += 20;
+		break;
+	case 11:
+		player1.ownedCars[player1.currentCar].HorsePower += 30;
+		break;
+	case 12:
+		player1.ownedCars[player1.currentCar].downForce += 0.1f;
+		break;
+	case 13:
+		player1.ownedCars[player1.currentCar].downForce += 0.2f;
+		break;
+	case 14:
+		player1.ownedCars[player1.currentCar].downForce += 0.3f;
+		break;
+	}
+	/*switch (player1.ownedCars[player1.currentCar].engineItem) {
+	case 0:
+		player1.ownedCars[player1.currentCar].HorsePower += 50;
+		break;
+	case 1:
+		player1.ownedCars[player1.currentCar].HorsePower += 100;
+		break;
+	case 2:
+
+		break;
+	}
+	switch (player1.ownedCars[player1.currentCar].turboItem) {
+	case 3:
+		player1.ownedCars[player1.currentCar].HorsePower += 50;
+		break;
+	case 4:
+		player1.ownedCars[player1.currentCar].HorsePower += 100;
+		break;
+	case 5:
+
+		break;
+	}
+	switch (player1.ownedCars[player1.currentCar].tireItem) {
+	case 6:
+
+		break;
+	case 7:
+
+		break;
+	case 8:
+
+		break;
+	}
+	switch (player1.ownedCars[player1.currentCar].exhaustItem) {
+	case 9:
+
+		break;
+	case 10:
+
+		break;
+	case 11:
+
+		break;
+	}
+	switch (player1.ownedCars[player1.currentCar].aeroItem) {
+	case 12:
+
+		break;
+	case 13:
+
+		break;
+	case 14:
+
+		break;
+	}*/
+	
+}
+
+//car stats recalc, but exchanging items
+void recalculate_car_stats_exchange(int swappedItem, int newItem) {
+	
+	switch (swappedItem) {
+	case 0:
+		player1.ownedCars[player1.currentCar].HorsePower -= 50;
+		break;
+	case 1:
+		player1.ownedCars[player1.currentCar].HorsePower -= 100;
+		break;
+	case 2:
+		player1.ownedCars[player1.currentCar].HorsePower -= 150;
+		break;
+	case 3:
+		player1.ownedCars[player1.currentCar].HorsePower -= 50;
+		break;
+	case 4:
+		player1.ownedCars[player1.currentCar].HorsePower -= 100;
+		break;
+	case 5:
+		player1.ownedCars[player1.currentCar].HorsePower -= 150;
+		break;
+	case 6:
+		player1.ownedCars[player1.currentCar].frontGrip -= 0.1f;
+		player1.ownedCars[player1.currentCar].rearGrip -= 0.1f;
+		break;
+	case 7:
+		player1.ownedCars[player1.currentCar].frontGrip -= 0.2f;
+		player1.ownedCars[player1.currentCar].rearGrip -= 0.2f;
+		break;
+	case 8:
+		player1.ownedCars[player1.currentCar].frontGrip -= 0.3f;
+		player1.ownedCars[player1.currentCar].rearGrip -= 0.3f;
+		break;
+	case 9:
+		player1.ownedCars[player1.currentCar].HorsePower -= 10;
+		break;
+	case 10:
+		player1.ownedCars[player1.currentCar].HorsePower -= 20;
+		break;
+	case 11:
+		player1.ownedCars[player1.currentCar].HorsePower -= 30;
+		break;
+	case 12:
+		player1.ownedCars[player1.currentCar].downForce -= 0.1f;
+		break;
+	case 13:
+		player1.ownedCars[player1.currentCar].downForce -= 0.2f;
+		break;
+	case 14:
+		player1.ownedCars[player1.currentCar].downForce -= 0.3f;
+		break;
+	}
+	switch (newItem) {
+	case 0:
+		player1.ownedCars[player1.currentCar].HorsePower += 50;
+		break;
+	case 1:
+		player1.ownedCars[player1.currentCar].HorsePower += 100;
+		break;
+	case 2:
+		player1.ownedCars[player1.currentCar].HorsePower += 150;
+		break;
+	case 3:
+		player1.ownedCars[player1.currentCar].HorsePower += 50;
+		break;
+	case 4:
+		player1.ownedCars[player1.currentCar].HorsePower += 100;
+		break;
+	case 5:
+		player1.ownedCars[player1.currentCar].HorsePower += 150;
+		break;
+	case 6:
+		player1.ownedCars[player1.currentCar].frontGrip += 0.1f;
+		player1.ownedCars[player1.currentCar].rearGrip += 0.1f;
+		break;
+	case 7:
+		player1.ownedCars[player1.currentCar].frontGrip += 0.2f;
+		player1.ownedCars[player1.currentCar].rearGrip += 0.2f;
+		break;
+	case 8:
+		player1.ownedCars[player1.currentCar].frontGrip += 0.3f;
+		player1.ownedCars[player1.currentCar].rearGrip += 0.3f;
+		break;
+	case 9:
+		player1.ownedCars[player1.currentCar].HorsePower += 10;
+		break;
+	case 10:
+		player1.ownedCars[player1.currentCar].HorsePower += 20;
+		break;
+	case 11:
+		player1.ownedCars[player1.currentCar].HorsePower += 30;
+		break;
+	case 12:
+		player1.ownedCars[player1.currentCar].downForce += 0.1f;
+		break;
+	case 13:
+		player1.ownedCars[player1.currentCar].downForce += 0.2f;
+		break;
+	case 14:
+		player1.ownedCars[player1.currentCar].downForce += 0.3f;
+		break;
+	}
+}
+
 //convert enums used for days into strings
 char *EnumsToString(enum DAYS day) {
 	switch (day) {
@@ -815,6 +1031,8 @@ int Main_Scene(){
 								//one of the engine items is trying to be equipped
 								if (player1.ownedCars[player1.currentCar].engineItem == NONE) {
 									player1.ownedCars[player1.currentCar].engineItem = player1.inventory.items[i];
+									//recalc with new part
+									recalculate_car_stats_normal(player1.inventory.items[i]);
 									player1.inventory.items[i] = NONE;
 								}
 								else {
@@ -822,6 +1040,8 @@ int Main_Scene(){
 									tempInv = player1.inventory.items[i];
 									player1.inventory.items[i] = player1.ownedCars[player1.currentCar].engineItem;
 									player1.ownedCars[player1.currentCar].engineItem = tempInv;
+									//recalc with old and new part to do proper calculation
+									recalculate_car_stats_exchange(player1.inventory.items[i], tempInv);
 								}
 								break;
 							case 3:
@@ -829,6 +1049,7 @@ int Main_Scene(){
 							case 5:
 								if (player1.ownedCars[player1.currentCar].turboItem == NONE) {
 									player1.ownedCars[player1.currentCar].turboItem = player1.inventory.items[i];
+									recalculate_car_stats_normal(player1.inventory.items[i]);
 									player1.inventory.items[i] = NONE;
 								}
 								else {
@@ -836,6 +1057,7 @@ int Main_Scene(){
 									tempInv = player1.inventory.items[i];
 									player1.inventory.items[i] = player1.ownedCars[player1.currentCar].turboItem;
 									player1.ownedCars[player1.currentCar].turboItem = tempInv;
+									recalculate_car_stats_exchange(player1.inventory.items[i], tempInv);
 								}
 								break;
 							case 6:
@@ -843,6 +1065,7 @@ int Main_Scene(){
 							case 8:
 								if (player1.ownedCars[player1.currentCar].tireItem == NONE) {
 									player1.ownedCars[player1.currentCar].tireItem = player1.inventory.items[i];
+									recalculate_car_stats_normal(player1.inventory.items[i]);
 									player1.inventory.items[i] = NONE;
 								}
 								else {
@@ -850,6 +1073,7 @@ int Main_Scene(){
 									tempInv = player1.inventory.items[i];
 									player1.inventory.items[i] = player1.ownedCars[player1.currentCar].tireItem;
 									player1.ownedCars[player1.currentCar].tireItem = tempInv;
+									recalculate_car_stats_exchange(player1.inventory.items[i], tempInv);
 								}
 								break;
 							case 9:
@@ -857,6 +1081,7 @@ int Main_Scene(){
 							case 11:
 								if (player1.ownedCars[player1.currentCar].exhaustItem == NONE) {
 									player1.ownedCars[player1.currentCar].exhaustItem = player1.inventory.items[i];
+									recalculate_car_stats_normal(player1.inventory.items[i]);
 									player1.inventory.items[i] = NONE;
 								}
 								else {
@@ -864,6 +1089,7 @@ int Main_Scene(){
 									tempInv = player1.inventory.items[i];
 									player1.inventory.items[i] = player1.ownedCars[player1.currentCar].exhaustItem;
 									player1.ownedCars[player1.currentCar].exhaustItem = tempInv;
+									recalculate_car_stats_exchange(player1.inventory.items[i], tempInv);
 								}
 								break;
 							case 12:
@@ -871,6 +1097,7 @@ int Main_Scene(){
 							case 14:
 								if (player1.ownedCars[player1.currentCar].aeroItem == NONE) {
 									player1.ownedCars[player1.currentCar].aeroItem = player1.inventory.items[i];
+									recalculate_car_stats_normal(player1.inventory.items[i]);
 									player1.inventory.items[i] = NONE;
 								}
 								else {
@@ -878,6 +1105,7 @@ int Main_Scene(){
 									tempInv = player1.inventory.items[i];
 									player1.inventory.items[i] = player1.ownedCars[player1.currentCar].aeroItem;
 									player1.ownedCars[player1.currentCar].aeroItem = tempInv;
+									recalculate_car_stats_exchange(player1.inventory.items[i], tempInv);
 								}
 								break;
 							}
@@ -886,65 +1114,7 @@ int Main_Scene(){
 
 								
 						/*	player1.ownedCars[player1.currentCar].HorsePower = player1.ownedCars[player1.currentCar].baseHorsePower + 50;*/
-							#pragma region New stats recalculation
-
-							switch (player1.ownedCars[player1.currentCar].engineItem) {
-							case 0:
-
-								break;
-							case 1:
-
-								break;
-							case 2:
-
-								break;
-							}
-							switch (player1.ownedCars[player1.currentCar].turboItem) {
-							case 3:
-
-								break;
-							case 4:
-
-								break;
-							case 5:
-
-								break;
-							}
-							switch (player1.ownedCars[player1.currentCar].tireItem) {
-							case 6:
-
-								break;
-							case 7:
-
-								break;
-							case 8:
-
-								break;
-							}
-							switch (player1.ownedCars[player1.currentCar].exhaustItem) {
-							case 9:
-
-								break;
-							case 10:
-
-								break;
-							case 11:
-
-								break;
-							}
-							switch (player1.ownedCars[player1.currentCar].aeroItem) {
-							case 12:
-
-								break;
-							case 13:
-
-								break;
-							case 14:
-
-								break;
-							}
-
-							#pragma endregion
+		
 
 						}
 					}

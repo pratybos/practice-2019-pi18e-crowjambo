@@ -4,6 +4,10 @@
 
 char *carNames[9] = { "AE86","FC RX-7","FD RX-7", "22B", "911", "Eclipse", "Astra F", "Civic", "NSX" };
 
+int calculate_performance(Car x) {
+	return (int)((x.HorsePower + x.BrakePower) / x.weigth / x.downForce);
+}
+
 Car car_init() {
 	Car temp;
 	temp.BrakePower = 0;
@@ -16,6 +20,11 @@ Car car_init() {
 	temp.exhaustItem = 15;
 	temp.price = 0;
 	temp.baseHorsePower = 0;
+	temp.performanceRatio = 0;
+	temp.rearGrip = 0;
+	temp.frontGrip = 0;
+	temp.weigth = 0;
+	temp.downForce = 0;
 	strcpy_s(temp.name, 20, "None");
 	return temp;
 }
@@ -30,67 +39,86 @@ Car car_generate() {
 	case 0:
 		temp.price = rand() % 1000 + 800;
 		temp.BrakePower = rand() % 50 + 50;
-		temp.CenterOfMass = 0.6;
+		temp.CenterOfMass = 0.6f;
 		temp.HorsePower = rand() % 50 + 100;
 		temp.baseHorsePower = temp.HorsePower;
+		temp.weigth = 800;
+		temp.downForce = 0.1;
 		break;
 	case 1:
 		temp.price = rand() % 1000 + 2000;
 		temp.BrakePower = rand() % 50 + 50;
-		temp.CenterOfMass = 0.51;
+		temp.CenterOfMass = 0.51f;
 		temp.HorsePower = rand() % 100 + 150;
 		temp.baseHorsePower = temp.HorsePower;
+		temp.weigth = 1100;
+		temp.downForce = 0.2;
 		break;
 	case 2:
 		temp.price = rand() % 1000 + 3000;
 		temp.BrakePower = rand() % 50 + 50;
-		temp.CenterOfMass = 0.5;
+		temp.CenterOfMass = 0.5f;
 		temp.HorsePower = rand() % 150 + 200;
 		temp.baseHorsePower = temp.HorsePower;
+		temp.weigth = 1250;
+		temp.downForce = 0.25;
 		break;
 	case 3:
 		temp.price = rand() % 1000 + 3000;
 		temp.BrakePower = rand() % 50 + 50;
-		temp.CenterOfMass = 0.65;
+		temp.CenterOfMass = 0.65f;
 		temp.HorsePower = rand() % 100 + 200;
 		temp.baseHorsePower = temp.HorsePower;
+		temp.weigth = 1500;
+		temp.downForce = 0.1;
 		break;
 	case 4:
 		temp.price = rand() % 1000 + 5000;
 		temp.BrakePower = rand() % 50 + 100;
-		temp.CenterOfMass = 0.4;
+		temp.CenterOfMass = 0.4f;
 		temp.HorsePower = rand() % 100 + 300;
 		temp.baseHorsePower = temp.HorsePower;
+		temp.weigth = 1100;
+		temp.downForce = 0.4;
 		break;
 	case 5:
 		temp.price = rand() % 500 + 800;
 		temp.BrakePower = rand() % 50 + 50;
-		temp.CenterOfMass = 0.7;
+		temp.CenterOfMass = 0.7f;
 		temp.HorsePower = rand() % 30 + 120;
 		temp.baseHorsePower = temp.HorsePower;
+		temp.weigth = 1100;
+		temp.downForce = 0.1;
 		break;
 	case 6:
 		temp.price = rand() % 300 + 300;
 		temp.BrakePower = rand() % 50 + 50;
-		temp.CenterOfMass = 0.68;
+		temp.CenterOfMass = 0.68f;
 		temp.HorsePower = rand() % 70 + 50;
 		temp.baseHorsePower = temp.HorsePower;
+		temp.weigth = 900;
+		temp.downForce = 0.1;
 		break;
 	case 7:
 		temp.price = rand() % 500 + 800;
 		temp.BrakePower = rand() % 50 + 50;
-		temp.CenterOfMass = 0.67;
+		temp.CenterOfMass = 0.67f;
 		temp.HorsePower = rand() % 35 + 90;
 		temp.baseHorsePower = temp.HorsePower;
+		temp.weigth = 950;
+		temp.downForce = 0.1;
 		break;
 	case 8:
 		temp.price = rand() % 1000 + 2500;
 		temp.BrakePower = rand() % 50 + 80;
-		temp.CenterOfMass = 0.48;
+		temp.CenterOfMass = 0.48f;
 		temp.HorsePower = rand() % 100 + 200;
 		temp.baseHorsePower = temp.HorsePower;
+		temp.weigth = 1050;
+		temp.downForce = 0.35;
 		break;
 	}
 
+	temp.performanceRatio = calculate_performance(temp);
 	return temp;
 }
