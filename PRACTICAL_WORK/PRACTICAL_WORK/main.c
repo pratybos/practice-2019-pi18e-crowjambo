@@ -942,8 +942,6 @@ int Main_Scene(){
 				al_draw_text(font22, colors[0], SCREEN_WIDTH - 300, SCREEN_HEIGHT - 130, NULL, "Sell your current car?");
 				//sell button been pressed
 				if (buttonValCarShop[10] == 1) {
-					//car exists by checking its price
-					printf("sell button pressed");
 					if (player1.ownedCars[player1.currentCar].price != 0) {
 						player1.money += player1.ownedCars[player1.currentCar].price;
 						player1.ownedCars[player1.currentCar] = car_init();
