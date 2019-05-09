@@ -13,6 +13,7 @@
 #include "GameManager.h"
 #include "Player.h"
 #include "CarShop.h"
+#include "Achievements.h"
 //standard imports
 #include <stdio.h>
 #include <string.h>
@@ -71,8 +72,7 @@ int ReturnOne() {
 
 //windows.h function to open a set file
 int OpenRankings() {
-	ShellExecute(NULL, "open", "\rankings.html", NULL, NULL, 0);
-	return 1;
+	ShellExecute(NULL, "open", "\output.html", NULL, NULL, 0);
 };
 
 //useful for multi-init of buttons, in case they all need very different functionality
@@ -326,7 +326,7 @@ int Start_Scene() {
 				}
 				//ranking button
 				else if (buttonVal[1] == 1) {
-
+					
 				}
 				//quit button
 				else if (buttonVal[2] == 1) {
@@ -424,6 +424,22 @@ int Main_Scene(){
 	for (i = 0; i < 10; i++) {
 		carsForSale[i] = generateListing();
 	}
+	//parts quick listings generation
+	Item itemsForSale[15];
+	for (i = 0; i < 15; i++) {
+		itemsForSale[i] = items_init(i);
+	}
+	//achievement list
+	Achievement achList[30];
+	for (i = 0; i < 30; i++) {
+		char tempBuffer[20];
+		achList[i].isFinished = 0;
+		strcpy_s(achList[i].name, 20, "Achievement ");
+		_itoa_s(i+1, tempBuffer, 20, 10);
+		strcat_s(achList[i].name, 20, tempBuffer);
+		strcpy_s(achList[i].description, 50, "Some description");
+	}
+	strcpy_s(achList[0].description, 50, "Check Garage");
 
 
 	#pragma endregion
@@ -520,12 +536,11 @@ int Main_Scene(){
 	Button buttonsPartsShop[15];
 	//quick button init
 	for (i = 0; i < buttonsNMBPartsShop; i++) {
-		buttonsPartsShop[i] = buttonInit(200, 112 + i * 20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Buy");
+		buttonsPartsShop[i] = buttonInit(300, 112 + i * 20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Buy");
 	}
 
 
 	#pragma endregion
-
 
 
 	#pragma endregion
@@ -636,6 +651,7 @@ int Main_Scene(){
 				if (buttonVal2[0] == 1) {
 					//show garage screen with inventory/cars/parts and equip if can/want
 					currentPage = 6;
+					achList[0].isFinished = 1;
 				}
 				//button sleep
 				if (buttonVal2[1] == 1) {
@@ -677,7 +693,7 @@ int Main_Scene(){
 
 				//draw all possible parts from inventory LIST
 				for (i = 0; i < 15; i++) {
-					al_draw_textf(font16, colors[0], 20, 112+i*20, NULL, "%s", inventory_ToName(i));
+					al_draw_textf(font16, colors[0], 20, 112+i*20, NULL, "%s || Price: %d", inventory_ToName(itemsForSale[i].itemNR), itemsForSale[i].price );
 				}
 
 				#pragma endregion
@@ -729,8 +745,15 @@ int Main_Scene(){
 				break;
 			case 8:
 				#pragma region PageAchievements
+				//column one
+				for (i = 0; i < 15; i++) {
+					al_draw_textf(font16, colors[0], 100, 200+i*20, NULL, "%s  || %s || Status : %d", achList[i].name, achList[i].description, achList[i].isFinished);
+				}
+				//column two
+				for (i = 15; i < 30; i++) {
+					al_draw_textf(font16, colors[0], 600, 200 + (i-15) * 20, NULL, "%s  || %s || Status : %d", achList[i].name, achList[i].description, achList[i].isFinished);
+				}
 
-				
 				break;
 				#pragma endregion
 

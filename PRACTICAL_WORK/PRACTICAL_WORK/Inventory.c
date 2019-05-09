@@ -1,5 +1,7 @@
 #include "Inventory.h"
 
+
+
 Inventory inventory_init() {
 	Inventory temp;
 	temp.size = 0;
@@ -30,4 +32,12 @@ char *inventory_ToName(int itemNR) {
 	case 14: return "Aerodynamics_3";
 	case 15: return "NONE";
 	}
+}
+
+Item items_init(int x) {
+	Item temp;
+	temp.itemNR = x;
+	temp.price = 50 * x +100;
+
+	return temp;
 }

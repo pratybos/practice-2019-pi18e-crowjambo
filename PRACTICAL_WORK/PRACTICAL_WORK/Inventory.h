@@ -25,5 +25,12 @@ struct Inventory {
 };
 typedef struct Inventory Inventory;
 
+struct Item {
+	int itemNR;
+	int price;
+};
+typedef struct Item Item;
+
 Inventory inventory_init();
 char *inventory_ToName(int itemNR);
+Item items_init(int x);
