@@ -625,6 +625,7 @@ int Main_Scene(){
 	#pragma region Variables
 	//temps
 	int i = 0;
+	int j = 0;
 	char temp[20];
 	//mouse position
 	int x = 0;
@@ -756,6 +757,29 @@ int Main_Scene(){
 	for (i = 0; i < buttonsNMBPartsShop; i++) {
 		buttonsPartsShop[i] = buttonInit(300, 112 + i * 20, 80, 15, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Buy");
 	}
+
+
+	#pragma endregion
+	#pragma region PageRace
+
+	//number of buttons
+	const int buttonsRaceNMB = 4;
+	//menu button detection variable(one for each button)
+	int buttonValRace[] = { 0,0,0,0 };
+	//all buttons
+	Button buttonsRace[4];
+	//quick button init
+	for (i = 0; i < buttonsRaceNMB; i++) {
+		buttonsRace[i] = buttonInit(0, SCREEN_HEIGHT/2-100 , 200, 50, colors[0], colors[1], colors[2], colors[3], ReturnOne, "Race");
+	}
+	//row1
+	buttonsRace[0].x = 300;
+	buttonsRace[1].x = 700;
+	//row2
+	buttonsRace[2].x = 300;
+	buttonsRace[2].y = SCREEN_HEIGHT/2+200;
+	buttonsRace[3].x = 700;
+	buttonsRace[3].y = SCREEN_HEIGHT / 2 + 200;
 
 
 	#pragma endregion
@@ -981,10 +1005,45 @@ int Main_Scene(){
 			case 5:
 				#pragma region PageRace
 
-				//set up races , choose races , choose opponents to race against ,progress story, make money etc.
-				//once all set up, load racing scene with all the data!
+				//button checking and drawing
+				for (i = 0; i < buttonsRaceNMB; i++) {
+					buttonValRace[i] = checkButton(&buttonsRace[i], x, y, leftClick, buttonValRace[i]);
+					drawButton(buttonsRace[i], font16, 16);
+				}
 
-				//stuff here depends on day/hour!!! (different opponents at different day/hour)
+				//button 1
+				if (buttonValRace[0] == 1) {
+
+				}
+				//button 2
+				if (buttonValRace[0] == 1) {
+
+				}
+				//button 3
+				if (buttonValRace[0] == 1) {
+
+				}
+				//button 4
+				if (buttonValRace[0] == 1) {
+
+				}
+
+				//card 1
+				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 - 200, NULL, "Name : Racer1");
+				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 - 170, NULL, "Car : Car1");
+				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 - 140, NULL, "Map : Map1");
+				//card 2
+				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 - 200, NULL, "Name : Racer2");
+				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 - 170, NULL, "Car : Car2");
+				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 - 140, NULL, "Map : Map2");
+				//card 3
+				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 + 100, NULL, "Name : Racer3");
+				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 + 130, NULL, "Car : Car3");
+				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 + 160, NULL, "Map : Map3");
+				//card 4
+				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 + 100, NULL, "Name : Racer4");
+				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 + 130, NULL, "Car : Car4");
+				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 + 160, NULL, "Map : Map4");
 
 				#pragma endregion
 				break;
