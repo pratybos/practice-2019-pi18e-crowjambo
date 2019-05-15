@@ -18,6 +18,8 @@ struct Car {
 	float rearGrip;
 	int weigth;
 	float downForce;
+	int currentSpeed;
+	int currentLine;
 };
 typedef struct Car Car;
 

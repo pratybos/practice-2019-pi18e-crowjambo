@@ -42,6 +42,12 @@
     <ClCompile Include="Achievements.c">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="Opponent.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -69,6 +75,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Achievements.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Opponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

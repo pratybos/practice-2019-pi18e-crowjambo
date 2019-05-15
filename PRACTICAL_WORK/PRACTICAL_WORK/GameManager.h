@@ -1,4 +1,5 @@
 #pragma once
+#include "Opponent.h"
 
 enum SCENES {
 	START,
@@ -21,6 +22,7 @@ struct GameManager {
 	int currentDay;
 	int currentHour;
 	float timePlayed;
+	Opponent currentOpponent;
 
 };
 typedef struct GameManager GameManager;

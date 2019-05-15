@@ -14,6 +14,8 @@
 #include "Player.h"
 #include "CarShop.h"
 #include "Achievements.h"
+#include "Opponent.h"
+#include "Map.h"
 //standard imports
 #include <stdio.h>
 #include <string.h>
@@ -51,6 +53,33 @@ ALLEGRO_TIMER *timer;
 ALLEGRO_EVENT_QUEUE *event_queue;
 #pragma endregion
 #pragma region FUNCTIONS
+
+void draw_point(Point point) {
+	// 1 = left , 2 == right
+	if (point.LeftRight == 1) {
+
+		//first straight part for each road part
+		al_draw_line(50, 600, 400, 300, colors[0], 1);
+		al_draw_line(900, 600, 650, 300, colors[0], 1);
+
+		//second part, calculate angles here and draw the rest
+		al_draw_line(400, 300, 400-point.angle*5, 20, colors[0], 1);
+		al_draw_line(650, 300, 500-point.angle*5, 20, colors[0], 1);
+		
+		//al_draw_line(origin x, origin y, dest x, dest y, colors[0], 1);
+	}
+	else if (point.LeftRight == 2) {
+
+		//first straight part for each road part
+		al_draw_line(50, 600, 400, 300, colors[0], 1);
+		al_draw_line(900, 600, 650, 300, colors[0], 1);
+
+		//second part, calculate angles here and draw the rest
+		al_draw_line(400, 300, 400 + point.angle * 5, 20, colors[0], 1);
+		al_draw_line(650, 300, 500 + point.angle * 5 , 20, colors[0], 1);
+	}
+}
+
 
 //car stats recalculation without exchange
 void recalculate_car_stats_normal(int EquippedItem) {
@@ -660,6 +689,13 @@ int Main_Scene(){
 	//example of one description
 	strcpy_s(achList[0].description, 50, "Check Garage");
 
+	//race mode, racers generation
+	Opponent oppList[4];
+	for (i = 0; i < 4; i++) {
+		oppList[i] = opponent_init();
+	}
+	
+
 
 	#pragma endregion
 	#pragma region Buttons
@@ -820,6 +856,9 @@ int Main_Scene(){
 			for (i = 0; i < buttonsNMBPartsShop; i++) {
 				buttonValPartsShop[i] = 0;
 			}
+			for (i = 0; i < buttonsRaceNMB; i++) {
+				buttonValRace[i] = 0;
+			}
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
 			x = event.mouse.x;
@@ -923,7 +962,7 @@ int Main_Scene(){
 				break;
 			case 3:
 				#pragma region PageCars
-				
+
 				//button checking and drawing
 				for (i = 0; i < buttonsNMBCarShop; i++) {
 					buttonValCarShop[i] = checkButton(&buttonsCarShop[i], x, y, leftClick, buttonValCarShop[i]);
@@ -931,7 +970,7 @@ int Main_Scene(){
 				}
 				//car listings
 				for (i = 0; i < 10; i++) {
-					al_draw_textf(font16, colors[0], 10, 112 + i * 40, NULL, "%s  Price: %d || Power : %d", carsForSale[i].car.name, carsForSale[i].car.price, carsForSale[i].car.HorsePower );
+					al_draw_textf(font16, colors[0], 10, 112 + i * 40, NULL, "%s  Price: %d || Power : %d", carsForSale[i].car.name, carsForSale[i].car.price, carsForSale[i].car.HorsePower);
 				}
 				//check which buy button was pressed
 				for (i = 0; i < 10; i++) {
@@ -956,7 +995,7 @@ int Main_Scene(){
 							buttonValCarShop[temp2] = 0;
 
 							//generate new car listing in place of old one
-							carsForSale[temp2].car = car_generate();				
+							carsForSale[temp2].car = car_generate();
 						}
 						//
 					}
@@ -985,7 +1024,7 @@ int Main_Scene(){
 
 				//draw all possible parts from inventory LIST
 				for (i = 0; i < 15; i++) {
-					al_draw_textf(font16, colors[0], 20, 112+i*20, NULL, "%s || Price: %d", inventory_ToName(itemsForSale[i].itemNR), itemsForSale[i].price );
+					al_draw_textf(font16, colors[0], 20, 112 + i * 20, NULL, "%s || Price: %d", inventory_ToName(itemsForSale[i].itemNR), itemsForSale[i].price);
 				}
 				//buying parts logic
 				for (i = 0; i < 15; i++) {
@@ -1011,38 +1050,30 @@ int Main_Scene(){
 					drawButton(buttonsRace[i], font16, 16);
 				}
 
-				//button 1
-				if (buttonValRace[0] == 1) {
-
-				}
-				//button 2
-				if (buttonValRace[0] == 1) {
-
-				}
-				//button 3
-				if (buttonValRace[0] == 1) {
-
-				}
-				//button 4
-				if (buttonValRace[0] == 1) {
-
-				}
+				//all 4 button check for opponent and send it into new scene
+				for (i = 0; i < 4; i++) {
+					if (buttonValRace[i] == 1) {
+						mng.currentScene = RACE;
+						mng.currentOpponent = oppList[i];
+						done = true;
+					}
+				}		
 
 				//card 1
-				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 - 200, NULL, "Name : Racer1");
-				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 - 170, NULL, "Car : Car1");
+				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 - 200, NULL, "Name : %s", oppList[0].name);
+				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 - 170, NULL, "Car : %s", oppList[0].car.name);
 				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 - 140, NULL, "Map : Map1");
 				//card 2
-				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 - 200, NULL, "Name : Racer2");
-				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 - 170, NULL, "Car : Car2");
+				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 - 200, NULL, "Name : %s", oppList[1].name);
+				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 - 170, NULL, "Car : %s", oppList[1].car.name);
 				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 - 140, NULL, "Map : Map2");
 				//card 3
-				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 + 100, NULL, "Name : Racer3");
-				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 + 130, NULL, "Car : Car3");
+				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 + 100, NULL, "Name : %s", oppList[2].name);
+				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 + 130, NULL, "Car : %s", oppList[2].car.name);
 				al_draw_textf(font22, colors[0], 300, SCREEN_HEIGHT / 2 + 160, NULL, "Map : Map3");
 				//card 4
-				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 + 100, NULL, "Name : Racer4");
-				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 + 130, NULL, "Car : Car4");
+				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 + 100, NULL, "Name : %s", oppList[3].name);
+				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 + 130, NULL, "Car : %s", oppList[3].car.name);
 				al_draw_textf(font22, colors[0], 700, SCREEN_HEIGHT / 2 + 160, NULL, "Map : Map4");
 
 				#pragma endregion
@@ -1233,12 +1264,127 @@ int Main_Scene(){
 	return 0;
 
 }
-int Race_Scene(){
+int Race_Scene(Opponent opp){
 
-	printf("this is race scene");
+	#pragma region Variables
+	//temps
+	int i = 0;
+	int j = 0;
+	char temp[20];
+	//mouse position
+	int x = 0;
+	int y = 0;
+	//mouse left click hold detection
+	bool leftClick = false;
+	//function main loop end condition
+	bool done = false;
+	bool redraw = false;
+	//navigation vars
+	int currentPage = 1;
+	//map 1
+	Map map1;
+	for (i = 0; i < 50; i++) {
+		map1.points[i].availableLines = 3;
+		map1.points[i].angle = rand() % 120;
+		map1.points[i].LeftRight = rand() % 2 + 1;
+	}
+	int currentPoint = 0;
 
-	return 1;
+
+
+
+	#pragma endregion
+	#pragma region Buttons
+
+	#pragma region Unnamed region
+
+	Button button1 = buttonInit(500, 10, 200, 50, colors[0], colors[1], colors[2], colors[4], &ReturnOne, "Next Point");
+	int button1Val = 0;
+
+
+	#pragma endregion
+
+
+	#pragma endregion
+
+	//main loop
+	while (!done) {
+
+	#pragma region Events
+
+		ALLEGRO_EVENT event;
+		al_wait_for_event(event_queue, &event);
+		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			fullyDone = true;
+			done = true;
+		}
+		else if (event.type == ALLEGRO_EVENT_TIMER) {
+			redraw = true;
+			leftClick = false;
+			//button value reset
+			button1Val = 0;
+
+		}
+		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
+			x = event.mouse.x;
+			y = event.mouse.y;
+
+		}
+		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+			// 1 is left click, 2 is right
+			if (event.mouse.button & 1) {
+				leftClick = true;
+
+			}
+		}
+		else if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) {
+			if (event.mouse.button & 1) {
+				leftClick = false;
+
+			}
+		}
+		else if (event.type == ALLEGRO_EVENT_KEY_DOWN) {
+			if (event.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
+				//Return to main page
+				currentPage = 1;
+			}
+		}
+	#pragma endregion
+	#pragma region Drawing
+
+		if (redraw && al_is_event_queue_empty(event_queue)) {
+
+			//button checking and drawing
+			button1Val = checkButton(&button1, x, y, leftClick, button1Val);
+			drawButton(button1, font16, 16);
+			if (button1Val == 1) {
+				currentPoint += 1;
+				if (currentPoint == 50) {
+					currentPoint = 0;
+				}
+			}
+			
+			draw_point(map1.points[currentPoint]);
+			al_draw_textf(font16, colors[0], 0, 0, NULL, "angle : %d , left/right %d", map1.points[currentPoint].angle, map1.points[currentPoint].LeftRight);
+		}
+		
+		al_flip_display();
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+	}
+
+	#pragma endregion
+
+
+	#pragma region Clean up / destroy
+
+	//destroy everything local here
+
+	#pragma endregion
+	sceneLoad();
+	return 0;
+
 }
+
 
 #pragma endregion
 
@@ -1259,7 +1405,7 @@ int sceneLoad() {
 		Main_Scene();
 		break;
 	case RACE:
-		Race_Scene();
+		Race_Scene(mng.currentOpponent);
 		break;
 	}
 }
