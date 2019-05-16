@@ -755,7 +755,7 @@ int Main_Scene(){
 		oppList[i] = opponent_init();
 	}
 	
-
+	FILE *fp;
 
 	#pragma endregion
 	#pragma region Buttons
@@ -893,6 +893,11 @@ int Main_Scene(){
 		if (event.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			fullyDone = true;
 			done = true;
+			//write and open rankings after closing
+			fopen_s(&fp,"\output.html", "w+");
+			fprintf(fp, "<html><head><link rel=\"stylesheet\" type=\"text / css\" href=\"style.css\"></head><body>");
+			fprintf(fp, "<h1>%s | %d  | %s | </h1></body></html>", player1.name, player1.money, player1.ownedCars[player1.currentCar].name);
+			OpenRankings();
 		}
 		else if (event.type == ALLEGRO_EVENT_TIMER) {
 			redraw = true;
@@ -1351,6 +1356,14 @@ int Race_Scene(Opponent opp) {
 	int currentPoint = 0;
 	RaceManager RaceMng = RaceManager_init();
 
+	//max speeds for each line
+	int maxSpeed[3] = { 0,0,0 };
+	//sum of speeds per race
+	int averageSpeed = 0;
+
+	//enter key detection
+	bool enterPressed = false;
+
 
 #pragma endregion
 #pragma region Buttons
@@ -1411,6 +1424,7 @@ int Race_Scene(Opponent opp) {
 			for (i = 0; i < buttonsNMBR; i++) {
 				buttonsVal[i] = 0;
 			}
+			enterPressed = false;
 
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
@@ -1436,11 +1450,18 @@ int Race_Scene(Opponent opp) {
 				//Return to main page
 				currentPage = 1;
 			}
+			else if (event.keyboard.keycode == ALLEGRO_KEY_ENTER) {
+				enterPressed = true;
+			}
 		}
 	#pragma endregion
 	#pragma region Drawing
 
 		if (redraw && al_is_event_queue_empty(event_queue)) {
+
+			switch (currentPage) {
+			case 1:
+				#pragma region Racing
 
 			//button checking and drawing
 			for (i = 0; i < buttonsNMBR; i++) {
@@ -1467,17 +1488,17 @@ int Race_Scene(Opponent opp) {
 					}
 					//brake buttons
 					else if (i >= 3 && i < 6) {
-							switch (i) {
-							case 3:
-								RaceMng.chosenBrake = 1;
-								break;
-							case 4:
-								RaceMng.chosenBrake = 2;
-								break;
-							case 5:
-								RaceMng.chosenBrake = 3;
-								break;
-							}
+						switch (i) {
+						case 3:
+							RaceMng.chosenBrake = 1;
+							break;
+						case 4:
+							RaceMng.chosenBrake = 2;
+							break;
+						case 5:
+							RaceMng.chosenBrake = 3;
+							break;
+						}
 					}
 					//line change buttons
 					else if (i >= 6 && i < 9) {
@@ -1486,7 +1507,7 @@ int Race_Scene(Opponent opp) {
 							RaceMng.chosenLine = 1;
 							break;
 						case 7:
-							RaceMng.chosenLine = 2;	
+							RaceMng.chosenLine = 2;
 							break;
 						case 8:
 							RaceMng.chosenLine = 3;
@@ -1497,11 +1518,49 @@ int Race_Scene(Opponent opp) {
 					else if (i == 9) {
 						//do some race manager logic here to calculate everything and go to next turn
 						turn_processing(RaceMng);
+						//angles/speed pentalty lines etc processing
+						//map1.points[currentPoint].angle;
+						//map1.points[currentPoint].LeftRight;
+
+						//LEFT
+						if (map1.points[currentPoint].LeftRight == 1) {
+							//line 1
+							maxSpeed[0] = 200 - map1.points[currentPoint].angle * 3;
+							//line 2
+							maxSpeed[1] = 200 - map1.points[currentPoint].angle *1.5;
+							//line 3
+							maxSpeed[2] = 200 - map1.points[currentPoint].angle *1.1;
+						}
+						//RIGHT
+						else if (map1.points[currentPoint].LeftRight == 2) {
+							//line 1
+							maxSpeed[0] = 200 - map1.points[currentPoint].angle *1.1;
+							//line 2
+							maxSpeed[1] = 200 - map1.points[currentPoint].angle *1.5;
+							//line 3
+							maxSpeed[2] = 200 - map1.points[currentPoint].angle * 3;
+						}
+
+						if (player1.ownedCars[player1.currentCar].currentSpeed > maxSpeed[player1.ownedCars[player1.currentCar].currentLine - 1]) {
+							player1.ownedCars[player1.currentCar].currentSpeed = 0;
+						}
+
+						averageSpeed += player1.ownedCars[player1.currentCar].currentSpeed;
+
+						//your final result, is amount of points + your speed per point added up and summed for average of time. If you crash, your speed is reduced to 0 or whatever penalty, so you get lower overall results.
+
+						//advance forward or end the race 
 						currentPoint += 1;
+						if (currentPoint > 49) {
+							//race is over
+							player1.money += averageSpeed;
+							currentPage = 2;
+						}
+						//calculate rewards once over
 					}
 				}
 			}
-			
+
 
 			//map drawing
 			draw_point(map1.points[currentPoint]);
@@ -1512,6 +1571,26 @@ int Race_Scene(Opponent opp) {
 
 			//current speed display
 			al_draw_textf(font16, colors[0], 700, 650, NULL, "current speed : %d", player1.ownedCars[player1.currentCar].currentSpeed);
+
+			#pragma endregion
+				break;
+			case 2:
+				#pragma region RaceFinished
+
+				al_draw_textf(font22, colors[0], SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, NULL, "Congrats you finished and won %d $", averageSpeed);
+
+				al_draw_text(font22, colors[0], SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 +200, NULL, "Press Enter to continue");
+
+				if (enterPressed) {
+					mng.currentScene = MAIN;
+					mng.currentDay += 1;
+					done = true;
+				}
+	
+
+				#pragma endregion
+				break;
+			}
 		}
 		
 		al_flip_display();
