@@ -48,6 +48,9 @@
     <ClCompile Include="Map.c">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="RaceManager.c">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RaceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

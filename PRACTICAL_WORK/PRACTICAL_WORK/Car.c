@@ -27,6 +27,7 @@ Car car_init() {
 	temp.downForce = 0;
 	temp.currentLine = 1;
 	temp.currentSpeed = 0;
+	temp.topSpeed = 0;
 	strcpy_s(temp.name, 20, "None");
 	return temp;
 }
@@ -46,6 +47,7 @@ Car car_generate() {
 		temp.baseHorsePower = temp.HorsePower;
 		temp.weigth = 800;
 		temp.downForce = 0.1;
+		temp.topSpeed = 150;
 		break;
 	case 1:
 		temp.price = rand() % 1000 + 2000;
@@ -55,6 +57,7 @@ Car car_generate() {
 		temp.baseHorsePower = temp.HorsePower;
 		temp.weigth = 1100;
 		temp.downForce = 0.2;
+		temp.topSpeed = 150;
 		break;
 	case 2:
 		temp.price = rand() % 1000 + 3000;
@@ -64,6 +67,7 @@ Car car_generate() {
 		temp.baseHorsePower = temp.HorsePower;
 		temp.weigth = 1250;
 		temp.downForce = 0.25;
+		temp.topSpeed = 150;
 		break;
 	case 3:
 		temp.price = rand() % 1000 + 3000;
@@ -73,6 +77,7 @@ Car car_generate() {
 		temp.baseHorsePower = temp.HorsePower;
 		temp.weigth = 1500;
 		temp.downForce = 0.1;
+		temp.topSpeed = 150;
 		break;
 	case 4:
 		temp.price = rand() % 1000 + 5000;
@@ -82,6 +87,7 @@ Car car_generate() {
 		temp.baseHorsePower = temp.HorsePower;
 		temp.weigth = 1100;
 		temp.downForce = 0.4;
+		temp.topSpeed = 150;
 		break;
 	case 5:
 		temp.price = rand() % 500 + 800;
@@ -91,6 +97,7 @@ Car car_generate() {
 		temp.baseHorsePower = temp.HorsePower;
 		temp.weigth = 1100;
 		temp.downForce = 0.1;
+		temp.topSpeed = 150;
 		break;
 	case 6:
 		temp.price = rand() % 300 + 300;
@@ -100,6 +107,7 @@ Car car_generate() {
 		temp.baseHorsePower = temp.HorsePower;
 		temp.weigth = 900;
 		temp.downForce = 0.1;
+		temp.topSpeed = 150;
 		break;
 	case 7:
 		temp.price = rand() % 500 + 800;
@@ -109,6 +117,7 @@ Car car_generate() {
 		temp.baseHorsePower = temp.HorsePower;
 		temp.weigth = 950;
 		temp.downForce = 0.1;
+		temp.topSpeed = 150;
 		break;
 	case 8:
 		temp.price = rand() % 1000 + 2500;
@@ -118,6 +127,7 @@ Car car_generate() {
 		temp.baseHorsePower = temp.HorsePower;
 		temp.weigth = 1050;
 		temp.downForce = 0.35;
+		temp.topSpeed = 150;
 		break;
 	}
 

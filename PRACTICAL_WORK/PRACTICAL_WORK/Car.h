@@ -20,6 +20,7 @@ struct Car {
 	float downForce;
 	int currentSpeed;
 	int currentLine;
+	int topSpeed;
 };
 typedef struct Car Car;
 

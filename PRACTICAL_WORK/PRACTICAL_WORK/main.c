@@ -16,6 +16,7 @@
 #include "Achievements.h"
 #include "Opponent.h"
 #include "Map.h"
+#include "RaceManager.h"
 //standard imports
 #include <stdio.h>
 #include <string.h>
@@ -54,6 +55,53 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 #pragma endregion
 #pragma region FUNCTIONS
 
+void turn_processing(RaceManager mng) {
+	//line processing
+	switch (mng.chosenLine) {
+	case 1:
+		player1.ownedCars[player1.currentCar].currentLine = 1;
+		break;
+	case 2:
+		player1.ownedCars[player1.currentCar].currentLine = 2;
+		break;
+	case 3:
+		player1.ownedCars[player1.currentCar].currentLine = 3;
+		break;
+	}
+	//accel processing
+	switch (mng.chosenAccel) {
+	case 1:
+		player1.ownedCars[player1.currentCar].currentSpeed += 0.05 * player1.ownedCars[player1.currentCar].HorsePower;
+		break;
+	case 2:
+		player1.ownedCars[player1.currentCar].currentSpeed += 0.1 * player1.ownedCars[player1.currentCar].HorsePower;
+		break;
+	case 3:
+		player1.ownedCars[player1.currentCar].currentSpeed += 0.15 * player1.ownedCars[player1.currentCar].HorsePower;
+		break;
+	}
+	//brake processing
+	switch (mng.chosenBrake) {
+	case 1:
+		player1.ownedCars[player1.currentCar].currentSpeed -= 0.05 * player1.ownedCars[player1.currentCar].BrakePower;
+		break;
+	case 2:
+		player1.ownedCars[player1.currentCar].currentSpeed -= 0.1 * player1.ownedCars[player1.currentCar].BrakePower;
+		break;
+	case 3:
+		player1.ownedCars[player1.currentCar].currentSpeed -= 0.15 * player1.ownedCars[player1.currentCar].BrakePower;
+		break;
+	}
+
+	//quick error check to limit values
+	if (player1.ownedCars[player1.currentCar].currentSpeed > player1.ownedCars[player1.currentCar].topSpeed) {
+		player1.ownedCars[player1.currentCar].currentSpeed = player1.ownedCars[player1.currentCar].topSpeed;
+	}
+	else if (player1.ownedCars[player1.currentCar].currentSpeed < 0) {
+		player1.ownedCars[player1.currentCar].currentSpeed = 0;
+	}
+
+}
 
 void draw_car(Car car) {
 	if (car.currentLine == 1) {
@@ -1301,8 +1349,7 @@ int Race_Scene(Opponent opp) {
 		map1.points[i].LeftRight = rand() % 2 + 1;
 	}
 	int currentPoint = 0;
-
-
+	RaceManager RaceMng = RaceManager_init();
 
 
 #pragma endregion
@@ -1401,7 +1448,59 @@ int Race_Scene(Opponent opp) {
 				drawButton(buttonsUI[i], font16, 16);
 			}
 
-			//button functions accel/brake/line/confirm and calculations
+			//button functions
+			for (i = 0; i < buttonsNMBR; i++) {
+				if (buttonsVal[i] == 1) {
+					//accel buttons
+					if (i < 3) {
+						switch (i) {
+						case 0:
+							RaceMng.chosenAccel = 1;
+							break;
+						case 1:
+							RaceMng.chosenAccel = 2;
+							break;
+						case 2:
+							RaceMng.chosenAccel = 3;
+							break;
+						}
+					}
+					//brake buttons
+					else if (i >= 3 && i < 6) {
+							switch (i) {
+							case 3:
+								RaceMng.chosenBrake = 1;
+								break;
+							case 4:
+								RaceMng.chosenBrake = 2;
+								break;
+							case 5:
+								RaceMng.chosenBrake = 3;
+								break;
+							}
+					}
+					//line change buttons
+					else if (i >= 6 && i < 9) {
+						switch (i) {
+						case 6:
+							RaceMng.chosenLine = 1;
+							break;
+						case 7:
+							RaceMng.chosenLine = 2;	
+							break;
+						case 8:
+							RaceMng.chosenLine = 3;
+							break;
+						}
+					}
+					//confirm button
+					else if (i == 9) {
+						//do some race manager logic here to calculate everything and go to next turn
+						turn_processing(RaceMng);
+						currentPoint += 1;
+					}
+				}
+			}
 			
 
 			//map drawing
@@ -1410,6 +1509,9 @@ int Race_Scene(Opponent opp) {
 
 			//player car drawing
 			draw_car(player1.ownedCars[player1.currentCar]);
+
+			//current speed display
+			al_draw_textf(font16, colors[0], 700, 650, NULL, "current speed : %d", player1.ownedCars[player1.currentCar].currentSpeed);
 		}
 		
 		al_flip_display();
