@@ -25,6 +25,8 @@ Car car_init() {
 	temp.frontGrip = 0;
 	temp.weigth = 0;
 	temp.downForce = 0;
+	temp.currentLine = 1;
+	temp.currentSpeed = 0;
 	strcpy_s(temp.name, 20, "None");
 	return temp;
 }

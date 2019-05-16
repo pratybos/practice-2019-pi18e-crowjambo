@@ -54,6 +54,18 @@ ALLEGRO_EVENT_QUEUE *event_queue;
 #pragma endregion
 #pragma region FUNCTIONS
 
+
+void draw_car(Car car) {
+	if (car.currentLine == 1) {
+		al_draw_filled_rectangle(55, 600, 255, 500, colors[1]);
+	}
+	else if (car.currentLine == 2) {
+		al_draw_filled_rectangle(355, 600, 555, 500, colors[1]);
+	}
+	else if (car.currentLine == 3) {
+		al_draw_filled_rectangle(655, 600, 855, 500, colors[1]);
+	}
+}
 void draw_point(Point point) {
 	// 1 = left , 2 == right
 	if (point.LeftRight == 1) {
@@ -1264,9 +1276,9 @@ int Main_Scene(){
 	return 0;
 
 }
-int Race_Scene(Opponent opp){
+int Race_Scene(Opponent opp) {
 
-	#pragma region Variables
+#pragma region Variables
 	//temps
 	int i = 0;
 	int j = 0;
@@ -1293,17 +1305,44 @@ int Race_Scene(Opponent opp){
 
 
 
-	#pragma endregion
-	#pragma region Buttons
+#pragma endregion
+#pragma region Buttons
 
-	#pragma region Unnamed region
+	const int buttonsNMBR = 10;
+	int buttonsVal[10] = { 0 };
 
-	Button button1 = buttonInit(500, 10, 200, 50, colors[0], colors[1], colors[2], colors[4], &ReturnOne, "Next Point");
-	int button1Val = 0;
+	Button buttonsUI[10];
+	for (i = 0; i < 10; i++) {
+		buttonsUI[i] = buttonInit(0, 0, 200, 50, colors[0], colors[1], colors[2], colors[3], &ReturnOne, "Text");
+	}
 
-
-	#pragma endregion
-
+	//customize accel buttons name and placement
+	for (i = 0; i < 3; i++) {
+		buttonsUI[i].y = 618 + i*50;
+		strcpy_s(buttonsUI[i].label, 20, "Accel ");
+		_itoa_s(i + 1, temp, 20, 10);
+		strcat_s(buttonsUI[i].label, 20, temp);
+	}
+	//customize brake buttons name and placement
+	for (i = 0; i < 3; i++) {
+		buttonsUI[i+3].x = 200;
+		buttonsUI[i+3].y = 618 + i * 50;
+		strcpy_s(buttonsUI[i+3].label, 20, "Brake ");
+		_itoa_s(i + 1, temp, 20, 10);
+		strcat_s(buttonsUI[i+3].label, 20, temp);
+	}
+	//custom line buttons name and placement
+	for (i = 0; i < 3; i++) {
+		buttonsUI[i+6].x = 400;
+		buttonsUI[i+6].y = 618 + i * 50;
+		strcpy_s(buttonsUI[i+6].label, 20, "Line ");
+		_itoa_s(i + 1, temp, 20, 10);
+		strcat_s(buttonsUI[i+6].label, 20, temp);
+	}
+	//custom confirm button name and placement
+	strcpy_s(buttonsUI[9].label, 20, "Confirm");
+	buttonsUI[9].x = 700;
+	buttonsUI[9].y = 700;
 
 	#pragma endregion
 
@@ -1322,7 +1361,9 @@ int Race_Scene(Opponent opp){
 			redraw = true;
 			leftClick = false;
 			//button value reset
-			button1Val = 0;
+			for (i = 0; i < buttonsNMBR; i++) {
+				buttonsVal[i] = 0;
+			}
 
 		}
 		else if (event.type == ALLEGRO_EVENT_MOUSE_AXES) {
@@ -1355,17 +1396,20 @@ int Race_Scene(Opponent opp){
 		if (redraw && al_is_event_queue_empty(event_queue)) {
 
 			//button checking and drawing
-			button1Val = checkButton(&button1, x, y, leftClick, button1Val);
-			drawButton(button1, font16, 16);
-			if (button1Val == 1) {
-				currentPoint += 1;
-				if (currentPoint == 50) {
-					currentPoint = 0;
-				}
+			for (i = 0; i < buttonsNMBR; i++) {
+				buttonsVal[i] = checkButton(&buttonsUI[i], x, y, leftClick, buttonsVal[i]);
+				drawButton(buttonsUI[i], font16, 16);
 			}
+
+			//button functions accel/brake/line/confirm and calculations
 			
+
+			//map drawing
 			draw_point(map1.points[currentPoint]);
-			al_draw_textf(font16, colors[0], 0, 0, NULL, "angle : %d , left/right %d", map1.points[currentPoint].angle, map1.points[currentPoint].LeftRight);
+			/*al_draw_textf(font16, colors[0], 0, 0, NULL, "angle : %d , left/right %d", map1.points[currentPoint].angle, map1.points[currentPoint].LeftRight);*/
+
+			//player car drawing
+			draw_car(player1.ownedCars[player1.currentCar]);
 		}
 		
 		al_flip_display();
