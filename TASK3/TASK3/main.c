@@ -24,7 +24,18 @@ int fibbonacci(int n) {
 		return (fibbonacci(n - 1) + fibbonacci(n - 2));
 	}
 }
-
+int count = 0, indent = 0;
+int ackermann(int x, int y)
+{
+	count++;
+	if (x < 0 || y < 0)
+		return -1;
+	if (x == 0)
+		return y + 1;
+	if (y == 0)
+		return ackermann(x - 1, 1);
+	return ackermann(x - 1, ackermann(x, y - 1));
+}
 
 int main() {
 	int i = 0;
@@ -53,10 +64,16 @@ int main() {
 	//printf("factorial of 20 = %llu \n", factorialRecursive(20));
 
 	//fibbonacci recursive
-	printf("Fibbonacci of %d: ", n);
-	for (i = 0; i < n; i++) {
-		printf("%d ", fibbonacci(i));
-	}
+	//printf("Fibbonacci of %d: ", n);
+	//for (i = 0; i < n; i++) {
+	//	printf("%d ", fibbonacci(i));
+	//}
+
+	//ackermann function
+	int x = 2;
+	int y = 2;
+	printf("\nAckermann Function with inputs (%d,%d) is %d\n", x, y, ackermann(x, y));
+	printf("\nFunction called %d times.\n", count);
 
 
 
