@@ -1,12 +1,19 @@
 //TASK 3 - EVALDAS PAULAUSKAS
 //PI18E - DATA STRUCTURES AND ALGORITHMS
 
-//Binary Tree traversal(also known as tree search) implement method for different traversals : InOrder, PreOrder, PostOrder.
-//
-
 
 #include "UtilityLibs.h"
 #include "BinaryTree.h"
+
+unsigned long long int factorialRecursive(int x) {
+	if (x >= 1) {
+		return x * factorialRecursive(x - 1);
+	}
+	else {
+		return 1;
+	}
+}
+
 
 int main() {
 
@@ -29,7 +36,8 @@ int main() {
 //
 //#pragma endregion
 
-
+	//factorial recursive
+	printf("factorial of 20 = %llu \n", factorialRecursive(20));
 
 
 	printf("\n");
