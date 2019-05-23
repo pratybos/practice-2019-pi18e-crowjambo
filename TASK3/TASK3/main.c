@@ -1,9 +1,11 @@
 //TASK 3 - EVALDAS PAULAUSKAS
 //PI18E - DATA STRUCTURES AND ALGORITHMS
 
-
+#define _CRT_SECURE_NO_WARNINGS
 #include "UtilityLibs.h"
 #include "BinaryTree.h"
+#include <Windows.h>
+
 
 unsigned long long int factorialRecursive(int x) {
 	if (x >= 1) {
@@ -36,6 +38,53 @@ int ackermann(int x, int y)
 		return ackermann(x - 1, 1);
 	return ackermann(x - 1, ackermann(x, y - 1));
 }
+bool ListDirectoryContents(const char *sDir)
+{
+	WIN32_FIND_DATA fdFile;
+	HANDLE hFind = NULL;
+
+	char sPath[2048];
+
+	//Specify a file mask. *.* = We want everything!
+	//sprintf(sPath, "%s\\*.*", sDir);
+
+	//make it read and target only .txt files
+	sprintf(sPath, "%s\\*.txt", sDir);
+
+	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
+	{
+		printf("Path not found: [%s]\n", sDir);
+		return false;
+	}
+
+	do
+	{
+		//Find first file will always return "."
+		//    and ".." as the first two directories.
+		if (strcmp(fdFile.cFileName, ".") != 0
+			&& strcmp(fdFile.cFileName, "..") != 0)
+		{
+			//Build up our file path using the passed in
+			//  [sDir] and the file/foldername we just found:
+			sprintf(sPath, "%s\\%s", sDir, fdFile.cFileName);
+
+			//Is the entity a File or Folder?
+			if (fdFile.dwFileAttributes &FILE_ATTRIBUTE_DIRECTORY)
+			{
+				printf("Directory: %s\n", sPath);
+				ListDirectoryContents(sPath); //Recursion, I love it!
+			}
+			else {
+				printf("File: %s\n", sPath);
+			}
+		}
+	} while (FindNextFile(hFind, &fdFile)); //Find the next file.
+
+	FindClose(hFind); //Always, Always, clean things up!
+
+	return true;
+}
+
 
 int main() {
 	int i = 0;
@@ -70,11 +119,11 @@ int main() {
 	//}
 
 	//ackermann function
-	int x = 2;
-	int y = 2;
-	printf("\nAckermann Function with inputs (%d,%d) is %d\n", x, y, ackermann(x, y));
-	printf("\nFunction called %d times.\n", count);
-
+	//int x = 2;
+	//int y = 2;
+	//printf("\nAckermann Function with inputs (%d,%d) is %d\n", x, y, ackermann(x, y));
+	//printf("\nFunction called %d times.\n", count);
+	ListDirectoryContents("C:\\rufus_files\\syslinux-6.03\\");
 
 
 	printf("\n");
