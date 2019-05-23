@@ -11,8 +11,10 @@ EVALDAS PAULAUSKAS - PI18E group
 
 
 int main() {
+	int i = 0;
+	srand(time(0));
 
-// STACK ALGORITHM [DONE]
+// STACK ALGORITHM 
 
 //#pragma region STACK USAGE
 //
@@ -25,40 +27,54 @@ int main() {
 //#pragma endregion
 //
 
-// QUEUE ALGORITHM
+// QUEUE USAGE
 
 //#pragma region QUEUE USAGE
 //
-// Think of something simple, like waiting time calc
-// if theres average waiting time, depending on how many people are waiting, you step into queue and it gives you the waiting time
-//#pragma endregion
+//	queue *myNewQueue = create_queue();
+//	int temp = 0;
+//	for (i = 0; i < 10; i++) {
+//		temp = rand() % 100;
+//		enqueue(myNewQueue, temp);
+//	}
+//	printf("Filled queue preview : \n");
+//	display_queue(myNewQueue);
+//	printf(" -----\n\n ");
+//	//deque and preview
+//	for (i = 0; i < 10; i++) {
+//		dequeue(myNewQueue);
+//		display_queue(myNewQueue);
+//		printf(" -----\n\n ");
+//	}
+//	destroy_queue(myNewQueue);
 //
+//#pragma endregion
+
 
 // TREE ALGORITHM
 
-//#pragma region BINARY TREE USAGE
-//
-// PARSE TREE ALGORITHM
-//
-//#pragma endregion
+#pragma region BINARY TREE USAGE
 
+ //PARSE TREE ALGORITHM
 
-// LINKED LIST ALGORITHM
-
-#pragma region LINKED LIST USAGE
-
- /*find the average value of all values in linked list*/
-	list *newList = create_list();
-	int i = 0;
-	for (i = 0; i < 10; i++) {
-		list_insert_at_front(newList, i+1);
-	}
-	list_display(newList);
-	printf("\n average value = %.1f", list_average_value(newList));
-	
 
 #pragma endregion
 
+
+// LINKED LIST USAGE
+
+//#pragma region LINKED LIST USAGE
+//
+// /*find the average value of all values in linked list*/
+//	list *newList = create_list();
+//	for (i = 0; i < 10; i++) {
+//		list_insert_at_front(newList, i+1);
+//	}
+//	list_display(newList);
+//	printf("\n average value = %.1f", list_average_value(newList));
+//	
+//
+//#pragma endregion
 
 
 
