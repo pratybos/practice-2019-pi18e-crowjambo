@@ -13,9 +13,22 @@ unsigned long long int factorialRecursive(int x) {
 		return 1;
 	}
 }
+int fibbonacci(int n) {
+	if (n == 0) {
+		return 0;
+	}
+	else if (n == 1) {
+		return 1;
+	}
+	else {
+		return (fibbonacci(n - 1) + fibbonacci(n - 2));
+	}
+}
 
 
 int main() {
+	int i = 0;
+	int n = 10;
 
 //recursive binary tree traversal
 
@@ -37,7 +50,14 @@ int main() {
 //#pragma endregion
 
 	//factorial recursive
-	printf("factorial of 20 = %llu \n", factorialRecursive(20));
+	//printf("factorial of 20 = %llu \n", factorialRecursive(20));
+
+	//fibbonacci recursive
+	printf("Fibbonacci of %d: ", n);
+	for (i = 0; i < n; i++) {
+		printf("%d ", fibbonacci(i));
+	}
+
 
 
 	printf("\n");
