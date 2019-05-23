@@ -55,8 +55,74 @@ int main() {
 
 #pragma region BINARY TREE USAGE
 
- //PARSE TREE ALGORITHM
+	//Simple binary tree usage
+	tree *myNewTree = create_tree();
+	for (i = 0; i < 20; i++) {
+		int temp = rand() % 100;
+		insert_to_tree(myNewTree, temp);
+	}
+	//biggest to smallest print out
+	display_tree(myNewTree->root, 2);
 
+
+ //PARSE TREE ALGORITHM
+	//tree *bt = create_tree();
+	//insert_to_tree(bt, ' ');
+	//char arrc_equation[] = "(3+(4*5))";
+	//int arr_lenght = strlen(arrc_equation);
+	//
+	////for traversing the tree
+	//tree_node* current_branch;
+	//tree_node* parent_branch;
+	//stack_for_trees *parent_stack = create_stack_tree();
+	//current_branch = bt->root;
+	//
+
+	//for (int i = 0; i < arr_lenght; i++) {
+
+	//	
+	//		if (arrc_equation[i] == '(') {
+	//			//rule 1 create new node as left child of root, and 
+	//			insert_left(current_branch, ' ');
+	//			push_stack_tree(parent_stack, current_branch);
+	//			//move current node to be this new child
+	//			current_branch = current_branch->left_child;
+
+	//		}
+	//		//numbers reading
+	//		else if (((int)arrc_equation[i] >= 48 && (int)arrc_equation[i] <= 57) || ((int)arrc_equation[i] >= 65 && (int)arrc_equation[i] <= 90) || ((int)arrc_equation[i] >= 97 && (int)arrc_equation[i] <= 122)) {
+
+	//			//rule 3
+	//			current_branch->data = arrc_equation[i];
+	//			parent_branch = peek_stack_tree(parent_stack);
+	//			pop_stack_tree(parent_stack);
+	//			current_branch = parent_branch;
+	//			
+
+	//		}
+	//		//operands reading
+	//		else if (arrc_equation[i] == '/' || arrc_equation[i] == '*' || arrc_equation[i] == '-' || arrc_equation[i] == '+') {
+
+	//			//rule 2
+	//			current_branch->data = arrc_equation[i];
+	//			insert_right(current_branch, ' ');
+	//			push_stack_tree(parent_stack, current_branch);
+	//			current_branch->right_child;
+
+
+	//		}
+	//		else if (arrc_equation[i] == ')') {
+
+	//			//rule 4
+	//			if (is_stack_empty_tree(parent_stack) != 0) {
+	//				parent_branch = peek_stack_tree(parent_stack);
+	//				pop_stack_tree(parent_stack);
+	//			}
+
+	//		}
+	//	}
+	//	display_tree(bt->root, 1);
+	
 
 #pragma endregion
 

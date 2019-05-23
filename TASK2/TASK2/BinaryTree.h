@@ -26,6 +26,7 @@ struct tree {
 };
 typedef struct tree tree;
 
+
 // FUNCTIONS
 tree *create_tree();
 tree_node *createTreeNode(int data);

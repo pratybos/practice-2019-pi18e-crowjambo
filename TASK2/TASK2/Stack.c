@@ -116,3 +116,45 @@ int Calculate(char* operation, int number1, int number2) {
 	}
 
 }
+
+
+//stacks for trees
+
+stack_for_trees * create_stack_tree() {
+	stack_for_trees *s = (stack_for_trees *)malloc(sizeof(stack_for_trees));
+	s->size = 0;
+	s->top = NULL;
+	return s;
+}
+
+
+// stack to push to and a value
+void push_stack_tree(stack_for_trees *s, tree_node *data) {
+	stack_node_for_trees *n = (stack_node_for_trees*)malloc(sizeof(stack_node_for_trees));
+	n->data = data;
+	n->next = s->top;
+	s->top = n;
+	s->size++;
+}
+
+// remove top element, and return its value as int
+tree_node * pop_stack_tree(stack_for_trees *s) {
+
+	// store data of node that is going to be deleted
+	tree_node * data = s->top->data;
+	// saving address of current top node to free it later
+	stack_node_for_trees *temp = s->top;
+	// Moving the current top to the next one
+	s->top = s->top->next;
+	s->size--;
+	free(temp);
+	return data;
+}
+
+tree_node * peek_stack_tree(stack_for_trees *s) {
+	return s->top->data;
+}
+
+bool is_stack_empty_tree(stack_for_trees *s) {
+	return s->size == 0;
+}

@@ -78,7 +78,7 @@ void display_tree(tree_node *tempRoot, enum PrintMode_Tree x) {
 	case 1:
 		#pragma region Ordered from smallest to biggest
 		display_tree(tempRoot->left_child,1);
-		printf("%d\t", tempRoot->data);
+		printf("%c\t", tempRoot->data);
 		display_tree(tempRoot->right_child,1);
 		#pragma endregion
 		break;
@@ -92,7 +92,7 @@ void display_tree(tree_node *tempRoot, enum PrintMode_Tree x) {
 
 	case 3:
 		#pragma region root first, then the rest
-		printf("%d\t", tempRoot->data);
+		printf("%c\t", tempRoot->data);
 		display_tree(tempRoot->right_child,3);
 		display_tree(tempRoot->left_child,3);
 		#pragma endregion
@@ -160,3 +160,6 @@ int get_left_child(tree_node *n) {
 int get_right_child(tree_node *n) {
 	return n->right_child->data;
 }
+
+
+//stack of binary tree nodes functions
