@@ -45,11 +45,19 @@ int main() {
 
 // LINKED LIST ALGORITHM
 
-//#pragma region LINKED LIST USAGE
-//
-// find the average value of all values in linked list
-//
-//#pragma endregion
+#pragma region LINKED LIST USAGE
+
+ /*find the average value of all values in linked list*/
+	list *newList = create_list();
+	int i = 0;
+	for (i = 0; i < 10; i++) {
+		list_insert_at_front(newList, i+1);
+	}
+	list_display(newList);
+	printf("\n average value = %.1f", list_average_value(newList));
+	
+
+#pragma endregion
 
 
 

@@ -26,7 +26,7 @@ void list_insert_at_back(list *list, int data);
 void list_display(list *list);
 void list_remove_first(list *list);
 void list_remove_last(list *list);
-
+float list_average_value(list *_list);
 
 
 

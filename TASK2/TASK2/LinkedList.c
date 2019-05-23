@@ -79,3 +79,13 @@ void list_remove_last(list *list) {
 	temp->next = NULL;
 	list->size--;
 }
+
+float list_average_value(list *_list) {
+	list_node *temp = _list->head;
+	float sum = 0;
+	while (temp != NULL) {
+		sum += temp->data;
+		temp = temp->next;
+	}
+	return sum/_list->size;
+}
