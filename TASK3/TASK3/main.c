@@ -1,6 +1,21 @@
 //TASK 3 - EVALDAS PAULAUSKAS
 //PI18E - DATA STRUCTURES AND ALGORITHMS
 
+
+//If its possible try to implement same algorithms : “Factorial, Fibonacci, Ackermar, Read files, Binary Tree traversal” without recursion.Else Write some explanation why is so hard to implement that algorithm.
+/*
+EXPLANATION
+
+Iterative functions are simpler, but take more lines of code
+The more complicated the recursion, the more loops(for/while) you'll be needing to use to simulate the recursion making the code unclean and potentially harder to understand/read.
+In some cases , you ll have to be using a stack data structure to keep changes to the variables in memory as the program keeps going through the loops. (once again adding more lines of code and complexity)
+
+For simple recursive functions, converting it into non recursive using one for loop or two, is easy though.
+
+
+*/
+
+
 #define _CRT_SECURE_NO_WARNINGS
 #include "UtilityLibs.h"
 #include "BinaryTree.h"
@@ -123,7 +138,12 @@ int main() {
 	//int y = 2;
 	//printf("\nAckermann Function with inputs (%d,%d) is %d\n", x, y, ackermann(x, y));
 	//printf("\nFunction called %d times.\n", count);
-	ListDirectoryContents("C:\\rufus_files\\syslinux-6.03\\");
+
+
+	//read text files in a directory recursively
+	//ListDirectoryContents("C:\\rufus_files\\syslinux-6.03\\");
+
+
 
 
 	printf("\n");
