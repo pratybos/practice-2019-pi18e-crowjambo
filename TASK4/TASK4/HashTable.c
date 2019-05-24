@@ -10,10 +10,10 @@
 #pragma region Main INIT/CREATE/DELETE functions
 
 //allocates a chunk of memory the size of an ht_item
-static ht_item* ht_new_item(const char* k, const char* v) {
+static ht_item* ht_new_item(const char* k, testStruct* v) {
 	ht_item* i = malloc(sizeof(ht_item));
 	i->key = _strdup(k);
-	i->value = _strdup(v);
+	i->value = v;
 	return i;
 }
 
@@ -94,7 +94,7 @@ static ht_item HT_DELETED_ITEM = { NULL, NULL };
 
 // iterate through indexes until find an empty bucket then insert the item into that bucket and increment the hash tables count attribute, to indicate a new item has been added
 //When inserting, if we hit a deleted node, we can insert the new node into the deleted slot.
-void ht_insert(ht_hash_table* ht, const char* key, const char* value) {
+void ht_insert(ht_hash_table* ht, const char* key, testStruct* value) {
 	//resize if load is more than 0.7 of hashtable
 	const int load = ht->count * 100 / ht->size;
 	if (load > 70) {
@@ -123,7 +123,7 @@ void ht_insert(ht_hash_table* ht, const char* key, const char* value) {
 
 //at each iteration of the while loop check whether the items key matches the key we are searching for. If it does, we return the item's value. If the while loop hits a NULL bucket, we return NULL, to indicate that no value was found.
 //When searching, we ignore and 'jump over' deleted nodes
-char* ht_search(ht_hash_table* ht, const char* key) {
+testStruct* ht_search(ht_hash_table* ht, const char* key) {
 	int index = ht_get_hash(key, ht->size, 0);
 	ht_item* item = ht->items[index];
 	int i = 1;
