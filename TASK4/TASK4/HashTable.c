@@ -6,7 +6,7 @@
 #define HT_PRIME_1 151
 #define HT_PRIME_2 163
 //base size of hash table
-#define HT_INITIAL_BASE_SIZE 50
+#define HT_INITIAL_BASE_SIZE 300
 
 #pragma region Main INIT/CREATE/DELETE functions
 
@@ -93,6 +93,7 @@ static void ht_resize_down(ht_hash_table* ht);
 //instead of deleting the item, we simply mark it as deleted
 static ht_item HT_DELETED_ITEM = { NULL, NULL };
 
+
 // iterate through indexes until find an empty bucket then insert the item into that bucket and increment the hash tables count attribute, to indicate a new item has been added
 //When inserting, if we hit a deleted node, we can insert the new node into the deleted slot.
 void ht_insert(ht_hash_table* ht, const char* key, list_node* value) {
@@ -108,9 +109,24 @@ void ht_insert(ht_hash_table* ht, const char* key, list_node* value) {
 	while (cur_item != NULL) {
 		if (cur_item != &HT_DELETED_ITEM) {
 			if (strcmp(cur_item->key, key) == 0) {
+
+			/*	list_node* custom_ht_search(ht_hash_table* ht, const char *searchValue) {
+					char temp[2] = { searchValue[0] };
+					const char* otherTemp = temp;
+					return ht_search(ht, otherTemp);
+				}*/
+
+				//IF Already exists, return previously existing node in same hash bucket
+				//assign previous nodes address to new ones NEXT
+				item->value->next = custom_ht_search(ht, key);
+				
+				//PREVIOUSLY USED, but dont use it with linked list or memory gets corrupted!
 				//delete the previous item and insert the new item at its location (UPDATE FUNCTION)
-				ht_del_item(cur_item);
+				//ht_del_item(cur_item);
+
+				//sets new item as first one in order
 				ht->items[index] = item;
+				ht->count++;
 				return;
 			}
 		}
@@ -155,6 +171,7 @@ void ht_delete(ht_hash_table* ht, const char* key) {
 	while (item != NULL) {
 		if (item != &HT_DELETED_ITEM) {
 			if (strcmp(item->key, key) == 0) {
+
 				ht_del_item(item);
 				ht->items[index] = &HT_DELETED_ITEM;
 			}
@@ -210,7 +227,7 @@ static void ht_resize_down(ht_hash_table* ht) {
 #pragma region Testing
 
 //void ht_insert(ht_hash_table* ht, const char* key, list_node* value)
-void custom_ht_insert(ht_hash_table* ht ,char *name, char *lastName, int age, char *groupName, const char *key) {
+void custom_ht_insert(ht_hash_table* ht ,char *name, char *lastName, int age, char *groupName) {
 
 	Student temp;
 	temp.age = age;
@@ -220,9 +237,11 @@ void custom_ht_insert(ht_hash_table* ht ,char *name, char *lastName, int age, ch
 
 	list_node *node = createNewListNode(temp);
 
-	//const char* test = &lastName[0];
+	//convert to cont char* first letter of last name
+	char temp2[2] = { lastName[0] };
+	const char* otherTemp = temp2;
 
-	ht_insert(ht, key, node);
+	ht_insert(ht, temp2, node);
 }
 
 //Make sure all searches are made to search with first letter only!

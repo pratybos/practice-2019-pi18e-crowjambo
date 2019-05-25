@@ -34,5 +34,7 @@ void ht_del_hash_table(ht_hash_table* ht);
 ht_hash_table* ht_new();
 
 //CUSTOM
-void custom_ht_insert(ht_hash_table* ht, char *name, char *lastName, int age, char *groupName, const char *key);
+void custom_ht_insert(ht_hash_table* ht, char *name, char *lastName, int age, char *groupName);
 list_node* custom_ht_search(ht_hash_table* ht, const char *searchValue);
+
+
