@@ -80,7 +80,7 @@ int main() {
 
 	//for (int i = 0; i < arr_lenght; i++) {
 
-	//	
+	//	 Probably need to send address &current_branch etc for the bug to be fixed!!!!!!!
 	//		if (arrc_equation[i] == '(') {
 	//			//rule 1 create new node as left child of root, and 
 	//			insert_left(current_branch, ' ');

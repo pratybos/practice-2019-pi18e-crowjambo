@@ -3,10 +3,8 @@
 TASK 4 - EVALDAS PAULAUSKAS PI18E
 
 */
+#include "UtilityLibs.h"
 #include "HashTable.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
 //void ht_insert(ht_hash_table* ht, const char* key, const char* value);
 //char* ht_search(ht_hash_table* ht, const char* key);
