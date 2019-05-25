@@ -1,6 +1,7 @@
 #include "HashTable.h"
-#include <stdlib.h>
-#include <string.h>
+
+
+
 //numbers bigger than alphabet (128, to vary hashing a bit)
 #define HT_PRIME_1 151
 #define HT_PRIME_2 163
@@ -10,7 +11,7 @@
 #pragma region Main INIT/CREATE/DELETE functions
 
 //allocates a chunk of memory the size of an ht_item
-static ht_item* ht_new_item(const char* k, testStruct* v) {
+static ht_item* ht_new_item(const char* k, list_node* v) {
 	ht_item* i = malloc(sizeof(ht_item));
 	i->key = _strdup(k);
 	i->value = v;
@@ -94,7 +95,7 @@ static ht_item HT_DELETED_ITEM = { NULL, NULL };
 
 // iterate through indexes until find an empty bucket then insert the item into that bucket and increment the hash tables count attribute, to indicate a new item has been added
 //When inserting, if we hit a deleted node, we can insert the new node into the deleted slot.
-void ht_insert(ht_hash_table* ht, const char* key, testStruct* value) {
+void ht_insert(ht_hash_table* ht, const char* key, list_node* value) {
 	//resize if load is more than 0.7 of hashtable
 	const int load = ht->count * 100 / ht->size;
 	if (load > 70) {
@@ -123,7 +124,7 @@ void ht_insert(ht_hash_table* ht, const char* key, testStruct* value) {
 
 //at each iteration of the while loop check whether the items key matches the key we are searching for. If it does, we return the item's value. If the while loop hits a NULL bucket, we return NULL, to indicate that no value was found.
 //When searching, we ignore and 'jump over' deleted nodes
-testStruct* ht_search(ht_hash_table* ht, const char* key) {
+list_node* ht_search(ht_hash_table* ht, const char* key) {
 	int index = ht_get_hash(key, ht->size, 0);
 	ht_item* item = ht->items[index];
 	int i = 1;
@@ -204,6 +205,32 @@ static void ht_resize_down(ht_hash_table* ht) {
 }
 
 
+
+#pragma endregion
+#pragma region Testing
+
+//void ht_insert(ht_hash_table* ht, const char* key, list_node* value)
+void custom_ht_insert(ht_hash_table* ht ,char *name, char *lastName, int age, char *groupName, const char *key) {
+
+	Student temp;
+	temp.age = age;
+	strcpy_s(temp.name, 20, name);
+	strcpy_s(temp.lastName, 20, lastName);
+	strcpy_s(temp.groupName, 10, groupName);
+
+	list_node *node = createNewListNode(temp);
+
+	//const char* test = &lastName[0];
+
+	ht_insert(ht, key, node);
+}
+
+//Make sure all searches are made to search with first letter only!
+list_node* custom_ht_search(ht_hash_table* ht, const char *searchValue) {
+	char temp[2] = { searchValue[0] };
+	const char* otherTemp = temp;
+	return ht_search(ht, otherTemp);
+}
 
 #pragma endregion
 

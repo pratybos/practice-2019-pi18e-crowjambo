@@ -1,10 +1,8 @@
 #pragma once
+#include "UtilityLibs.h"
+#include "Student.h"
+#include "LinkedList.h"
 
-
-typedef struct {
-	char* name[20];
-	int number;
-}testStruct;
 
 //key value pairs
 //typedef struct {
@@ -15,7 +13,7 @@ typedef struct {
 //key value pairs
 typedef struct {
 	char* key;
-	testStruct* value;
+	list_node* value;
 } ht_item;
 
 //table stores an array of pointers to items, and some details about its size and how full it is
@@ -29,8 +27,12 @@ typedef struct {
 
 
 //Methods
-void ht_insert(ht_hash_table* ht, const char* key, testStruct* value);
-testStruct* ht_search(ht_hash_table* ht, const char* key);
+void ht_insert(ht_hash_table* ht, const char* key, list_node* value);
+list_node* ht_search(ht_hash_table* ht, const char* key);
 void ht_delete(ht_hash_table* h, const char* key);
 void ht_del_hash_table(ht_hash_table* ht);
 ht_hash_table* ht_new();
+
+//CUSTOM
+void custom_ht_insert(ht_hash_table* ht, char *name, char *lastName, int age, char *groupName, const char *key);
+list_node* custom_ht_search(ht_hash_table* ht, const char *searchValue);

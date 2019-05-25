@@ -119,11 +119,13 @@
     <ClCompile Include="LinkedList.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="Prime.c" />
+    <ClCompile Include="Student.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Prime.h" />
+    <ClInclude Include="Student.h" />
     <ClInclude Include="UtilityLibs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

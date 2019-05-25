@@ -9,24 +9,25 @@ list *create_list() {
 }
 
 //create an unconnected list node with data
-list_node *createNewListNode(int data) {
+list_node *createNewListNode(Student data) {
 	list_node *temp = (list_node*)malloc(sizeof(list_node));
 	temp->data = data;
 	temp->next = NULL;
+	//return temp?
 }
 
 bool is_list_empty(list *list) {
 	return list->size == 0;
 }
 
-void list_insert_at_front(list *list, int data) {
+void list_insert_at_front(list *list, Student data) {
 	list_node *temp = createNewListNode(data);
 	temp->next = list->head;
 	list->head = temp;
 	list->size++;
 }
 
-void list_insert_at_back(list *list, int data) {
+void list_insert_at_back(list *list, Student data) {
 	list_node *temp = createNewListNode(data);
 	list_node *p = list->head;
 	while (p != NULL && p->next != NULL) {
@@ -40,6 +41,7 @@ void list_insert_at_back(list *list, int data) {
 	list->size++;
 }
 
+//wont work with Student struct
 void list_display(list *list) {
 	list_node *temp = list->head;
 	while (temp != NULL) {
@@ -79,3 +81,5 @@ void list_remove_last(list *list) {
 	temp->next = NULL;
 	list->size--;
 }
+
+//NODE FUNCTIONS
