@@ -11,11 +11,6 @@ typedef struct {
 	char groupName[10];
 }Student;
 
-//FUNCTIONS
-Student student_create(char name, char lastName, int age, char groupName);
-
-
-
 
 
 

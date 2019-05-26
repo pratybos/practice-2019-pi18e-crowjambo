@@ -110,11 +110,6 @@ void ht_insert(ht_hash_table* ht, const char* key, list_node* value) {
 		if (cur_item != &HT_DELETED_ITEM) {
 			if (strcmp(cur_item->key, key) == 0) {
 
-			/*	list_node* custom_ht_search(ht_hash_table* ht, const char *searchValue) {
-					char temp[2] = { searchValue[0] };
-					const char* otherTemp = temp;
-					return ht_search(ht, otherTemp);
-				}*/
 
 				//IF Already exists, return previously existing node in same hash bucket
 				//assign previous nodes address to new ones NEXT
@@ -126,7 +121,7 @@ void ht_insert(ht_hash_table* ht, const char* key, list_node* value) {
 
 				//sets new item as first one in order
 				ht->items[index] = item;
-				ht->count++;
+				//ht->count++;
 				return;
 			}
 		}
@@ -184,6 +179,7 @@ void ht_delete(ht_hash_table* ht, const char* key) {
 }
 
 //check to make sure we're not attempting to reduce the size of the hash table below its minimum. We then initialise a new hash table with the desired size. All non NULL or deleted items are inserted into the new hash table. We then swap the attributes of the new and old hash tables before deleting the old
+//Crashes right now fix later
 static void ht_resize(ht_hash_table* ht, const int base_size) {
 	if (base_size < HT_INITIAL_BASE_SIZE) {
 		return;
@@ -229,6 +225,7 @@ static void ht_resize_down(ht_hash_table* ht) {
 //void ht_insert(ht_hash_table* ht, const char* key, list_node* value)
 void custom_ht_insert(ht_hash_table* ht ,char *name, char *lastName, int age, char *groupName) {
 
+	//abit confusing, but take in student data here, and send it into list creation function
 	Student temp;
 	temp.age = age;
 	strcpy_s(temp.name, 20, name);
@@ -238,17 +235,19 @@ void custom_ht_insert(ht_hash_table* ht ,char *name, char *lastName, int age, ch
 	list_node *node = createNewListNode(temp);
 
 	//convert to cont char* first letter of last name
-	char temp2[2] = { lastName[0] };
-	const char* otherTemp = temp2;
+	//char temp2[2] = { lastName[0] };
+	//const char* otherTemp = temp2;
 
-	ht_insert(ht, temp2, node);
+	//ht_insert(ht, temp2, node);
+	ht_insert(ht, lastName, node);
 }
 
 //Make sure all searches are made to search with first letter only!
 list_node* custom_ht_search(ht_hash_table* ht, const char *searchValue) {
-	char temp[2] = { searchValue[0] };
-	const char* otherTemp = temp;
-	return ht_search(ht, otherTemp);
+	//char temp[2] = { searchValue[0] };
+	//const char* otherTemp = temp;
+	//return ht_search(ht, otherTemp);
+	return ht_search(ht, searchValue);
 }
 
 #pragma endregion

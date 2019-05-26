@@ -13,7 +13,7 @@ list_node *createNewListNode(Student data) {
 	list_node *temp = (list_node*)malloc(sizeof(list_node));
 	temp->data = data;
 	temp->next = NULL;
-	//return temp?
+	//return temp? //does so automatically
 }
 
 bool is_list_empty(list *list) {
@@ -82,4 +82,3 @@ void list_remove_last(list *list) {
 	list->size--;
 }
 
-//NODE FUNCTIONS

@@ -16,9 +16,27 @@ TASK 4 - EVALDAS PAULAUSKAS PI18E
 //implement Map Abstract Data Type and use it;
 //search by keyword;
 
-char *groups[] = { "PI18E", "PI17E", "PI16E", "DB18A", "DB17C" };
+//just example
+char *groups[] = { "PI18E", "PI18A", "PI18B", "PI18C", "PI18D" };
+
+list_node *searchTest(ht_hash_table *ht , char *searchLastName, char *searchName) {
+	int found = 0;
+	list_node *temp = ht_search(ht, searchLastName);
+	while (temp != NULL && !found) {
+		if (strcmp(temp->data.name, searchName) == 0) {
+			found = 1;
+			return temp;
+		}
+		temp = temp->next;
+	}
+	return NULL;
+
+}
 
 int main() {
+
+	#pragma region INIT
+
 	srand(time(0));
 	int i = 0;
 	//initialize table
@@ -38,62 +56,42 @@ int main() {
 		//remove new line token out of each line read
 		strtok(str, "\n");
 		//write first name, last name, first name etc;
-		if (counter) {
+		if (counter == 1) {
 			strcpy_s(_lastName, 20, str);
 			counter--;
 			custom_ht_insert(ht, _name, _lastName, rand() % 10 + 18, groups[rand() % 5]);
-			continue;
 		}
-		strcpy_s(_name, 20, str);
-		counter++;
+		else {
+			strcpy_s(_name, 20, str);
+			counter++;
+		}
+
 	}
 	fclose(fp);
 
+	#pragma endregion
 
-	for (i = 0; i < ht->size; i++) {
-	ht_item* item = ht->items[i];
-	if (item != NULL) {
-		while (item->value != NULL) {
-			printf("%s %s %d %s\n", item->value->data.name, item->value->data.lastName, item->value->data.age, item->value->data.groupName);
-			item->value = item->value->next;
-			}
-		}
-	}
+	////print out all values
+	//for (i = 0; i < ht->size; i++) {
+	//ht_item* item = ht->items[i];
+	//if (item != NULL) {
+	//while (item->value != NULL) {
+	//		printf("NR : %d || %s %s %d %s\n", i,item->value->data.name, item->value->data.lastName, item->value->data.age, item->value->data.groupName);
+	//		item->value = item->value->next;
+	//		}
+	//	}
+	//}
+	//printf("\n\n how many keys - %d , what size - %d\n", ht->count, ht->size);
 
 
+	//for (i = 0; i < ht->size; i++) {
+	//	ht_item* item = ht->items[i];
+	//	if (item != NULL) {
+	//		printf("KEY %d : %s \n", i,item->key);	
+	//	}
+	//}
 
-
-
-
-	//Populate hashtable with values
-//	custom_ht_insert(ht, "Abbigail", "Moore", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Kenny", "Irwin", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Brenda", "Sheppard", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Mason", "Ibarra", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Branson", "Benitez", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Laylah", "Good", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Freddy", "Mathews", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Maria", "Garner", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Haiden", "Montoya", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Miah", "Hawkins", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Fiona", "Ritter", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Leon", "Lawson", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Natalya", "Cochran", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Taliyah", "Richards", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Martin", "Browning", rand() % 10 + 18, groups[rand() % 5]);
-//	custom_ht_insert(ht, "Danielle", "Reese", rand() % 10 + 18, groups[rand() % 5]);
-//	
-//	
-//
-//for (i = 0; i < ht->size; i++) {
-//	ht_item* item = ht->items[i];
-//	if (item != NULL) {
-//		while (item->value != NULL) {
-//			printf("%s %s %d %s\n", item->value->data.name, item->value->data.lastName, item->value->data.age, item->value->data.groupName);
-//			item->value = item->value->next;
-//		}
-//	}
-//}
+	printf("RESULT : %s \n", ht_search(ht, "Ramsey")->data.name);
 
 
 
@@ -154,6 +152,18 @@ int main() {
 	//		}
 	//	}
 	//}
+
+
+		//for (i = 0; i < ht->size; i++) {
+	//ht_item* item = ht->items[i];
+	//if (item != NULL) {
+	//	while (item->value != NULL) {
+	//		printf("%s %s %d %s\n", item->value->data.name, item->value->data.lastName, item->value->data.age, item->value->data.groupName);
+	//		item->value = item->value->next;
+	//		}
+	//	}
+	//}
+
 
 #pragma endregion
 
