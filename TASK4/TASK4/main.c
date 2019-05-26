@@ -24,6 +24,26 @@ TODO:
 
 */
 
+void Instructions() {
+	printf("1 - Show all records \n 2 - Show records in Descending order \n 3 - Show records in Ascending order \n 4 - full name(keyword) search \n 5 - Exit program \n");
+}
+void PrintColumns() {
+	printf("First Name | Last Name | Group Name | Age |\n -----------------------------------------");
+}
+
+void PrintAllValues(ht_hash_table *ht) {
+	int i = 0;
+	for (i = 0; i < ht->size; i++) {
+	ht_item* item = ht->items[i];
+	if (item != NULL) {
+	while (item->value != NULL) {
+		printf("\n%s   | %s   | %s | %d |\n", item->value->data.name, item->value->data.lastName, item->value->data.groupName,item->value->data.age);
+		item->value = item->value->next;
+			}
+		}
+	}
+}
+
 int main() {
 
 	#pragma region INIT
@@ -61,14 +81,68 @@ int main() {
 	fclose(fp);
 
 	#pragma endregion
+	#pragma region Variables
 
+	bool finished = false;
+	int choice = 0;
+	char searchName[20];
+	char searchLastN[20];
+	list_node *temp = NULL;
 
+	#pragma endregion
+	#pragma region MAIN_LOOP
 
+	while (!finished) {
+		//MAIN MENU
+		system("cls");
+		Instructions();
+		//INPUT
+		printf("--------------------------------------\nMake a choice : ");
+		choice = _getch()-48;
+		//LOGIC
+		switch (choice) {
+		case 1:
+			system("cls");
+			PrintColumns();
+			PrintAllValues(ht);
+			_fgetchar();
+			break;
+		case 2:
+			//descending order list(by last name)
+			break;
+		case 3:
+			//ascending order list (by last name)
+			break;
+		case 4:
+			system("cls");
+			printf("Enter first name : ");
+			fgets(searchName, 20, stdin);
+			printf("Enter last name: ");
+			fgets(searchLastN, 20, stdin);
+			//clean up of newline symbols
+			strtok(searchName, "\n");
+			strtok(searchLastN, "\n");
+			//create temp variable to hold found person
+			temp = custom_ht_search_fullName(ht, searchLastN, searchName);
+			//print out value + error check
+			if (temp != NULL) {
+				printf("\n%s %s %s %d", temp->data.name, temp->data.lastName, temp->data.groupName, temp->data.age);
+			}
+			else {
+				printf("Record wasn't found");
+			}
 
+			//make sure key needs to be pressed to return to main menu
+			_fgetchar();
+			
+			break;
+		case 5:
+			finished = true;
+			break;
+		}
+	}
 
-
-
-
+	#pragma endregion
 
 #pragma region TESTS
 
@@ -161,8 +235,6 @@ int main() {
 
 
 #pragma endregion
-
-
-	system("pause");
+	
 	return 0;
 }
