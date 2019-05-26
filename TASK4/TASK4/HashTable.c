@@ -114,6 +114,8 @@ void ht_insert(ht_hash_table* ht, const char* key, list_node* value) {
 				//IF Already exists, return previously existing node in same hash bucket
 				//assign previous nodes address to new ones NEXT
 				item->value->next = custom_ht_search(ht, key);
+
+				//For more robustness, can do multiple checks here (same firstname with strcmp, etc etc. IF all same data then just replace! or allow user to specify whether they want to replace a certain value or not)
 				
 				//PREVIOUSLY USED, but dont use it with linked list or memory gets corrupted!
 				//delete the previous item and insert the new item at its location (UPDATE FUNCTION)
@@ -249,6 +251,19 @@ list_node* custom_ht_search(ht_hash_table* ht, const char *searchValue) {
 	//return ht_search(ht, otherTemp);
 	return ht_search(ht, searchValue);
 }
+
+list_node *custom_ht_search_fullName(ht_hash_table *ht, char *searchLastName, char *searchName) {
+	list_node *temp = ht_search(ht, searchLastName);
+	while (temp != NULL) {
+		if (strcmp(temp->data.name, searchName) == 0) {
+			return temp;
+		}
+		temp = temp->next;
+	}
+	return NULL;
+}
+
+
 
 #pragma endregion
 

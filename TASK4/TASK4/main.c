@@ -2,36 +2,27 @@
 
 TASK 4 - EVALDAS PAULAUSKAS PI18E
 
+//filter some information by column data : ascending or descending order;
+//implement Map Abstract Data Type and use it;
+//search by keyword;
+
 */
+#pragma region HEADERS
+
 #define _CRT_SECURE_NO_WARNINGS
 #include "UtilityLibs.h"
 #include "HashTable.h"
 #include "LinkedList.h"
 #include "Student.h"
 
-//void ht_insert(ht_hash_table* ht, const char* key, const char* value);
-//char* ht_search(ht_hash_table* ht, const char* key);
+#pragma endregion
 
-//filter some information by column data : ascending or descending order;
-//implement Map Abstract Data Type and use it;
-//search by keyword;
+/*
+TODO:
+	- print out columns/table data
+	- using switch + loop have UI to select actions of sorting in descending/ascending order and keyword search and display all elements and quit program
 
-//just example
-char *groups[] = { "PI18E", "PI18A", "PI18B", "PI18C", "PI18D" };
-
-list_node *searchTest(ht_hash_table *ht , char *searchLastName, char *searchName) {
-	int found = 0;
-	list_node *temp = ht_search(ht, searchLastName);
-	while (temp != NULL && !found) {
-		if (strcmp(temp->data.name, searchName) == 0) {
-			found = 1;
-			return temp;
-		}
-		temp = temp->next;
-	}
-	return NULL;
-
-}
+*/
 
 int main() {
 
@@ -41,7 +32,7 @@ int main() {
 	int i = 0;
 	//initialize table
 	ht_hash_table *ht = ht_new();
-
+	char *groups[] = { "PI18E", "PI18A", "PI18B", "PI18C", "PI18D" };
 
 	//POPULATE THE TABLE
 	FILE *fp;
@@ -71,31 +62,35 @@ int main() {
 
 	#pragma endregion
 
-	////print out all values
-	//for (i = 0; i < ht->size; i++) {
-	//ht_item* item = ht->items[i];
-	//if (item != NULL) {
-	//while (item->value != NULL) {
-	//		printf("NR : %d || %s %s %d %s\n", i,item->value->data.name, item->value->data.lastName, item->value->data.age, item->value->data.groupName);
-	//		item->value = item->value->next;
-	//		}
-	//	}
-	//}
-	//printf("\n\n how many keys - %d , what size - %d\n", ht->count, ht->size);
 
 
-	//for (i = 0; i < ht->size; i++) {
-	//	ht_item* item = ht->items[i];
-	//	if (item != NULL) {
-	//		printf("KEY %d : %s \n", i,item->key);	
-	//	}
-	//}
 
-	printf("RESULT : %s \n", ht_search(ht, "Ramsey")->data.name);
+
+
 
 
 
 #pragma region TESTS
+
+	////print out all values
+//for (i = 0; i < ht->size; i++) {
+//ht_item* item = ht->items[i];
+//if (item != NULL) {
+//while (item->value != NULL) {
+//		printf("NR : %d || %s %s %d %s\n", i,item->value->data.name, item->value->data.lastName, item->value->data.age, item->value->data.groupName);
+//		item->value = item->value->next;
+//		}
+//	}
+//}
+//printf("\n\n how many keys - %d , what size - %d\n", ht->count, ht->size);
+
+
+//for (i = 0; i < ht->size; i++) {
+//	ht_item* item = ht->items[i];
+//	if (item != NULL) {
+//		printf("KEY %d : %s \n", i,item->key);	
+//	}
+//}
 
 	//testStruct someShit;
 	//strcpy_s(someShit.name, 20, "SomeName");
@@ -166,10 +161,6 @@ int main() {
 
 
 #pragma endregion
-
-	
-
-
 
 
 	system("pause");

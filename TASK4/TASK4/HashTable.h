@@ -36,5 +36,6 @@ ht_hash_table* ht_new();
 //CUSTOM
 void custom_ht_insert(ht_hash_table* ht, char *name, char *lastName, int age, char *groupName);
 list_node* custom_ht_search(ht_hash_table* ht, const char *searchValue);
+list_node *custom_ht_search_fullName(ht_hash_table *ht, char *searchLastName, char *searchName);
 
 
