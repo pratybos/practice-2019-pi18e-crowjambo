@@ -16,13 +16,18 @@ TASK 4 - EVALDAS PAULAUSKAS PI18E
 #include "Student.h"
 
 #pragma endregion
-
-/*
-TODO:
-	- print out columns/table data
-	- using switch + loop have UI to select actions of sorting in descending/ascending order and keyword search and display all elements and quit program
-
-*/
+#pragma region FUNCTIONS
+enum SortOrder
+{
+	Ascending,
+	Descending
+};
+enum SortBy {
+	FirstName,
+	LastName,
+	Age,
+	Group
+};
 
 void Instructions() {
 	printf("1 - Show all records \n 2 - Show records in Descending order \n 3 - Show records in Ascending order \n 4 - full name(keyword) search \n 5 - Exit program \n");
@@ -49,6 +54,113 @@ void PrintAllValues(ht_hash_table *temp) {
 	}
 }
 
+struct list_node* swap(struct list_node* ptr1, struct list_node* ptr2)
+{
+	struct list_node* tmp = ptr2->next;
+	ptr2->next = ptr1;
+	ptr1->next = tmp;
+	return ptr2;
+}
+
+int bubbleSort(struct list_node** head, int count, int sortBy, int sortOrder)
+{
+	struct list_node** h;
+	int i, j, swapped;
+
+	for (i = 0; i <= count; i++) {
+
+		h = head;
+		swapped = 0;
+
+		for (j = 0; j < count - i - 1; j++) {
+
+			struct list_node* p1 = *h;
+			struct list_node* p2 = p1->next;
+
+			switch (sortBy) {
+			case FirstName:
+
+				break;
+			case LastName:
+
+				break;
+			case Group:
+
+				break;
+
+			case Age:
+
+				break;
+			}
+			if (strcmp(p1->data.name, p2->data.name) > 0) {
+
+				/* update the link after swapping */
+				*h = swap(p1, p2);
+				swapped = 1;
+			}
+
+			h = &(*h)->next;
+		}
+
+		/* break if the loop ended without any swap */
+		if (swapped == 0)
+			break;
+	}
+}
+
+//list *temp = (list*)malloc(sizeof(list));
+void sortTest(ht_hash_table *temp) {
+	int i = 0;
+	//Init a list
+	list *someList = create_list();
+	list_node *tempNode = NULL;
+
+	//read through hashtable
+	for (i = 0; i < temp->size; i++) {
+		if (temp->items[i] != NULL) {
+			tempNode = temp->items[i]->value;
+		}
+		else {
+			//insert each hashtable node into new list
+			while (tempNode != NULL) {
+				list_insert_at_front(someList, tempNode->data);
+				//navigate through child nodes in hashtable aswell
+				tempNode = tempNode->next;
+			}
+		}
+	}
+
+	bubbleSort(&someList->head, someList->size, FirstName, Descending);
+
+	tempNode = someList->head;
+	while (tempNode != NULL) {
+	printf("%s %s \n", tempNode->data.name, tempNode->data.lastName);
+	tempNode = tempNode->next;
+	
+	}
+
+	////temp node to help traverse new list
+	//tempNode = someList->head;
+	////traverse through list
+	//while (tempNode != NULL) {
+
+	//	if (strcmp(tempNode->data.name, tempNode->next->data.name) > 0) {
+
+	//	}
+
+	//	tempNode = tempNode->next;
+	//}
+
+
+	//while (tempNode != NULL) {
+	//	printf("%s %s \n", tempNode->data.name, tempNode->data.lastName);
+	//	tempNode = tempNode->next;
+	//	
+	//}
+	
+}
+
+#pragma endregion
 
 int main() {
 
@@ -94,6 +206,7 @@ int main() {
 	char searchName[20];
 	char searchLastN[20];
 	list_node *temp = NULL;
+	list_node *sortedList = NULL;
 
 	#pragma endregion
 	#pragma region MAIN_LOOP
@@ -115,9 +228,14 @@ int main() {
 			break;
 		case 2:
 			//descending order list(by last name)
+			//create a sorted list and print it out
+			system("cls");
+			sortTest(ht);
+			_fgetchar();
 			break;
 		case 3:
 			//ascending order list (by last name)
+			//add the sorted list to stack, and then print out all stack nodes(will be reversed!)
 			break;
 		case 4:
 			system("cls");
