@@ -31,18 +31,24 @@ void PrintColumns() {
 	printf("First Name | Last Name | Group Name | Age |\n -----------------------------------------");
 }
 
-void PrintAllValues(ht_hash_table *ht) {
+
+void PrintAllValues(ht_hash_table *temp) {
 	int i = 0;
-	for (i = 0; i < ht->size; i++) {
-	ht_item* item = ht->items[i];
-	if (item != NULL) {
-	while (item->value != NULL) {
-		printf("\n%s   | %s   | %s | %d |\n", item->value->data.name, item->value->data.lastName, item->value->data.groupName,item->value->data.age);
-		item->value = item->value->next;
+	list_node *tempNode = NULL;
+	for (i = 0; i < temp->size; i++) {
+		if (temp->items[i] != NULL) {
+			tempNode = temp->items[i]->value;
+		}
+		else {
+			while (tempNode != NULL) {
+				printf("\n%s   | %s   | %s | %d |\n", tempNode->data.name, tempNode->data.lastName, tempNode->data.groupName, tempNode->data.age);
+				tempNode = tempNode->next;
 			}
 		}
+
 	}
 }
+
 
 int main() {
 
