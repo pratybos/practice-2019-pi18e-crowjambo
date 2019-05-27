@@ -215,6 +215,7 @@ int main() {
 
 	bool finished = false;
 	int choice = 0;
+	int sortBy = 0;
 	char searchName[20];
 	char searchLastN[20];
 	list_node *temp = NULL;
@@ -239,17 +240,21 @@ int main() {
 			_fgetchar();
 			break;
 		case 2:
-			//descending order list(by last name)
-			//create a sorted list and print it out
 			system("cls");
-			sortTest(ht,LastName,Descending);
+			printf("Sort by : 0 - FirstName ; 1 - LastName ; 2 - Group \n");
+			scanf_s("%d", &sortBy);
+			system("cls");
+			sortTest(ht, sortBy, Descending);
+			_fgetchar();
 			_fgetchar();
 			break;
-		case 3:
-			//ascending order list (by last name)
-			//add the sorted list to stack, and then print out all stack nodes(will be reversed!)
+		case 3:	
 			system("cls");
-			sortTest(ht,LastName,Ascending);
+			printf("Sort by : 0 - FirstName ; 1 - LastName ; 2 - Group \n");
+			scanf_s("%d", &sortBy);
+			system("cls");
+			sortTest(ht, sortBy, Ascending);
+			_fgetchar();
 			_fgetchar();
 			break;
 		case 4:
