@@ -19,13 +19,13 @@ TASK 4 - EVALDAS PAULAUSKAS PI18E
 #pragma region FUNCTIONS
 enum SortOrder
 {
-	Ascending,
-	Descending
+	Descending,
+	Ascending
+	
 };
 enum SortBy {
 	FirstName,
 	LastName,
-	Age,
 	Group
 };
 
@@ -33,10 +33,8 @@ void Instructions() {
 	printf("1 - Show all records \n 2 - Show records in Descending order \n 3 - Show records in Ascending order \n 4 - full name(keyword) search \n 5 - Exit program \n");
 }
 void PrintColumns() {
-	printf("First Name | Last Name | Group Name | Age |\n -----------------------------------------");
+	printf("First Name | Last Name | Group Name | Age |\n -----------------------------------------\n");
 }
-
-
 void PrintAllValues(ht_hash_table *temp) {
 	int i = 0;
 	list_node *tempNode = NULL;
@@ -46,14 +44,13 @@ void PrintAllValues(ht_hash_table *temp) {
 		}
 		else {
 			while (tempNode != NULL) {
-				printf("\n%s   | %s   | %s | %d |\n", tempNode->data.name, tempNode->data.lastName, tempNode->data.groupName, tempNode->data.age);
+				printf("%s   | %s   | %s | %d |\n", tempNode->data.name, tempNode->data.lastName, tempNode->data.groupName, tempNode->data.age);
 				tempNode = tempNode->next;
 			}
 		}
 
 	}
 }
-
 struct list_node* swap(struct list_node* ptr1, struct list_node* ptr2)
 {
 	struct list_node* tmp = ptr2->next;
@@ -61,44 +58,80 @@ struct list_node* swap(struct list_node* ptr1, struct list_node* ptr2)
 	ptr1->next = tmp;
 	return ptr2;
 }
-
-int bubbleSort(struct list_node** head, int count, int sortBy, int sortOrder)
-{
+int bubbleSort(struct list_node** head, int count, int sortBy, int orderBy){
 	struct list_node** h;
 	int i, j, swapped;
-
 	for (i = 0; i <= count; i++) {
-
 		h = head;
 		swapped = 0;
-
 		for (j = 0; j < count - i - 1; j++) {
-
 			struct list_node* p1 = *h;
 			struct list_node* p2 = p1->next;
 
-			switch (sortBy) {
-			case FirstName:
-
+			switch (orderBy) {
+			//descending order
+			case 0:
+				switch (sortBy) {
+				//by name
+				case 0:
+					if (strcmp(p1->data.name, p2->data.name) > 0) {
+						/* update the link after swapping */
+						*h = swap(p1, p2);
+						swapped = 1;
+					}
+					break;
+				//by lastName
+				case 1:
+					if (strcmp(p1->data.lastName, p2->data.lastName) > 0) {
+						/* update the link after swapping */
+						*h = swap(p1, p2);
+						swapped = 1;
+					}
+					break;
+				//by group
+				case 2:
+					if (strcmp(p1->data.groupName, p2->data.groupName) > 0) {
+						/* update the link after swapping */
+						*h = swap(p1, p2);
+						swapped = 1;
+					}
+					break;
+				}
 				break;
-			case LastName:
+			//ascending order
+			case 1:
+				switch (sortBy) {
+				//by name
+				case 0:
+					if (strcmp(p1->data.name, p2->data.name) < 0) {
 
-				break;
-			case Group:
+						/* update the link after swapping */
+						*h = swap(p1, p2);
+						swapped = 1;
+					}
+					break;
+				//by lastname
+				case 1:
+					if (strcmp(p1->data.lastName, p2->data.lastName) < 0) {
 
-				break;
+						/* update the link after swapping */
+						*h = swap(p1, p2);
+						swapped = 1;
+					}
+					break;
+				//by group
+				case 2:
+					if (strcmp(p1->data.groupName, p2->data.groupName) < 0) {
 
-			case Age:
-
+						/* update the link after swapping */
+						*h = swap(p1, p2);
+						swapped = 1;
+					}
+					break;
+				}
 				break;
 			}
-			if (strcmp(p1->data.name, p2->data.name) > 0) {
-
-				/* update the link after swapping */
-				*h = swap(p1, p2);
-				swapped = 1;
-			}
-
+	
 			h = &(*h)->next;
 		}
 
@@ -108,8 +141,7 @@ int bubbleSort(struct list_node** head, int count, int sortBy, int sortOrder)
 	}
 }
 
-//list *temp = (list*)malloc(sizeof(list));
-void sortTest(ht_hash_table *temp) {
+void sortTest(ht_hash_table *temp, int sortBy, int orderBy) {
 	int i = 0;
 	//Init a list
 	list *someList = create_list();
@@ -130,34 +162,14 @@ void sortTest(ht_hash_table *temp) {
 		}
 	}
 
-	bubbleSort(&someList->head, someList->size, FirstName, Descending);
+	bubbleSort(&someList->head, someList->size,sortBy,orderBy);
 
 	tempNode = someList->head;
 	while (tempNode != NULL) {
-	printf("%s %s \n", tempNode->data.name, tempNode->data.lastName);
+	printf("%s %s %s %d \n", tempNode->data.name, tempNode->data.lastName, tempNode->data.groupName, tempNode->data.age);
 	tempNode = tempNode->next;
 	
 	}
-
-	////temp node to help traverse new list
-	//tempNode = someList->head;
-	////traverse through list
-	//while (tempNode != NULL) {
-
-	//	if (strcmp(tempNode->data.name, tempNode->next->data.name) > 0) {
-
-	//	}
-
-	//	tempNode = tempNode->next;
-	//}
-
-
-	//while (tempNode != NULL) {
-	//	printf("%s %s \n", tempNode->data.name, tempNode->data.lastName);
-	//	tempNode = tempNode->next;
-	//	
-	//}
-	
 }
 
 #pragma endregion
@@ -230,12 +242,15 @@ int main() {
 			//descending order list(by last name)
 			//create a sorted list and print it out
 			system("cls");
-			sortTest(ht);
+			sortTest(ht,LastName,Descending);
 			_fgetchar();
 			break;
 		case 3:
 			//ascending order list (by last name)
 			//add the sorted list to stack, and then print out all stack nodes(will be reversed!)
+			system("cls");
+			sortTest(ht,LastName,Ascending);
+			_fgetchar();
 			break;
 		case 4:
 			system("cls");
