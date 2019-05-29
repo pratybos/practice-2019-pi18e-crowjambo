@@ -4,8 +4,7 @@
 //Create a console program that can guess your invented word for a freely chosen topic
 	/*
 	TODO:
-		- Multiple data structures is required (maybe not)
-		- forward chaining is simplest, and the task example is like that. But backward chaining seems to be more scalable and more powerful!!! CHOOSE ONEE! (its only 10% of grade, just do forward chainign and chill?)
+		- just do forward chaining, basic, but have some depth in questions at first
 
 	*/
 
