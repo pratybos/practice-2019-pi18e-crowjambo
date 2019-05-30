@@ -1,5 +1,11 @@
 #include "BinaryTree.h"
 
+data *tree_data_create(char *question, char *answer) {
+	data *temp = (data *)malloc(sizeof(data));
+	strcpy_s(temp->question, 100, question);
+	strcpy_s(temp->answer, 20, answer);
+	return temp;
+}
 
 tree *create_tree() {
 	tree *t = (tree *)malloc(sizeof(tree));
@@ -8,7 +14,7 @@ tree *create_tree() {
 	return t;
 }
 
-tree_node *createTreeNode(data data) {
+tree_node *createTreeNode(data *data) {
 	tree_node *temp = (tree_node*)malloc(sizeof(tree_node));
 	temp->left_child = temp->right_child = NULL;
 	temp->data = data;
@@ -32,7 +38,7 @@ void destroy_tree(tree_node *tempRoot) {
 }
 
 // insert value to left, if left child already exist, continue down the tree until left child is empty
-void insert_left(tree_node *n, data data) {
+void insert_left(tree_node *n, data *data) {
 	if (n->left_child == NULL) {
 		n->left_child = createTreeNode(data);
 		return;
@@ -41,7 +47,7 @@ void insert_left(tree_node *n, data data) {
 }
 
 //traverse until empty spot and add to the right
-void insert_right(tree_node *n, data data) {
+void insert_right(tree_node *n, data *data) {
 	if (n->right_child == NULL) {
 		n->right_child = createTreeNode(data);
 		return;
@@ -50,7 +56,7 @@ void insert_right(tree_node *n, data data) {
 }
 
 // insert new root, if root exist, replace it
-void set_root(tree *Tree, data data) {
+void set_root(tree *Tree, data *data) {
 	if (Tree->root == NULL) {
 		Tree->root = createTreeNode(data);
 		return;
@@ -62,23 +68,23 @@ void set_root(tree *Tree, data data) {
 	free(temp);
 }
 
-data get_root(tree *Tree) {
-	return Tree->root->data;
-}
-
-data get_left_child(tree_node *n) {
-	return n->left_child->data;
-}
-
-data get_right_child(tree_node *n) {
-	return n->right_child->data;
-}
+//data *get_root(tree *Tree) {
+//	return Tree->root->data;
+//}
+//
+//data *get_left_child(tree_node *n) {
+//	return n->left_child->data;
+//}
+//
+//data *get_right_child(tree_node *n) {
+//	return n->right_child->data;
+//}
 
 #pragma region Wont work with new DATA struct
 
 
 // Insert new values all ordered by value size automatically
-//void insert_to_tree(tree *t, data data) {
+//void insert_to_tree(tree *t, data *data) {
 //	tree_node *temp = createTreeNode(data);
 //	// if empty, just become the root
 //	if (is_tree_empty(t)) {

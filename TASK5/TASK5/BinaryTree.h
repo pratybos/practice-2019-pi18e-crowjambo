@@ -17,7 +17,7 @@ enum DisplayMode_Tree {
 };
 
 struct tree_node {
-	data data;
+	data *data;
 	struct tree_node *left_child;
 	struct tree_node *right_child;
 };
@@ -32,14 +32,15 @@ typedef struct tree tree;
 
 // FUNCTIONS
 tree *create_tree();
-tree_node *createTreeNode(data data);
+tree_node *createTreeNode(data *data);
 bool is_tree_empty(tree *t);
 void destroy_tree(tree_node *tempRoot);
-void insert_left(tree_node *n, data data);
-void insert_right(tree_node *n, data data);
-void set_root(tree *Tree, data data);
+void insert_left(tree_node *n, data *data);
+void insert_right(tree_node *n, data *data);
+void set_root(tree *Tree, data *data);
 data get_root(tree *Tree);
 data get_left_child(tree_node *n);
 data get_right_child(tree_node *n);
+data *tree_data_create(char *question, char *answer);
 
 #endif
