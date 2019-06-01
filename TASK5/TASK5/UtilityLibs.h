@@ -10,5 +10,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <Windows.h>
+#include "BinaryTree.h"
+#include "LinkedList.h"
 
 #endif

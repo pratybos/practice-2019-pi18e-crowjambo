@@ -1,5 +1,6 @@
 #include "BinaryTree.h"
 
+
 data *tree_data_create(char *question, char *answer) {
 	data *temp = (data *)malloc(sizeof(data));
 	strcpy_s(temp->question, 100, question);
@@ -14,10 +15,11 @@ tree *create_tree() {
 	return t;
 }
 
-tree_node *createTreeNode(data *data) {
+tree_node *createTreeNode(char *question, char *answer) {
 	tree_node *temp = (tree_node*)malloc(sizeof(tree_node));
 	temp->left_child = temp->right_child = NULL;
-	temp->data = data;
+	strcpy_s(temp->data.question, 100, question);
+	strcpy_s(temp->data.answer, 20, answer);
 	return temp;
 }
 
@@ -38,35 +40,80 @@ void destroy_tree(tree_node *tempRoot) {
 }
 
 // insert value to left, if left child already exist, continue down the tree until left child is empty
-void insert_left(tree_node *n, data *data) {
+void insert_left(tree_node *n, char *question, char *answer) {
 	if (n->left_child == NULL) {
-		n->left_child = createTreeNode(data);
+		n->left_child = createTreeNode(question, answer);
 		return;
 	}
-	insert_left(n->left_child, data);
+	insert_left(n->left_child, question,answer);
 }
 
 //traverse until empty spot and add to the right
-void insert_right(tree_node *n, data *data) {
+void insert_right(tree_node *n, char *question, char *answer) {
 	if (n->right_child == NULL) {
-		n->right_child = createTreeNode(data);
+		n->right_child = createTreeNode(question, answer);
 		return;
 	}
-	insert_left(n->right_child, data);
+	insert_left(n->right_child, question,answer);
 }
 
 // insert new root, if root exist, replace it
-void set_root(tree *Tree, data *data) {
+void set_root(tree *Tree, char *question, char *answer) {
 	if (Tree->root == NULL) {
-		Tree->root = createTreeNode(data);
+		Tree->root = createTreeNode(question,answer);
 		return;
 	}
 	tree_node *temp = Tree->root;
-	Tree->root = createTreeNode(data);
+	Tree->root = createTreeNode(question, answer);
 	Tree->root->left_child = temp->left_child;
 	Tree->root->right_child = temp->right_child;
 	free(temp);
 }
+
+//void tree_values(list *someList, tree_node *root) {
+//		if (root == NULL) {
+//		return;
+//	}
+//	//list_node *temp = (list_node *)malloc(sizeof(list_node));
+//	//temp->tree_node_data->data = tempRoot->data;
+//	//temp->tree_node_data->left_child = tempRoot->left_child;
+//	//temp->tree_node_data->right_child = tempRoot->right_child;
+//
+//
+//	testStruct someValue;
+//	strcpy_s(someValue.question, 100, root->data.question);
+//	strcpy_s(someValue.answer, 20, root->data.answer);
+//	list_new_insert(someList, someValue);
+//
+//	tree_values(root->right_child,someList);
+//	tree_values(root->left_child, someList);
+//}
+
+////return someshit?
+//void get_tree_Testing(tree_node *tempRoot, list *tempList) {
+//	if (tempRoot == NULL) {
+//		return;
+//	}
+//	//list_node *temp = (list_node *)malloc(sizeof(list_node));
+//	//temp->tree_node_data->data = tempRoot->data;
+//	//temp->tree_node_data->left_child = tempRoot->left_child;
+//	//temp->tree_node_data->right_child = tempRoot->right_child;
+//
+//
+//	testStruct someValue;
+//	strcpy_s(someValue.question, 100, tempRoot->data.question);
+//	strcpy_s(someValue.answer, 20, tempRoot->data.answer);
+//	list_new_insert(tempList, someValue);
+//
+//	get_tree_values(tempRoot->right_child,tempList);
+//	get_tree_values(tempRoot->left_child, tempList);
+//
+//	//printf("%c\t", tempRoot->data);
+//	//get_tree_values(tempRoot->right_child);
+//	//get_tree_values(tempRoot->left_child);
+//
+//	
+//}
 
 //data *get_root(tree *Tree) {
 //	return Tree->root->data;
@@ -171,4 +218,6 @@ void display_tree(tree_node *tempRoot, enum PrintMode_Tree x) {
 		return;
 	}
 }
+
+
 #pragma endregion
