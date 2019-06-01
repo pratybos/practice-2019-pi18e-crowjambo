@@ -128,9 +128,19 @@ int main() {
 	someList.head = NULL;
 	someList.size = 0;
 	
+	//save tree values to list
 	tree_values(&someList, someTree->root);
-	printf("%s %s \n", someList.head->testData.question, someList.head->testData.answer);
+	
+	//traversal
+	list_node *temp = someList.head;
+	//print out multiple saved values
+	while(temp != NULL) {
+		printf("%s %s", temp->testData.question, temp->testData.answer);
+		temp = temp->next;
+	}
 	system("pause");
+
+	//printf("%s %s \n", someList.head->testData.question, someList.head->testData.answer);
 	//fwrite(&, sizeof(savedData), 1, outfile);
 	
 
