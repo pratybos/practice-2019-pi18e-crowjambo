@@ -3,20 +3,11 @@
 #include "testHeader.h"
 
 //Create a console program that can guess your invented word for a freely chosen topic
-	/*
-	TODO:
-		- dynamic. If you answer wrong, it allows you to append a question OR answer if next node which you were about to traverse to is EMPTY ( this way its both dynamic and I can fill it in quickly and easily )
-		- update data structure in binary tree
-		- update createTreeNode, to take in strings, and create+allocate memory for new data node and append it to tree_node during treenode creation
-		- after last value is reached, program should make a guess on current best answer
 
-		- current best answer Char, which copies current best answer as you traverse, and once you reach dead end it prints it out, and if thats wrong, you can append new stuff
-	*/
 
 typedef struct {
-	data data[100];
-
-}savedData;
+	char input[100];
+}InputStruct;
 
 int main() {
 
@@ -28,34 +19,99 @@ int main() {
 	bool takenInput = false;
 	bool anotherInput = false;
 	char input = 'z';
-	char question[100], ch;
-	char answer[20], ch2;
+	char question[100];
+	char answer[20];
+	int i = 0;
 	//INIT, note -  root is NULL 
 	tree *someTree = create_tree();
 
+	//user input replay data
+	InputStruct userInput;
+	int inputCounter = 0;
 
-	//init first question
-	set_root(someTree,"Test Question?", "None");
-	someTree->size += 1;
 
-	//some test insertions
-	insert_left(someTree->root, "Inserted Question?", "None");
-	insert_left(someTree->root->left_child, "Second Level left Question?", "None");
-	insert_right(someTree->root, "First Level Right Question?", "None");
+#pragma region Reading already written data
 
-	//Populate the tree with previously available data
+	//populate input data
+	outfile = fopen("input.dat", "r");
+	if (outfile != NULL) {
+		//while (fread(&userInput, sizeof(userInput), 1, outfile)) {}
+		fread(&userInput, sizeof(userInput), 1, outfile);
+		fclose(outfile);
+	}
+
+	//populate list w values
+	outfile = fopen("data.dat", "r");
+	if (outfile != NULL) {
+		testStruct forReadingINTRO;
+		list *readingList = create_list();
+		//read data.dat into forReadingINTRO struct and append to linkedList
+		while (fread(&forReadingINTRO, sizeof(testStruct), 1, outfile)) {
+			//printf("%s %s \n ", forReading.question, forReading.answer);
+			//each binary tree node was written to list, and now being read and added to list again
+			list_new_insert(readingList, forReadingINTRO);
+		}
+		fclose(outfile);
+
+		//Create binary tree using input data and list data
+		int anotherCounter = 0;
+
+		//traversal node
+		list_node *listTraversal = readingList->head;
+
+		//add root before this loop
+		//start appending afterwards
+		set_root(someTree, listTraversal->testData.question, listTraversal->testData.answer);
+		//move up after root by a step in list
+		listTraversal = listTraversal->next;
+		//set root traversal node
+		tree_node *treeTarversal = someTree->root;
+
+		//find the end of user input
+		char someChar = 'y';
+		//while theres user input data in array
+		while (someChar == 'y' || someChar == 'n' || someChar == 'e') {
+			//if end of session symbol
+			if (userInput.input[anotherCounter] == 'e') {
+				//reset binary tree traversal to beginning
+				treeTarversal = someTree->root;
+			}
+
+			else if (userInput.input[anotherCounter] == 'y') {
+				insert_left(treeTarversal, listTraversal->testData.question, listTraversal->testData.answer);
+				//move up to the left
+				treeTarversal = treeTarversal->left_child;
+			}
+			else if (userInput.input[anotherCounter] == 'n') {
+				insert_right(treeTarversal, listTraversal->testData.question, listTraversal->testData.answer);
+				//move up to the right
+				treeTarversal = treeTarversal->right_child;
+			}
+
+			//read next stored input
+			anotherCounter++;
+			someChar = userInput.input[anotherCounter];
+			//next list value
+			if (listTraversal->next != NULL) {
+				listTraversal = listTraversal->next;
+			}
+		}
+		inputCounter = anotherCounter;
+
+	}
+	//no data.dat
+	else {
+		set_root(someTree, "First Question", "None");
+	}
+
 	
 
 
 
-	//reading
-	//outfile = fopen("data.dat", "r");
-	//testStruct forReading;
-	//while (fread(&forReading, sizeof(testStruct), 1, outfile)) {
-	//	//printf("%s %s \n ", forReading.question, forReading.answer);
 
-	//}
-	//fclose(outfile);
+#pragma endregion
+
+
 
 	//Car buying expert system
 	printf("Welcome to car buying expert system, y for Yes n for No\n");
@@ -80,6 +136,8 @@ int main() {
 		while (!takenInput) {
 			input = _getch();
 			if (input == 'y') {
+				userInput.input[inputCounter] = 'y';
+				inputCounter++;
 				//next node is empty(append new answers/questions)
 				if (currentNode->left_child == NULL) {
 					printf("Add question[1] or answer[2]?\n");
@@ -105,10 +163,13 @@ int main() {
 					}
 
 				}
+				//show next node
 				currentNode = currentNode->left_child;
 				takenInput = true;
 			}
 			else if (input == 'n') {
+				userInput.input[inputCounter] = 'n';
+				inputCounter++;
 				if (currentNode->right_child == NULL) {
 					printf("Add question[1] or answer[2]?\n");
 
@@ -132,17 +193,16 @@ int main() {
 						}
 					}
 				}
-
+				//show next node
 				currentNode = currentNode->right_child;
 				takenInput = true;
 			}
 		}
 	}
-	//traverese through tree and save data
-	currentNode = someTree->root;
 
 	//save created nodes to file
 	outfile = fopen("data.dat", "w");
+	//temp list creation to store binary tree data
 	list someList;
 	someList.head = NULL;
 	someList.size = 0;
@@ -150,37 +210,39 @@ int main() {
 	//save tree values to list
 	tree_values(&someList, someTree->root);
 	
-	////traversal
-	//list_node *temp = someList.head;
-	////save all list values to binary
-	//while(temp != NULL) {
-	//	//printf("%s %s\n", temp->testData.question, temp->testData.answer);
-	//	fwrite(&temp, sizeof(struct list_node), 1, outfile);
-	//	temp = temp->next;
-	//}
+
+	//save list values to file
 	testStruct temp;
+	//traversal node
 	list_node *temp_node = someList.head;
 	while (temp_node != NULL) {
+		//copy data to temp testStruct
 		strcpy(temp.question, temp_node->testData.question);
 		strcpy(temp.answer, temp_node->testData.answer);
+		//write data to file
 		fwrite(&temp, sizeof(testStruct), 1, outfile);
+		//traverse to next list node
 		temp_node = temp_node->next;
 	}
-
+	//close file
 	fclose(outfile);
 
-
-	//reading
-	outfile = fopen("data.dat", "r");
-	testStruct forReading;
-	while (fread(&forReading, sizeof(testStruct), 1, outfile)) {
-		//clean up of newline symbols
-		strtok(forReading.question, "\n");
-		strtok(forReading.answer, "\n");
-
-		printf("%s %s \n ", forReading.question, forReading.answer);
+	//to the end of current replay data inputs save a special symbol to indicate end of that session
+	//length of current input array
+	char lengthX = 'y';
+	i = 0;
+	while (lengthX == 'y' || lengthX == 'n' || lengthX == 'e') {
+		lengthX = userInput.input[i];
+		i++;
 	}
+	//add to the last element e to indicate end
+	userInput.input[i-1] = 'e';
+
+	//save inputs
+	outfile = fopen("input.dat", "w");
+	fwrite(&userInput,sizeof(InputStruct),1,outfile);
 	fclose(outfile);
+
 
 	system("pause");
 	return 0;
