@@ -107,7 +107,7 @@ int main() {
 							printf("Enter answer: ");
 							fgets(answer, 20, stdin);
 
-							insert_right(currentNode, "", answer);
+							insert_right(currentNode, "None", answer);
 							someTree->size += 1;
 							anotherInput = true;
 						}
@@ -131,28 +131,47 @@ int main() {
 	//save tree values to list
 	tree_values(&someList, someTree->root);
 	
-	//traversal
-	list_node *temp = someList.head;
-	//print out multiple saved values
-	while(temp != NULL) {
-		printf("%s %s", temp->testData.question, temp->testData.answer);
-		temp = temp->next;
+	////traversal
+	//list_node *temp = someList.head;
+	////save all list values to binary
+	//while(temp != NULL) {
+	//	//printf("%s %s\n", temp->testData.question, temp->testData.answer);
+	//	fwrite(&temp, sizeof(struct list_node), 1, outfile);
+	//	temp = temp->next;
+	//}
+	testStruct temp;
+	list_node *temp_node = someList.head;
+	while (temp_node != NULL) {
+		strcpy(temp.question, temp_node->testData.question);
+		strcpy(temp.answer, temp_node->testData.answer);
+		fwrite(&temp, sizeof(testStruct), 1, outfile);
+		temp_node = temp_node->next;
 	}
-	system("pause");
-
-	//printf("%s %s \n", someList.head->testData.question, someList.head->testData.answer);
-	//fwrite(&, sizeof(savedData), 1, outfile);
-	
-
 
 	fclose(outfile);
 
 
+	/*
+		//print out multiple saved values
+	while(temp != NULL) {
+		printf("%s %s\n", temp->testData.question, temp->testData.answer);
+		temp = temp->next;
+	}
+	system("pause");
+	*/
+
+	//printf("%s %s \n", someList.head->testData.question, someList.head->testData.answer);
+	//fwrite(&, sizeof(savedData), 1, outfile);
+
 	//reading
 	outfile = fopen("data.dat", "r");
-	
+	testStruct forReading;
+	while (fread(&forReading, sizeof(testStruct), 1, outfile)) {
+		printf("%s %s \n ", forReading.question, forReading.answer);
+	}
+	fclose(outfile);
 
-	//system("pause");
+	system("pause");
 	return 0;
 }
 
