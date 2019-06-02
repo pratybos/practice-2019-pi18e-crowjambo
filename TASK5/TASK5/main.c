@@ -38,6 +38,25 @@ int main() {
 	set_root(someTree,"Test Question?", "None");
 	someTree->size += 1;
 
+	//some test insertions
+	insert_left(someTree->root, "Inserted Question?", "None");
+	insert_left(someTree->root->left_child, "Second Level left Question?", "None");
+	insert_right(someTree->root, "First Level Right Question?", "None");
+
+	//Populate the tree with previously available data
+	
+
+
+
+	//reading
+	//outfile = fopen("data.dat", "r");
+	//testStruct forReading;
+	//while (fread(&forReading, sizeof(testStruct), 1, outfile)) {
+	//	//printf("%s %s \n ", forReading.question, forReading.answer);
+
+	//}
+	//fclose(outfile);
+
 	//Car buying expert system
 	printf("Welcome to car buying expert system, y for Yes n for No\n");
 
@@ -79,7 +98,7 @@ int main() {
 							printf("Enter answer: ");
 							fgets(answer, 20, stdin);
 
-							insert_left(currentNode, "", answer);
+							insert_left(currentNode, "No Question", answer);
 							someTree->size += 1;
 							anotherInput = true;
 						}
@@ -107,7 +126,7 @@ int main() {
 							printf("Enter answer: ");
 							fgets(answer, 20, stdin);
 
-							insert_right(currentNode, "None", answer);
+							insert_right(currentNode, "No Question", answer);
 							someTree->size += 1;
 							anotherInput = true;
 						}
@@ -151,22 +170,14 @@ int main() {
 	fclose(outfile);
 
 
-	/*
-		//print out multiple saved values
-	while(temp != NULL) {
-		printf("%s %s\n", temp->testData.question, temp->testData.answer);
-		temp = temp->next;
-	}
-	system("pause");
-	*/
-
-	//printf("%s %s \n", someList.head->testData.question, someList.head->testData.answer);
-	//fwrite(&, sizeof(savedData), 1, outfile);
-
 	//reading
 	outfile = fopen("data.dat", "r");
 	testStruct forReading;
 	while (fread(&forReading, sizeof(testStruct), 1, outfile)) {
+		//clean up of newline symbols
+		strtok(forReading.question, "\n");
+		strtok(forReading.answer, "\n");
+
 		printf("%s %s \n ", forReading.question, forReading.answer);
 	}
 	fclose(outfile);
