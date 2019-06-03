@@ -187,7 +187,7 @@ int main() {
 	//POPULATE THE TABLE
 	FILE *fp;
 	char str[100];
-	char *fileName = "C:\\students.txt";
+	char *fileName = "students.txt";
 	fopen_s(&fp, fileName, "r");
 	char _name[20];
 	char _lastName[20];

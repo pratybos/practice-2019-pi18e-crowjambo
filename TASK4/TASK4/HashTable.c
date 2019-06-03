@@ -6,7 +6,7 @@
 #define HT_PRIME_1 151
 #define HT_PRIME_2 163
 //base size of hash table
-#define HT_INITIAL_BASE_SIZE 300
+#define HT_INITIAL_BASE_SIZE 500
 
 #pragma region Main INIT/CREATE/DELETE functions
 
