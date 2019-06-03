@@ -75,6 +75,10 @@ int main() {
 			if (userInput.input[anotherCounter] == 'e') {
 				//reset binary tree traversal to beginning
 				treeTarversal = someTree->root;
+				//continue, else you skip 1 value each time E is spotted
+				anotherCounter++;
+				someChar = userInput.input[anotherCounter];
+				continue;
 			}
 
 			else if (userInput.input[anotherCounter] == 'y') {
@@ -150,6 +154,7 @@ int main() {
 							someTree->size += 1;
 							anotherInput = true;
 							isModified = true;
+
 						}
 						else if (input == '2') {
 							printf("Enter answer: ");
@@ -159,6 +164,7 @@ int main() {
 							someTree->size += 1;
 							anotherInput = true;
 							isModified = true;
+
 						}
 					}
 
@@ -183,6 +189,7 @@ int main() {
 							someTree->size += 1;
 							anotherInput = true;
 							isModified = true;
+
 						}
 						else if (input == '2') {
 							printf("Enter answer: ");
@@ -192,6 +199,7 @@ int main() {
 							someTree->size += 1;
 							anotherInput = true;
 							isModified = true;
+
 						}
 					}
 				}
@@ -223,13 +231,13 @@ int main() {
 		tree_node *treeTrav = someTree->root;
 		list_node *listTrav = someList.head;
 
+		//temp struct to hold list values
 		testStruct testingStruct2;
 		strcpy(testingStruct2.question, someTree->root->data.question);
 		strcpy(testingStruct2.answer, someTree->root->data.answer);
 		//send in the root to list
 		list_new_insert(&someList, testingStruct2);
-		//travel next
-		listTrav = listTrav->next;
+		
 
 		//while theres user input data in array
 		while (someChar2 == 'y' || someChar2 == 'n' || someChar2 == 'e') {
@@ -240,31 +248,31 @@ int main() {
 			}
 
 			else if (userInput.input[otherCounter] == 'y') {
-				//list_new_insert(&someList,)
-
-				insert_left(treeTrav, listTrav->testData.question, listTrav->testData.answer);
-				//move up to the left
+				//move left
 				treeTrav = treeTrav->left_child;
+				//set testingstruct2 values to be current tree node value
+				strcpy(testingStruct2.question, treeTrav->data.question);
+				strcpy(testingStruct2.answer, treeTrav->data.answer);
+				//insert to list
+				list_new_insert(&someList, testingStruct2);
+				
 			}
 			else if (userInput.input[otherCounter] == 'n') {
-				insert_right(treeTrav, listTrav->testData.question, listTrav->testData.answer);
-				//move up to the right
+				//move right
 				treeTrav = treeTrav->right_child;
+				//set testingstruct2 values to be current tree node value
+				strcpy(testingStruct2.question, treeTrav->data.question);
+				strcpy(testingStruct2.answer, treeTrav->data.answer);
+				//insert to list (treeNode)
+				list_new_insert(&someList, testingStruct2);
 			}
 
 			//read next stored input
 			otherCounter++;
 			someChar2 = userInput.input[otherCounter];
-			//next list value
-			if (listTrav->next != NULL) {
-				listTrav = listTrav->next;
-			}
 		}
-		//inputCounter = otherCounter;
-
 
 #pragma endregion
-
 
 
 		//save list values to file
