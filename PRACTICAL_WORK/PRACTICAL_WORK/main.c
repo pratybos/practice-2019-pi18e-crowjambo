@@ -1118,9 +1118,12 @@ int Main_Scene(){
 				//all 4 button check for opponent and send it into new scene
 				for (i = 0; i < 4; i++) {
 					if (buttonValRace[i] == 1) {
-						mng.currentScene = RACE;
-						mng.currentOpponent = oppList[i];
-						done = true;
+						//Only let race if have a car
+						if (player1.ownedCars[player1.currentCar].HorsePower != 0) {
+							mng.currentScene = RACE;
+							mng.currentOpponent = oppList[i];
+							done = true;
+						}
 					}
 				}		
 
